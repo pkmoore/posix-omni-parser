@@ -1,6 +1,6 @@
 import sys
 
-DEBUG = True
+DEBUG = False
 
 class ParsingClass:
   def __repr__(self):
@@ -266,110 +266,6 @@ class Sockaddr(ParsingClass):
 
 
 
-def _get_parsing_class(syscall_name, definition_parameter):
-  """
-  Examine the definition type to figure out which class should be used to 
-  describe this argument.
-  """
-  if definition_parameter.type == "char" and definition_parameter.pointer:
-    # char pointer type
-    if "path" in definition_parameter.name or "filename" in definition_parameter.name:
-      # argument is a file path.
-      return Filepath
-
-  elif definition_parameter.type == "int" or definition_parameter.type.endswith("_t"):
-    # number type
-    if "fd" in definition_parameter.name:
-      # argument is a file descriptor
-      return FileDescriptor
-
-    elif ("flag" in definition_parameter.name or 
-         "mode" in definition_parameter.name or
-         "prot" in definition_parameter.name or
-         "domain" in definition_parameter.name):
-      # argument is a set of flags.
-      return Flags
-
-    elif ("socket" in syscall_name and definition_parameter.type == "int" and
-          "type" in definition_parameter.name):
-      return Flags
-
-    else:
-      return Int
-
-  elif definition_parameter.type == "sockaddr":
-    # argument is a sockaddr
-    return Sockaddr
-  
-  sys.stderr.write("No CLASS for: '" + definition_parameter.type + " " + 
-                   definition_parameter.name + "' created yet :(\n")
-  
-  return UnimplementedType
-
-
-
-def _cast_syscall_arg(syscall_name, definition_parameter, string_args):
-  # if the string_args list is empty, then the value is missing.
-  if len(string_args) == 0:
-    return MissingValue(definition_parameter, string_args)
-  
-  parsing_class = _get_parsing_class(syscall_name, definition_parameter)
-
-  arg = parsing_class(string_args)
-
-  if arg.value == None:
-    # if the value of the argument is None, it means that the expected value was
-    # not found. This can occur when a system call has an error in which case
-    # structure and pointer values are not dereferenced, and instead we get the
-    # hex value of its memory location.
-    # Example:
-    # 14037 recv(6, 0xb7199058, 4096, 0)      = -1 EAGAIN
-    return MissingValue(definition_parameter, string_args)
-
-
-  return arg
-
-
-def cast_args(syscall_name, syscall_definitions, string_args):
-  # we will consume these args (pop them off the list) so let's make a fresh
-  # copy of them to avoid messing with the original list.
-  string_args = string_args[:]
-
-  if DEBUG:
-    print("Syscall Name:", syscall_name)
-
-  # find the syscall definition for this syscall.
-  syscall_definition = None
-  for sd in syscall_definitions:
-    if syscall_name == sd.name:
-      syscall_definition = sd
-      break
-
-  casted_args = []
-  for definition_parameter in syscall_definition.definition.parameters:
-    if DEBUG:
-      print("Definition Parameter:", definition_parameter)
-    
-    ca = _cast_syscall_arg(syscall_name, definition_parameter, string_args)
-    casted_args.append(ca)
-
-  # Since not all arguments have a type corresponding to them (yet), and
-  # because some argument values are part of the same syscall parameter (eg
-  # structures may have multiple values) it is possible that there are still
-  # arguments in the string_args list that are not consumed. Let's wrap them
-  # in an UnimplementedType class and append them at the end of the
-  # casted_args list.
-  while len(string_args) > 0:
-    # remember that casting to a class automatically consumes items from the
-    # given list
-    casted_args.append(UnimplementedType(string_args))
-
-
-  casted_args = tuple(casted_args)
-
-  return casted_args
-
-
 def _string_to_flags(flags_string):
   """
   Transforms a string to a list of flags.
@@ -444,3 +340,119 @@ def _mode_to_flags(mode):
       
       entity_position /= 10
   return list_of_flags
+
+
+
+def _get_parsing_class(syscall_name, definition_parameter):
+  """
+  Examine the definition type to figure out which class should be used to 
+  describe this argument.
+  """
+  if definition_parameter.type == "char" and definition_parameter.pointer:
+    # char pointer type
+    if "path" in definition_parameter.name or "filename" in definition_parameter.name:
+      # argument is a file path.
+      return Filepath
+
+  elif definition_parameter.type == "int" or definition_parameter.type.endswith("_t"):
+    # number type
+    if "fd" in definition_parameter.name:
+      # argument is a file descriptor
+      return FileDescriptor
+
+    elif ("flag" in definition_parameter.name or 
+         "mode" in definition_parameter.name or
+         "prot" in definition_parameter.name or
+         "domain" in definition_parameter.name):
+      # argument is a set of flags.
+      return Flags
+
+    elif ("socket" in syscall_name and definition_parameter.type == "int" and
+          "type" in definition_parameter.name):
+      return Flags
+
+    else:
+      return Int
+
+  elif definition_parameter.type == "sockaddr":
+    # argument is a sockaddr
+    return Sockaddr
+  
+  sys.stderr.write("No CLASS for: '" + definition_parameter.type + " " + 
+                   definition_parameter.name + "' created yet :(\n")
+  
+  return UnimplementedType
+
+
+
+def _cast_syscall_arg(syscall_name, definition_parameter, string_args):
+  # if the string_args list is empty, then the value is missing.
+  if len(string_args) == 0:
+    return MissingValue(definition_parameter, string_args)
+  
+  parsing_class = _get_parsing_class(syscall_name, definition_parameter)
+
+  arg = parsing_class(string_args)
+
+  if arg.value == None:
+    # if the value of the argument is None, it means that the expected value was
+    # not found. This can occur when a system call has an error in which case
+    # structure and pointer values are not dereferenced, and instead we get the
+    # hex value of its memory location.
+    # Example:
+    # 14037 recv(6, 0xb7199058, 4096, 0)      = -1 EAGAIN
+    return MissingValue(definition_parameter, string_args)
+
+
+  return arg
+
+
+
+def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
+  # we will consume these args (pop them off the list) so let's make a fresh
+  # copy of them to avoid messing with the original list.
+  string_args = string_args[:]
+
+  if DEBUG:
+    print("Syscall Name:", syscall_name)
+
+  # find the syscall definition for this syscall.
+  syscall_definition = None
+  for sd in syscall_definitions:
+    if syscall_name == sd.name:
+      syscall_definition = sd
+      break
+
+  casted_args = []
+  for definition_parameter in syscall_definition.definition.parameters:
+    if DEBUG:
+      print("Definition Parameter:", definition_parameter)
+    
+    # for system calls that are unfinished we don't need to consider the
+    # definition arguments beyond the number of arguments the unfinished syscall
+    # includes. If this was not here, for every definition parameter for which
+    # an argument is not provided in the unfinished system call a MissingValue
+    # object would be used. This is not a bad idea (could even be usefull in
+    # some cases) but it is a bit cleaner if we just ignore the missing
+    # arguments.
+    if syscall_type == "unfinished" and len(string_args) == 0:
+      break
+
+    ca = _cast_syscall_arg(syscall_name, definition_parameter, string_args)
+    casted_args.append(ca)
+
+  # Since not all arguments have a type corresponding to them (yet), and
+  # because some argument values are part of the same syscall parameter (eg
+  # structures may have multiple values) it is possible that there are still
+  # arguments in the string_args list that are not consumed. Let's wrap them
+  # in an UnimplementedType class and append them at the end of the
+  # casted_args list.
+  while len(string_args) > 0:
+    # remember that casting to a class automatically consumes items from the
+    # given list
+    casted_args.append(UnimplementedType(string_args))
+
+
+  casted_args = tuple(casted_args)
+
+  return casted_args
