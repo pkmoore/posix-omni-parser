@@ -72,7 +72,6 @@ class StraceParser:
     self._re_complete_syscall = re.compile(r"([^(]+)\((.*)\)[ ]+=[ ]+([a-fx\d\-?]+)(.*)")
     
 
-
   def _detect_trace_options(self):
     """
     "inst_pointer" True/False -i
@@ -287,7 +286,7 @@ class StraceParser:
     """
 
     # Let's make sure that the system call we are examining is execve.
-    assert syscall_name == "execve", "Trace line does not include an execve system call `" + syscall_name + "`"
+    assert syscall_name == "execve", "Trace line does start with an execve system call `" + syscall_name + "`"
 
     # now if the parameters_string includes the strings "[/*" and "*/]" then the
     # -v option was not used.
@@ -305,7 +304,6 @@ class StraceParser:
       trace_options["elapsed_time"] = True
 
     return trace_options
-
 
 
   def parse_trace(self):
@@ -342,7 +340,6 @@ class StraceParser:
     return syscalls
 
 
-  
   def _parse_line(self, line, unfinished_syscalls):
     """
     <return>
@@ -555,7 +552,6 @@ class StraceParser:
     return line_parts
 
 
-
   def _parse_args(self, args_string):
     args_string = args_string.strip()
 
@@ -567,7 +563,6 @@ class StraceParser:
       return []
 
     return _merge_quote_args(args_string.split(", "))
-
 
 
   def _fix_args(self, line_parts):
@@ -657,7 +652,6 @@ class StraceParser:
     return line_parts
 
 
-
   def __repr__(self):
     # generate the trace options string.
     trace_options_string = ""
@@ -680,17 +674,18 @@ class StraceParser:
 
 
 
-"""
-Used to fix errors on parsed args. Specifically, if a string value in the trace
-contains ", " the string will be wrongly split in two args. This method searches
-for args that start with a double quote (indicating that the arg is a string)
-and if that args does not end with a double quote (an unescaped double quote)
-then the string must have been split. Join this args with the next one and
-repeat the same procedure to fix.
-"""
 def _merge_quote_args(args):
+  """
+  Used to fix errors on parsed args. Specifically, if a string value in the trace
+  contains ", " the string will be wrongly split in two args. This method searches
+  for args that start with a double quote (indicating that the arg is a string)
+  and if that args does not end with a double quote (an unescaped double quote)
+  then the string must have been split. Join this args with the next one and
+  repeat the same procedure to fix.
+  """
   if len(args) <= 1:
     return args
+  
   index = 0
   while index < len(args):
     # if the args starts with a quote but does not end with a quote, the

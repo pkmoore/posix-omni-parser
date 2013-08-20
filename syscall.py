@@ -53,5 +53,3 @@ class Syscall:
       representation += "ELAPSED_TIME: " + str(self.elapsed_time) + "\n"
 
     return representation
-
-

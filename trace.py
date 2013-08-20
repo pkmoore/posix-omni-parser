@@ -69,7 +69,6 @@ class Trace:
     #- gathered from.
 
 
-
   def _detect_tracing_utility(self, trace_path):
     """
     <parameters>
@@ -80,7 +79,6 @@ class Trace:
 
     assert tracing_utility in ["strace", "truss"]
     return tracing_utility
-  
 
   
   def generate_trace_bundle(trace_path, parser=None):
@@ -158,7 +156,6 @@ class Trace:
     for fname in os.listdir(os.getcwd()):
       if fname.startswith("linddata."):
         os.remove(fname)
-
 
 
   def __repr__(self):
