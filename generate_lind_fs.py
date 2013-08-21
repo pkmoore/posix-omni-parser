@@ -39,35 +39,14 @@ DEBUG = False
 
 """
 This is the only public function of this module. It takes as argument a tuple of
-trace actions and generates a lind fs based on the information it can gather
-from these actions and the posix fs.
+trace syscalls and generates a lind fs based on the information it can gather
+from these syscalls and the posix fs.
 """
-def generate_fs(actions, trace_path):
-  # Relative paths found in actions are related to this HOME_PATH. It is initially
-  # set to an empty string which ultimately translates to the current directory.
+def generate_fs(syscalls, trace_path):
+  # Relative paths found in actions are related to this HOME_PATH. It is
+  # initially set to an empty string which ultimately translates to the current
+  # directory.
   home_path = ''
-
-  # read the trace and examine the execve syscall to see if the HOME environment
-  # variable is set to somewhere else. This usually happens when running 
-  # benchmarks. The reason to do this is because actions referring to files 
-  # using relative paths, might refere to these files relative to the HOME
-  # variable defined in the execve syscall.
-  fh = open(trace_path, "r")
-  # the execve syscall is the first action of the trace file
-  execve_line = fh.readline()
-  fh.close()
-  
-  # If the 'HOME' variable is defined in the execve line, the HOME_PATH
-  # variable will be set to the path of 'HOME'.
-  if execve_line.find("execve(") != -1:
-    execve_parts = execve_line.split(", ")
-    # the parameter of the HOME variable in the execve syscall has this format:
-    # "HOME=/home/savvas/tests/" including the double quotes.
-    for part in execve_parts:
-      if part.startswith("\"HOME="):
-        part = part.strip("\"")
-        assert(part.startswith("HOME="))
-        home_path = part[part.find("HOME=")+5:]
 
   # load an initial lind file system.
   lind_test_server._blank_fs_init()
