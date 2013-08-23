@@ -1,31 +1,30 @@
 """
-<Program>
-  generate_lind_fs.py
-
 <Started>
   March 2013
 
 <Author>
-  Savvas Savvides
+  Savvas Savvides <savvas@purdue.edu>
 
 <Purpose>
-  This module is responsible for generating a lind file system based on the 
-  information gathered from a trace. It provides a single public function which 
-  takes as argument a tuple with all the parsed system call actions and creates 
-  a set of files that make up the lind file system. The function returns nothing
+
+  This module is responsible for generating a Lind file system based on the
+  information gathered from a trace. It provides a single public function which
+  takes as argument a list of system calls parsed into Syscall objects and
+  generates a set of files that make up the Lind file system. More information
+  about Lind can be found here: https://seattle.poly.edu/wiki/Lind
   
   Example of using this module:
 
-    import generate_lind_fs
-    import parser_strace_calls
-    
-    fh = open(TRACE_FILE_NAME, "r")
-    actions = parser_strace_calls.parse_trace(fh)
-    generate_lind_fs.generate_fs(actions)
+    import trace
+    import generate_fs
+
+    trace = trace.Trace(path_to_trace_file)
+    generate_fs.generate_fs(trace.syscalls)
 
 <Remarks>
-  generate_fs calls lind_test_server._blank_fs_init() which removes
-  all existing lind fs files and initializes the lind.metadata file.
+  generate_fs calls removes all existing Lind fs files and initializes the
+  lind.metadata file.
+
 """
 
 import os
@@ -37,16 +36,32 @@ from lind_fs_constants import *
 DEBUG = False
 
 
-"""
-This is the only public function of this module. It takes as argument a tuple of
-trace syscalls and generates a lind fs based on the information it can gather
-from these syscalls and the posix fs.
-"""
-def generate_fs(syscalls, trace_path):
-  # Relative paths found in actions are related to this HOME_PATH. It is
-  # initially set to an empty string which ultimately translates to the current
-  # directory.
-  home_path = ''
+
+def generate_fs(syscalls, home_env=None):
+  """
+  <Purpose>
+    This is the only public function of this module. It takes a list of
+    Syscall objects as an argument and generates a Lind fs based on the
+    information gathered from these system calls.
+
+  <Arguments>
+    syscalls:
+      A list of Syscall objects, representing system calls parsed from a trace
+      file.
+
+    home_env:
+      The HOME environment variable extracted from the traced execve sytem call.
+
+  <Exceptions>
+    None
+  
+  <Side Effects>
+    Generates a set of files that make up the Lind file system.
+
+  <Returns>
+    None
+
+  """
 
   # load an initial lind file system.
   lind_test_server._blank_fs_init()
@@ -493,3 +508,14 @@ def _find_all_paths_recursively(startingpath):
       knownitems = knownitems + _find_all_paths_recursively(thisitem)
 
   return knownitems
+
+
+
+
+def main():
+  import trace
+  trace = trace.Trace(sys.argv[1])
+  generate_fs(trace.syscalls)
+
+if __name__ == "__main__":
+  main()
