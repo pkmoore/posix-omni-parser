@@ -27,7 +27,7 @@ import strace_parser
 class Trace:
   """
   <Purpose>
-    This object represents an entire system call trace, which means taht it 
+    This object represents an entire system call trace, which means that it 
     holds all the information extracted from a system call trace file created by
     an interposition utility such as the strace utility on Linux, the truss 
     utility on Solaris or the dtrace utility on BSD and OSX platforms.
@@ -39,10 +39,6 @@ class Trace:
     self.tracing_utility:
       The detected tracing utility used to generate the trace file, e.g strace.
     
-    self.home_env:
-      This instance variable holds the contents of the HOME environment 
-      variable, if this information can be extracted from the trace file itself.
-
     self.parser:
       The parser to use in order to extract the information from the trace file.
       The choice of parser depends on the tracing utility used to generate the 
@@ -57,7 +53,6 @@ class Trace:
       especially useful when creating a trace bundle containing not only the
       parsed system calls but also a representation of all the files referenced
       in trace file.
-
   """
 
   def __init__(self, trace_path=None):
@@ -76,10 +71,6 @@ class Trace:
       
       IOError:
         If the trace_path given is not a file.
-      
-      IOError:
-        If the pickle file containing the system call definitions (this file 
-        comes as part of the program) is not found.
     
     <Side Effects>
       None
@@ -102,33 +93,12 @@ class Trace:
     # peek here to avoid re-initializing the file.
     self.tracing_utility = self._detect_tracing_utility()
 
-    # get the HOME environment variable. Normally environment variables appear
-    # as arguments of the execve system call. execve syscall should be the first
-    # system call in a trace. The HOME environment variable is useful as general
-    # information about the trace but also in case a file bundle needs to be
-    # generated. In this case all the files referenced in the trace must be
-    # located and included in the bundle. The location of these files are in
-    # respect to the HOME variable.
-    self.home_env = self._get_home_environment()
-
-    # get the syscall definitions from the pickle file. These  will be used to
-    # parse the parameters of each system call.
-    syscall_definitions = None
-    try:
-      pickle_file = open("syscall_definitions.pickle", 'rb')
-      syscall_definitions = pickle.load(pickle_file)
-    except IOError:
-      raise IOError("The pickle file holding the system call definitions " + 
-                    "was not found. (syscall_definitions.pickle)")
-    finally:
-      pickle_file.close()
-
     # select parser according to the tracing utility.
     if self.tracing_utility == "strace":
-      self.parser = strace_parser.StraceParser(self.trace_path, syscall_definitions)
+      self.parser = strace_parser.StraceParser(self.trace_path)
     elif self.tracing_utility == "truss":
       # not yet implemented.
-      self.parser = TrussParser(self.trace_path, syscall_definitions)
+      self.parser = TrussParser(self.trace_path)
     else:
       raise Exception("Unknown parser when attempting to parse trace.")
 
@@ -167,66 +137,6 @@ class Trace:
     return tracing_utility
 
   
-  def _get_home_environment(self):
-    """
-    <Purpose>
-      Read the first line of the trace file. If that line represents the execve
-      system call then examine it to see whether the HOME environment variable
-      is set. If it is set, extract it and return it, otherwise return None. The
-      HOME environment variable is sometimes set to a path other than the
-      current directory (i.e the directory in which the traced application was
-      executed) when running a benchmark. Keeping track of the HOME env variable
-      is particularly useful when reasoning about relative paths that appear in
-      the trace file. System calls referring to files using relative paths,
-      might refer to these files relative to the HOME variable defined in the
-      execve syscall.
-
-    <Arguments>
-      None
-
-    <Exceptions>
-      IOError:
-        Unable to read from the trace file.
-    
-    <Side Effects>
-      None
-
-    <Returns>
-      The HOME env path as this is defined in the execve system call, or None if
-      the HOME path was not found.
-
-    """
-    
-    try:
-      fh = open(self.trace_path, "r")
-      # the execve syscall is the first action of the trace file
-      execve_line = fh.readline()
-    except IOError:
-      raise IOError("Unable to read trace file when trying to extract the " + 
-                    "HOME environment variable.")
-    finally:
-      fh.close()
-    
-    # If the 'HOME' variable is defined in the execve line, the HOME_PATH
-    # variable will be set to the path of 'HOME'.
-    if "execve(" in execve_line:
-      # split to get the arguments of the syscall
-      execve_parts = execve_line.split(", ")
-
-      # the parameter of the HOME variable in the execve syscall has this
-      # format: 
-      # "HOME=/home/savvas/tests/" including the double quotes.
-      for part in execve_parts:
-        if part.startswith("\"HOME="):
-          # remove the double quotes
-          part = part.strip("\"")
-          
-          # return the path excluding the "HOME="" label in front of it.
-          return part[part.find("HOME=")+5:]
-
-    return None
-
- 
   def generate_trace_bundle(self):
     """
     <Purpose>

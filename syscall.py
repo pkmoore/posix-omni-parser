@@ -2,6 +2,43 @@ import parsing_classes
 
 DEBUG = False
 
+
+
+
+class UnfinishedSyscall:
+  """
+  If a syscall is interrupted or blocked, strace will split it in multiple 
+  lines.
+  
+  Example:
+  19176 accept(3, <unfinished ...>
+  19175 connect(5, {sa_family=AF_INET, sin_port=htons(25588), 
+                    sin_addr=inet_addr("127.0.0.1")}, 16) = 0
+  19176 <... accept resumed> {sa_family=AF_INET, sin_port=htons(42572), 
+                              sin_addr=inet_addr("127.0.0.1")}, [16]) = 4
+
+  This object is used to store the information from the unfinished syscall until
+  it is resumed.
+  """
+  
+  def __init__(self, pid, name, args):
+    self.pid = pid
+    self.name = name
+    self.args = args
+
+  def __eq__(self, other):
+    return self.pid == other.pid and self.name == other.name
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+  
+  def __repr__(self):
+    return "UnfinishedSyscall: " + self.pid + \
+           " " + self.name + " " + str(self.args)
+
+
+
+
 class Syscall:
   """
   """
