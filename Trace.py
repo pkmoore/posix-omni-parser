@@ -11,8 +11,8 @@
 
   Example using this module:
 
-    import trace
-    trace = trace.Trace(path_to_trace)
+    import Trace
+    trace = Trace.Trace(path_to_trace)
     print(trace)
 
 """
@@ -21,7 +21,7 @@ import os
 import sys
 import pickle
 
-import strace_parser
+import StraceParser
 
 
 class Trace:
@@ -95,7 +95,7 @@ class Trace:
 
     # select parser according to the tracing utility.
     if self.tracing_utility == "strace":
-      self.parser = strace_parser.StraceParser(self.trace_path)
+      self.parser = StraceParser.StraceParser(self.trace_path)
     elif self.tracing_utility == "truss":
       # not yet implemented.
       self.parser = TrussParser(self.trace_path)
@@ -234,7 +234,6 @@ class Trace:
                    + "\ntrace_path=" + self.trace_path \
                    + "\ntracing_utility=" + self.tracing_utility \
                    + "\nparser=" + str(self.parser) \
-                   + "\nhome_env=" + str(self.home_env) \
                    + "\ntraced_syscalls=" + str(len(self.syscalls)) + ">"
 
     return representation
