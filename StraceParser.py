@@ -274,7 +274,7 @@ class StraceParser(Parser.Parser):
       Name of Option    Possible Values           Corresponding strace Option
       -------------------------------------------------------------------------
       "output"          True/False                -o
-      "fork"            None/True/False           -f
+      "fork"            True/False           -f
       "verbose"         True/False                -v
       "string_size"     None/int                  -s
       "timestamp"       None/"r"/"t"/"tt"/"ttt"   -r / -t / -tt / -ttt
@@ -296,26 +296,66 @@ class StraceParser(Parser.Parser):
 
     """
 
-    # read the first line of the trace to detect the used options.
+    # initially assume that no option was used.
+    trace_options = {}
+    trace_options["output"] = False
+    trace_options["fork"] = False
+    trace_options["verbose"] = False
+    trace_options["string_size"] = None
+    trace_options["timestamp"] = None
+    trace_options["elapsed_time"] = False
+    trace_options["inst_pointer"] = False
+
+    # read the first line of the trace to detect the used options. Traces that
+    # represent application executions should start with a complete execve
+    # system call. But to allow traces that are "made up" e.g for testing
+    # purposes, let's not assume that the first syscall is always execve.
     try:
       fh = open(self.trace_path, "r")
-      # the execve syscall is the first action of the trace file
-      trace_line = fh.readline()
+      
+      trace_line = None
+
+      # we need a trace line that is complete ore resumed in order to examine
+      # which options were used. Keep reading lines until a suitable trace line
+      # is found.
+      for line in fh:
+        line = line.strip()
+        
+        # empty lines don't normally appear in trace files but in case this is a
+        # made up trace let deal with empty lines.
+        if line == "":
+          continue
+
+        # unfinished syscall trace lines don't give us all the info we need to 
+        # figure out which options are used.
+        if "<unfinished ..." in line:
+          continue
+
+        # resuming lines do hold the information we need but they have a
+        # slightly different format so let's just skip them too for now.
+        if " resumed>" in line:
+          continue
+        
+        trace_line = line
+        break
+
+      # if no suitable trace line is found to extract the options, then return
+      # the initial values of trace_options which assumes that no options were
+      # used with the utility.
+      if trace_line == None:
+        return trace_options
+
     except IOError:
       raise IOError("Unable to read trace file when trying to determine the " + 
                     "trace options.")
     finally:
       fh.close()
 
-    """ OBSOLETE, and can cause problems if first syscall in unfinished or 
-        resuming.
-
     # check if the general format of a trace line is correct.
     # example: 8085  open("syscalls.txt", O_RDONLY|O_CREAT, 0664) = 3
     if (trace_line.find('(') == -1 or trace_line.find(')') == -1 
      or trace_line.find('=') == -1):
       raise Exception("Incorrect format of trace line `" + trace_line + "`")
-    """
 
     # content differences based on the strace options we care about appear in
     # three different parts of the trace line. The first one is before the name
@@ -360,7 +400,6 @@ class StraceParser(Parser.Parser):
     assert pid.isdigit(), "Invalid format of pid in trace line `" + trace_line + "`"
 
     # Since the pid exists, the -o and -f options must have been set.
-    trace_options = {}
     trace_options["output"] = True
     trace_options["fork"] = True
 
@@ -526,8 +565,8 @@ class StraceParser(Parser.Parser):
         # the line_parts will be set to None if the trace line is not a valid
         # system call trace. So we just ignore the line entirely.
         if line_parts != None:
-          syscalls.append(Syscall.Syscall(self.syscall_definitions, 
-                                          line, line_parts))
+          syscalls.append(Syscall.Syscall(self.syscall_definitions, line, 
+                                          line_parts))
     finally:
       trace_file_handler.close()
 
@@ -636,7 +675,7 @@ class StraceParser(Parser.Parser):
     # 15900 1371634358.112850 [????????] nanosleep({...},  <unfinished ... exit status 0>
 
     if "<unfinished ..." in remaining_line:
-      line_parts["type"] = "unfinished"
+      line_parts["type"] = Syscall.Syscall.UNFINISHED
       
       m = self._re_unfinished_syscall.match(remaining_line)
       if not m:
@@ -655,7 +694,7 @@ class StraceParser(Parser.Parser):
       remaining_line = ''
     
     elif " resumed>" in remaining_line:
-      line_parts["type"] = "resumed"
+      line_parts["type"] = Syscall.Syscall.RESUMED
       
       m = self._re_resumed_syscall.match(remaining_line)
       if not m:
@@ -687,7 +726,7 @@ class StraceParser(Parser.Parser):
       remaining_line = m.group(4)
 
     else:
-      line_parts["type"] = "completed"
+      line_parts["type"] = Syscall.Syscall.COMPLETE
 
       m = self._re_complete_syscall.match(remaining_line)
       if not m:
@@ -705,7 +744,7 @@ class StraceParser(Parser.Parser):
     # if the type of the syscall is unfinished then there is nothing else to
     # parse.
     line_parts["elapsed_time"] = None
-    if line_parts["type"] == "unfinished":
+    if line_parts["type"] == Syscall.Syscall.UNFINISHED:
       return line_parts
 
     # at this point the remaining line should include the error label eg ENOENT
