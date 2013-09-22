@@ -202,11 +202,11 @@ class StraceParser(Parser.Parser):
       -f (R) Trace child processes as they are created by currently traced 
              processes as a line_parts of the fork(2) system call.
       
-      Note: The parser requires each traced system call to include the process id.
-            This is achieved by using both the -f and -o options when tracing an 
-            application.
+      Note:  The parser requires each traced system call to include the process
+             id. This is achieved by using both the -f and -o options when
+             tracing an application. Hence these two options are required
 
-      Example strace output with different options. Required options -v -f and -o 
+      Example strace output with different options. Required options -f and -o 
       are included in each of the following examples.
 
       with no extra options (other than -o and -f):
@@ -220,9 +220,10 @@ class StraceParser(Parser.Parser):
           "ORBIT_SOCKETDIR=/tmp/orbit-ssavv"..., "XDG_MENU_PREFIX=gnome-", 
           "SHELL=/usr/local/bin/bash", "TERM=xterm", "WINDOWID=25165827", 
           "SHLVL=3", "ICAROOT=/opt/Citrix/ICAClient", "HOME=/homes/ssavvide", 
-          "JDK_HOME=/etc/java-config-2/curr"..., "GNOME_DESKTOP_SESSION_ID=this-is"..., 
-          "LOGNAME=ssavvide", "LESS=-R -M --shift 5", "CUR_WIDTH=77", 
-          "CVS_RSH=ssh", "GCC_SPECS=", "DBUS_SESSION_BUS_ADDRESS=unix:ab"..., 
+          "JDK_HOME=/etc/java-config-2/curr"..., 
+          "GNOME_DESKTOP_SESSION_ID=this-is"..., "LOGNAME=ssavvide", 
+          "LESS=-R -M --shift 5", "CUR_WIDTH=77", "CVS_RSH=ssh", "GCC_SPECS=", 
+          "DBUS_SESSION_BUS_ADDRESS=unix:ab"..., 
           "DBUS_SYSTEM_BUS_ADDRESS=unix:pat"..., "COLORTERM=gnome-terminal", 
           "OLDPWD=/homes/ssavvide/programmi"...]) = 0
 

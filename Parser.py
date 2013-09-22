@@ -68,6 +68,17 @@ class Parser():
     self.home_env = self._get_home_environment()
     
 
+  """ ABSTRACT METHODS """
+  def _get_home_environment(self):
+    raise NotImplementedError
+
+  def _detect_trace_options(self):
+    raise NotImplementedError
+
+  def parse_trace(self):
+    raise NotImplementedError
+
+
   def _merge_quote_args(self, args_list):
     """
     <Purpose>
@@ -123,14 +134,3 @@ class Parser():
       if string[index] != '\\':
         return index % 2 == 0
     return False
-
-
-  """ ABSTRACT METHODS """
-  def _get_home_environment(self):
-    raise NotImplementedError
-
-  def _detect_trace_options(self):
-    raise NotImplementedError
-
-  def parse_trace(self):
-    raise NotImplementedError
