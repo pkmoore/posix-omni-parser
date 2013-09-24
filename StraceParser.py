@@ -204,7 +204,10 @@ class StraceParser(Parser.Parser):
       
       Note:  The parser requires each traced system call to include the process
              id. This is achieved by using both the -f and -o options when
-             tracing an application. Hence these two options are required
+             tracing an application. Hence these two options are required. The
+             reason we need the pid in each system call is because we use it to
+             identify the corresponding unfinished syscall for every resuming
+             syscalls.
 
       Example strace output with different options. Required options -f and -o 
       are included in each of the following examples.
@@ -275,7 +278,7 @@ class StraceParser(Parser.Parser):
       Name of Option    Possible Values           Corresponding strace Option
       -------------------------------------------------------------------------
       "output"          True/False                -o
-      "fork"            True/False           -f
+      "fork"            True/False                -f
       "verbose"         True/False                -v
       "string_size"     None/int                  -s
       "timestamp"       None/"r"/"t"/"tt"/"ttt"   -r / -t / -tt / -ttt
@@ -340,18 +343,18 @@ class StraceParser(Parser.Parser):
         trace_line = line
         break
 
-      # if no suitable trace line is found to extract the options, then return
-      # the initial values of trace_options which assumes that no options were
-      # used with the utility.
-      if trace_line == None:
-        return trace_options
-
     except IOError:
       raise IOError("Unable to read trace file when trying to determine the " + 
                     "trace options.")
     finally:
       fh.close()
 
+    # if no suitable trace line is found to extract the options, then return
+    # the initial values of trace_options which assumes that no options were
+    # used with the utility.
+    if trace_line == None:
+      return trace_options
+      
     # check if the general format of a trace line is correct.
     # example: 8085  open("syscalls.txt", O_RDONLY|O_CREAT, 0664) = 3
     if (trace_line.find('(') == -1 or trace_line.find(')') == -1 

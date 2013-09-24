@@ -1,0 +1,91 @@
+<Trace
+platform=linux2
+trace_path=traces/test.strace
+tracing_utility=strace
+parser=<StraceParser trace_path=`traces/test.strace` trace_options=-o -f>
+traced_syscalls=12>
+
+ORIGINAL LINE: 14037 execve("/usr/bin/firefox", ["firefox"], ["SSH_AGENT_PID=1808", "GPG_AGENT_INFO=/tmp/keyring-Qted1O/gpg:0:1", "TERM=xterm", "SHELL=/bin/bash", "XDG_SESSION_COOKIE=f7e455fdc491574bce46d78d0000000a-1367615184.585954-1545209927", "WINDOWID=69233662", "OLDPWD=/home/savvas", "GNOME_KEYRING_CONTROL=/tmp/keyring-Qted1O", "USER=savvas", "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*"..., "XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0", "XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0", "SSH_AUTH_SOCK=/tmp/keyring-Qted1O/ssh", "SESSION_MANAGER=local/savvas-notebook:@/tmp/.ICE-unix/1769,unix/savvas-notebook:/tmp/.ICE-unix/1769", "DEFAULTS_PATH=/usr/share/gconf/ubuntu.default.path", "XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg", "GPGKEY=D61510C1", "PATH=/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games", "DESKTOP_SESSION=ubuntu", "PWD=/home/savvas/Desktop/SYSCALLS", "REPY_PATH=/home/savvas/Desktop/CHECKAPI/project/posix_checkapi/TRACES/parser", "GNOME_KEYRING_PID=1758", "LANG=en_US.UTF-8", "MANDATORY_PATH=/usr/share/gconf/ubuntu.mandatory.path", "UBUNTU_MENUPROXY=libappmenu.so", "COMPIZ_CONFIG_PROFILE=ubuntu", "GDMSESSION=ubuntu", "SHLVL=1", "HOME=/home/savvas", "GNOME_DESKTOP_SESSION_ID=this-is-deprecated", "LOGNAME=savvas", "XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/", "DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-VBNzTCiFHD,guid=dd0336656ef5031102cc32dd00000023", "LESSOPEN=| /usr/bin/lesspipe %s", "DISPLAY=:0", "XDG_CURRENT_DESKTOP=Unity", "LESSCLOSE=/usr/bin/lesspipe %s %s", "COLORTERM=gnome-terminal", "XAUTHORITY=/home/savvas/.Xauthority", "_=/usr/bin/strace"]) = 0
+TYPE:          complete
+PID:           14037
+NAME:          execve
+ARGS:          (<Filepath "/usr/bin/firefox">, <UnimplementedType ["firefox"]>, <UnimplementedType ["SSH_AGENT_PID=1808">, <UnimplementedType "GPG_AGENT_INFO=/tmp/keyring-Qted1O/gpg:0:1">, <UnimplementedType "TERM=xterm">, <UnimplementedType "SHELL=/bin/bash">, <UnimplementedType "XDG_SESSION_COOKIE=f7e455fdc491574bce46d78d0000000a-1367615184.585954-1545209927">, <UnimplementedType "WINDOWID=69233662">, <UnimplementedType "OLDPWD=/home/savvas">, <UnimplementedType "GNOME_KEYRING_CONTROL=/tmp/keyring-Qted1O">, <UnimplementedType "USER=savvas">, <UnimplementedType "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*"...>, <UnimplementedType "XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0">, <UnimplementedType "XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0">, <UnimplementedType "SSH_AUTH_SOCK=/tmp/keyring-Qted1O/ssh">, <UnimplementedType "SESSION_MANAGER=local/savvas-notebook:@/tmp/.ICE-unix/1769,unix/savvas-notebook:/tmp/.ICE-unix/1769">, <UnimplementedType "DEFAULTS_PATH=/usr/share/gconf/ubuntu.default.path">, <UnimplementedType "XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg">, <UnimplementedType "GPGKEY=D61510C1">, <UnimplementedType "PATH=/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games">, <UnimplementedType "DESKTOP_SESSION=ubuntu">, <UnimplementedType "PWD=/home/savvas/Desktop/SYSCALLS">, <UnimplementedType "REPY_PATH=/home/savvas/Desktop/CHECKAPI/project/posix_checkapi/TRACES/parser">, <UnimplementedType "GNOME_KEYRING_PID=1758">, <UnimplementedType "LANG=en_US.UTF-8">, <UnimplementedType "MANDATORY_PATH=/usr/share/gconf/ubuntu.mandatory.path">, <UnimplementedType "UBUNTU_MENUPROXY=libappmenu.so">, <UnimplementedType "COMPIZ_CONFIG_PROFILE=ubuntu">, <UnimplementedType "GDMSESSION=ubuntu">, <UnimplementedType "SHLVL=1">, <UnimplementedType "HOME=/home/savvas">, <UnimplementedType "GNOME_DESKTOP_SESSION_ID=this-is-deprecated">, <UnimplementedType "LOGNAME=savvas">, <UnimplementedType "XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/">, <UnimplementedType "DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-VBNzTCiFHD,guid=dd0336656ef5031102cc32dd00000023">, <UnimplementedType "LESSOPEN=| /usr/bin/lesspipe %s">, <UnimplementedType "DISPLAY=:0">, <UnimplementedType "XDG_CURRENT_DESKTOP=Unity">, <UnimplementedType "LESSCLOSE=/usr/bin/lesspipe %s %s">, <UnimplementedType "COLORTERM=gnome-terminal">, <UnimplementedType "XAUTHORITY=/home/savvas/.Xauthority">, <UnimplementedType "_=/usr/bin/strace"]>)
+RETURN:        (0, None)
+
+ORIGINAL LINE: 7123  accept(3,  <unfinished ...>
+TYPE:          unfinished
+PID:           7123
+NAME:          accept
+ARGS:          (<FileDescriptor 3>, <MissingValue expected_value: struct sockaddr *addr, given_value: None>, <MissingValue expected_value: socklen_t *addrlen, given_value: None>)
+RETURN:        None
+
+ORIGINAL LINE: 7123  <... accept resumed> {sa_family=AF_INET, sin_port=htons(50383), sin_addr=inet_addr("127.0.0.1")}, [16]) = 4
+TYPE:          resumed
+PID:           7123
+NAME:          accept
+ARGS:          (<FileDescriptor 3>, <Sockaddr [<SockFamily AF_INET>, <SockPort 50383>, <SockIP 127.0.0.1>]>, <Int 16>)
+RETURN:        (4, None)
+
+ORIGINAL LINE: 14038 access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+TYPE:          complete
+PID:           14038
+NAME:          access
+ARGS:          (<Filepath "/etc/ld.so.preload">, <Flags ['R_OK']>)
+RETURN:        (-1, 'ENOENT')
+
+ORIGINAL LINE: 438   bind(3, {sa_family=AF_INET, sin_port=htons(25588), sin_addr=inet_addr("127.0.0.1")}, 16) = 0
+TYPE:          complete
+PID:           438
+NAME:          bind
+ARGS:          (<FileDescriptor 3>, <Sockaddr [<SockFamily AF_INET>, <SockPort 25588>, <SockIP 127.0.0.1>]>, <Int 16>)
+RETURN:        (0, None)
+
+ORIGINAL LINE: 28991 chdir(".")                        = 0
+TYPE:          complete
+PID:           28991
+NAME:          chdir
+ARGS:          (<Filepath ".">,)
+RETURN:        (0, None)
+
+ORIGINAL LINE: 14037 connect(4, {sa_family=AF_FILE, path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+TYPE:          complete
+PID:           14037
+NAME:          connect
+ARGS:          (<FileDescriptor 4>, <Sockaddr [<SockFamily AF_FILE>, <SockPath type: abstract value: /var/run/nscd/socket>]>, <Int 110>)
+RETURN:        (-1, 'ENOENT')
+
+ORIGINAL LINE: 14038 dup2(4, 1)                        = 1
+TYPE:          complete
+PID:           14038
+NAME:          dup2
+ARGS:          (<FileDescriptor 4>, <FileDescriptor 1>)
+RETURN:        (1, None)
+
+ORIGINAL LINE: 14037 open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+TYPE:          complete
+PID:           14037
+NAME:          open
+ARGS:          (<Filepath "/etc/ld.so.cache">, <Flags ['O_RDONLY', 'O_CLOEXEC']>, <MissingValue expected_value: mode_t mode, given_value: None>)
+RETURN:        (3, None)
+
+ORIGINAL LINE: 493   sendto(3, "Message for sendto.\0", 20, 0, {sa_family=AF_INET, sin_port=htons(25588), sin_addr=inet_addr("127.0.0.1")}, 16) = 20
+TYPE:          complete
+PID:           493
+NAME:          sendto
+ARGS:          (<FileDescriptor 3>, <UnimplementedType "Message for sendto.\0">, <Int 20>, <Flags []>, <Sockaddr [<SockFamily AF_INET>, <SockPort 25588>, <SockIP 127.0.0.1>]>, <Int 16>)
+RETURN:        (20, None)
+
+ORIGINAL LINE: 7122  socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 5
+TYPE:          complete
+PID:           7122
+NAME:          socket
+ARGS:          (<Flags ['PF_INET']>, <Flags ['SOCK_STREAM']>, <Flags ['IPPROTO_IP']>)
+RETURN:        (5, None)
+
+ORIGINAL LINE: 14037 socket(PF_FILE, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 4
+TYPE:          complete
+PID:           14037
+NAME:          socket
+ARGS:          (<Flags ['PF_FILE']>, <Flags ['SOCK_STREAM', 'SOCK_CLOEXEC', 'SOCK_NONBLOCK']>, <Flags []>)
+RETURN:        (4, None)
+
