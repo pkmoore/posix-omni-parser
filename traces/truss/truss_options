@@ -1,0 +1,107 @@
+-o
+write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-of
+1794:   write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-a
+without:
+1815:   execve("/usr/bin/ls", 0x08047558, 0x08047568)  argc = 3
+with:
+1815:   execve("/usr/bin/ls", 0x08047558, 0x08047568)  argc = 3
+1815:    argv: ls -l -a
+
+
+-e
+with:
+1820:   execve("/usr/bin/ls", 0x08047558, 0x08047568)  argc = 3
+1820:    envp: MANPATH=/usr/dt/man:/usr/man:/usr/openwin/share/man
+1820:     DTSOURCEPROFILE=true TERM=xterm SHELL=/sbin/sh
+1820:     SDT_NO_TOOLTALK=1 DESKTOP_STARTUP_ID=
+1820:     GTK_RC_FILES=/etc/gtk/gtkrc://.gtkrc-1.2-gnome2
+1820:     WINDOWID=39845935
+1820:     DTHELPSEARCHPATH=//.dt/help/root-unknown-0/%H://.dt/help/root-unknown-0/%H.sdl://.dt/help/root-unknown-0/%H.hv://.dt/help/%H://.dt/help/%H.sdl://.dt/help/%H.hv:/usr/dt/appconfig/help/%L/%H:/usr/dt/appconfig/help/%L/%H.sdl:/usr/dt/appconfig/help/%L/%H.hv:/usr/dt/appconfig/help/C/%H:/usr/dt/appconfig/help/C/%H.sdl:/usr/dt/appconfig/help/C/%H.hv
+1820:     USER=root DTDEVROOT= OPENWINHOME=/usr/openwin
+1820:     DTXSERVERLOCATION=local XMBINDDIR=/usr/dt/lib/bindings
+1820:     GNOME_KEYRING_SOCKET=/var/tmp/keyring-UkxoVa/socket
+1820:     SESSION_MANAGER=local/unknown:/tmp/.ICE-unix/979,inet6/unknown:32815,inet/unknown:32816
+1820:     SESSION_SVR=unknown
+1820:     HELPPATH=/usr/openwin/lib/locale:/usr/openwin/lib/help
+1820:     PATH=/usr/sbin:/usr/bin:/usr/openwin/bin:/usr/ucb:/opt/csw/bin
+1820:     MAIL=/var/mail/root PWD=/savvas/TRUSS_TRACES
+1820:     START_SPECKEYSD=no EDITOR=/usr/dt/bin/dtpad LANG=C
+1820:     DTAPPSEARCHPATH=//.dt/appmanager:/usr/dt/appconfig/appmanager/%L:/usr/dt/appconfig/appmanager/C
+1820:     TZ=US/Eastern SDT_NO_DTDBCACHE=1
+1820:     XFILESEARCHPATH=/usr/openwin/lib/locale/%L/%T/%N%S:/usr/openwin/lib/%T/%N%S
+1820:     SESSIONTYPE=altDt SHLVL=1 HOME=/
+1820:     DTSCREENSAVERLIST=StartDtscreenSwarm StartDtscreenQix     StartDtscreenFlame StartDtscreenHop StartDtscreenImage StartDtscreenLife     StartDtscreenRotor StartDtscreenPyro StartDtscreenWorm StartDtscreenBlank
+1820:     GNOME_DESKTOP_SESSION_ID=Default LOGNAME=root
+1820:     G_FILENAME_ENCODING=@locale,UTF-8
+1820:     AB_CARDCATALOG=/usr/dt/share/answerbooks/C/ab_cardcatalog
+1820:     DTDATABASESEARCHPATH=//.dt/types,/usr/dt/appconfig/types/%L,/usr/dt/appconfig/types/C
+1820:     XMICONSEARCHPATH=//.dt/icons/%B%M.pm://.dt/icons/%B%M.bm://.dt/icons/%B:/usr/dt/appconfig/icons/%L/%B%M.pm:/usr/dt/appconfig/icons/%L/%B%M.bm:/usr/dt/appconfig/icons/%L/%B:/usr/dt/appconfig/icons/C/%B%M.pm:/usr/dt/appconfig/icons/C/%B%M.bm:/usr/dt/appconfig/icons/C/%B
+1820:     DTUSERSESSION=root-unknown-0 DISPLAY=:0.0
+1820:     XMICONBMSEARCHPATH=//.dt/icons/%B%M.bm://.dt/icons/%B%M.pm://.dt/icons/%B:/usr/dt/appconfig/icons/%L/%B%M.bm:/usr/dt/appconfig/icons/%L/%B%M.pm:/usr/dt/appconfig/icons/%L/%B:/usr/dt/appconfig/icons/C/%B%M.bm:/usr/dt/appconfig/icons/C/%B%M.pm:/usr/dt/appconfig/icons/C/%B
+1820:     G_BROKEN_FILENAMES=yes dtstart_sessionlogfile=/dev/null
+1820:     COLORTERM=gnome-terminal _=/usr/bin/truss OLDPWD=/savvas
+
+-ae:
+execve("/usr/bin/ls", 0x08047558, 0x08047568)  argc = 3
+1823:    argv: ls -l -a
+1823:    envp: MANPATH=/usr/dt/man:/usr/man:/usr/openwin/share/man
+1823:     DTSOURCEPROFILE=true TERM=xterm SHELL=/sbin/sh
+1823:     SDT_NO_TOOLTALK=1 DESKTOP_STARTUP_ID=
+1823:     GTK_RC_FILES=/etc/gtk/gtkrc://.gtkrc-1.2-gnome2
+1823:     WINDOWID=39845935 ...some text ommited here...
+
+-d
+1826:    0.1370 write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-D
+1829:    0.0002 write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-E
+1835:    0.0001 write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-dDE
+1841:    0.2406  0.0008  0.0001 write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-l
+1844/1:         write(1, " - r w - r - - r - -    ".., 66)      = 66
+
+-rall
+without:
+1844:         read(3, "\0\0\00201\0\0\0 407\0\0".., 336)      = 336
+with:
+1853:   read(3, 0x08045FB0, 336)                        = 336
+1853:     \0\0\00201\0\0\0 =07\0\0 <07\0\0 <07\0\0 y05\0\0\0\0\0\0\0\0\0\0
+1853:     \0\0\0\0\0\0\0\0 P A xD3EC05\0\0DC03\0\0\0\0\0\003\0 `\0 '\01F\0
+1853:      w i > RE988AB )\0\0\0\0FA e8D01\0\0\0\0\0\0\0\0 l s\0\0\0\0\0\0
+1853:     \0\0\0\0\0\0\0\0 l s   - l   - a\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
+1853:     \0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
+1853:     \0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\003\0\0\0
+1853:      X u04\b h u04\b01\0\0\0 M\0\0\001\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
+1853:      X\0\0\0\0\0\0\0\0\0\0\001\0\0\0A0 ; ;D8\0\0\0\0\006 O1403\0 (\0
+1853:      ;\0\0\0 '\0\0\0 w i > R\0\0\0\0\0\0\0\0FA e8D01 I A\0\0\0\0\0\0
+1853:     \0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0FFFFFFFFFFFFFFFF\0\0\0\0
+1853:     \0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0
+
+-vall
+without:
+1859:   stat64("/lib/libsec.so.1", 0x080469F0)          = 0
+with:
+1856:   stat64("/lib/libsec.so.1", 0x080469F0)          = 0
+1856:       d=0x00780000 i=4956  m=0100755 l=1  u=0     g=2     sz=78872
+1856:           at = Sep 21 23:52:23 EDT 2013  [ 1379821943.750957000 ]
+1856:           mt = Jul  4 17:14:47 EDT 2011  [ 1309814087.000000000 ]
+1856:           ct = Jan 29 20:52:59 EST 2013  [ 1359510779.638008000 ]
+1856:       bsz=8192  blks=156   fs=ufs
+
+-wall
+without:
+1862:   write(1, " - r w - r - - r - -    ".., 66)      = 66
+with:
+1865:   write(1, 0xD0F46BA4, 66)                        = 66
+1865:      - r w - r - - r - -       1   r o o t           r o o t
+1865:              6 4 3 1   A p r   2 5   2 3 : 1 3   w r i t e . t r u s
+1865:      s\n

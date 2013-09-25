@@ -1,0 +1,474 @@
+374   execve("/usr/sbin/useradd", ["useradd", "pavlos"], ["TERM=xterm", "LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*"..., "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "LANG=en_US.UTF-8", "HOME=/home/savvas", "DISPLAY=:0", "COLORTERM=gnome-terminal", "XAUTHORITY=/home/savvas/.Xauthority", "SHELL=/bin/bash", "LOGNAME=root", "USER=root", "USERNAME=root", "MAIL=/var/mail/root", "SUDO_COMMAND=/usr/bin/strace -vf -s1024 -o useradd.strace useradd pavlos", "SUDO_USER=savvas", "SUDO_UID=1000", "SUDO_GID=1000"]) = 0
+374   brk(0)                            = 0x9591000
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb777c000
+374   access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+374   open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=452200, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=200, st_size=99146, st_atime=2013/05/12-16:21:19, st_mtime=2013/05/03-16:10:53, st_ctime=2013/05/03-16:10:53}) = 0
+374   mmap2(NULL, 99146, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7763000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libselinux.so.1", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0@A\0\0004\0\0\0\374\322\1\0\0\0\0\0004\0 \0\10\0(\0\36\0\35\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\34\311\1\0\34\311\1\0\5\0\0\0\0\20\0\0\1\0\0\0l\316\1\0l\336\1\0l\336\1\0t\3\0\0000\r\0\0\6\0\0\0\0\20\0\0\2\0\0\0\244\316\1\0\244\336\1\0\244\336\1\0\370\0\0\0\370\0\0\0\6\0\0\0\4\0\0\0\4\0\0\0004\1\0\0004\1\0\0004\1\0\0$\0\0\0$\0\0\0\4\0\0\0\4\0\0\0\7\0\0\0l\316\1\0l\336\1\0l\336\1\0\0\0\0\0U\0\0\0\4\0\0\0\4\0\0\0P\345tdx\214\1\0x\214\1\0x\214\1\0004\t\0\0004\t\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345tdl\316\1\0l\336\1\0l\336\1\0\224\1\0\0\224\1\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0AJ<\n\224&\210\376\331\240pA\303e\n \247Y\257f\305\0\0\0n\0\0\0@\0\0\0\v\0\0\0\270 \4\200\0H\0\3\"\30@JU\0\356\320\2\4\10\2\24\6\0\4\20\210\4\0\0\305@\1\0\16\1\20P&\30hH \220+\30\10\22\t\0\4!\4\21(\217\7\240`@Q\10\30\0\20\0B\24\234\4\21\1\6\33\1\23\r \20\v\302\10\1H\220\n\2\0\1j\207D\201\"\10\200\202\200\2*\204\202@\200\0\0\0Q\10\4\0\2\220:\0\1\242\10\5\1\236\204\4\0@\0\24\0F\n\0\240\0\0`\20t\1@\204\0\20\0\340\24\20\234\10\204\0@\0\200", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=395282, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=240, st_size=120748, st_atime=2013/05/12-01:08:53, st_mtime=2012/03/05-08:49:27, st_ctime=2012/06/17-01:32:51}) = 0
+374   mmap2(NULL, 125852, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7744000
+374   mmap2(0xb7761000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c) = 0xb7761000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0000\226\1\0004\0\0\0p`\32\0\0\0\0\0004\0 \0\n\0(\0#\0\"\0\6\0\0\0004\0\0\0004\0\0\0004\0\0\0@\1\0\0@\1\0\0\5\0\0\0\4\0\0\0\3\0\0\0\310\262\26\0\310\262\26\0\310\262\26\0\23\0\0\0\23\0\0\0\4\0\0\0\1\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0$,\32\0$,\32\0\5\0\0\0\0\20\0\0\1\0\0\0\2641\32\0\264A\32\0\264A\32\0(-\0\0(Y\0\0\6\0\0\0\0\20\0\0\2\0\0\0|M\32\0|]\32\0|]\32\0\360\0\0\0\360\0\0\0\6\0\0\0\4\0\0\0\4\0\0\0t\1\0\0t\1\0\0t\1\0\0D\0\0\0D\0\0\0\4\0\0\0\4\0\0\0\7\0\0\0\2641\32\0\264A\32\0\264A\32\0\10\0\0\0@\0\0\0\4\0\0\0\4\0\0\0P\345td\334\262\26\0\334\262\26\0\334\262\26\0\314v\0\0\314v\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345td\2641\32\0\264A\32\0\264A\32\0L\36\0\0L\36\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\274\231\273\207E\23\0174\243\21\6\225\34\354\317\331\3342\225\264\4\0\0\0\20\0\0\0\1\0\0\0GNU\0\0\0\0\0\2\0\0\0\6\0\0\0\30\0\0\0\363\3\0\0\t\0\0\0\0\2\0\0\16\0\0\0\2400\20D\200 \2\1\214\3\346\220AE\210\0\204\0\10\0E\200\0`\300\200\0\f\212\f\0\0010\0\10@2\10\256\4\210H6l\240\0260\0&\204\200\216\4\10B$", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=407750, st_mode=S_IFREG|0755, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=3384, st_size=1730024, st_atime=2013/05/12-17:17:01, st_mtime=2012/10/05-16:40:10, st_ctime=2012/11/09-15:32:29}) = 0
+374   mmap2(NULL, 1743580, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb759a000
+374   mprotect(0xb773d000, 4096, PROT_NONE) = 0
+374   mmap2(0xb773e000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1a3) = 0xb773e000
+374   mmap2(0xb7741000, 10972, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb7741000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libdl.so.2", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0`\n\0\0004\0\0\0t1\0\0\0\0\0\0004\0 \0\t\0(\0 \0\37\0\6\0\0\0004\0\0\0004\0\0\0004\0\0\0 \1\0\0 \1\0\0\5\0\0\0\4\0\0\0\3\0\0\0\307\32\0\0\307\32\0\0\307\32\0\0\23\0\0\0\23\0\0\0\4\0\0\0\1\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\\!\0\0\\!\0\0\5\0\0\0\0\20\0\0\1\0\0\0\244.\0\0\244>\0\0\244>\0\0\240\1\0\0\324\1\0\0\6\0\0\0\0\20\0\0\2\0\0\0\300.\0\0\300>\0\0\300>\0\0\10\1\0\0\10\1\0\0\6\0\0\0\4\0\0\0\4\0\0\0T\1\0\0T\1\0\0T\1\0\0D\0\0\0D\0\0\0\4\0\0\0\4\0\0\0P\345td\334\32\0\0\334\32\0\0\334\32\0\0\324\0\0\0\324\0\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345td\244.\0\0\244>\0\0\244>\0\0\\\1\0\0\\\1\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0;\nY\324X\267\371\341Zj\21\232i,\366\323\307\333C\364\4\0\0\0\20\0\0\0\1\0\0\0GNU\0\0\0\0\0\2\0\0\0\6\0\0\0\30\0\0\0\26\0\0\0\30\0\0\0\4\0\0\0\7\0\0\0\230\0\21\0\0B\0\0\202\0`\10\223(\10\336\30\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\31\0\0\0\0\0\0\0\32\0\0\0\33\0\0\0\0\0\0\0\35\0\0\0\0\0\0\0\0\0\0\0\36\0\0\0 \0\0\0!\0\0\0\0\0\0\0\0\0\0\0\"\0\0\0", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=425367, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=32, st_size=13940, st_atime=2013/05/12-00:04:53, st_mtime=2012/10/05-16:40:10, st_ctime=2012/11/09-15:32:29}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7599000
+374   mmap2(NULL, 16504, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7594000
+374   mmap2(0xb7597000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2) = 0xb7597000
+374   close(3)                          = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7593000
+374   set_thread_area({entry_number:-1 -> 6, base_addr:0xb7593740, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+374   mprotect(0xb773e000, 8192, PROT_READ) = 0
+374   mprotect(0xb7597000, 4096, PROT_READ) = 0
+374   mprotect(0xb7761000, 4096, PROT_READ) = 0
+374   mprotect(0x805b000, 4096, PROT_READ) = 0
+374   mprotect(0xb779f000, 4096, PROT_READ) = 0
+374   munmap(0xb7763000, 99146)         = 0
+374   statfs64("/selinux", 84, {f_type="EXT2_SUPER_MAGIC", f_bsize=4096, f_blocks=4553183, f_bfree=749793, f_bavail=518497, f_files=1158720, f_ffree=498541, f_fsid={-1853641883, -1823071587}, f_namelen=255, f_frsize=4096}) = 0
+374   brk(0)                            = 0x9591000
+374   brk(0x95b2000)                    = 0x95b2000
+374   open("/proc/filesystems", O_RDONLY|O_LARGEFILE) = 3
+374   fstat64(3, {st_dev=makedev(0, 3), st_ino=4026532018, st_mode=S_IFREG|0444, st_nlink=1, st_uid=0, st_gid=0, st_blksize=1024, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb777b000
+374   read(3, "nodev\tsysfs\nnodev\trootfs\nnodev\tbdev\nnodev\tproc\nnodev\tcgroup\nnodev\tcpuset\nnodev\ttmpfs\nnodev\tdevtmpfs\nnodev\tdebugfs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tpipefs\nnodev\tanon_inodefs\nnodev\tdevpts\n\text3\n\text4\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tpstore\nnodev\tmqueue\nnodev\tbinfmt_misc\n\tvfat\n", 1024) = 328
+374   read(3, "", 1024)                 = 0
+374   close(3)                          = 0
+374   munmap(0xb777b000, 4096)          = 0
+374   open("/usr/lib/locale/locale-archive", O_RDONLY|O_LARGEFILE|O_CLOEXEC) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=139303, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=17088, st_size=8748544, st_atime=2013/05/12-17:39:01, st_mtime=2012/06/17-15:19:02, st_ctime=2012/06/17-15:19:02}) = 0
+374   mmap2(NULL, 2097152, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7393000
+374   mmap2(NULL, 4096, PROT_READ, MAP_PRIVATE, 3, 0x5e0) = 0xb777b000
+374   close(3)                          = 0
+374   open("/proc/sys/kernel/ngroups_max", O_RDONLY) = 3
+374   read(3, "65536\n", 31)            = 6
+374   close(3)                          = 0
+374   mmap2(NULL, 266240, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7352000
+374   access("/etc/shadow", F_OK)       = 0
+374   access("/etc/gshadow", F_OK)      = 0
+374   open("/etc/default/useradd", O_RDONLY|O_LARGEFILE) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=392963, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1118, st_atime=2013/05/12-18:47:33, st_mtime=2012/04/08-22:40:06, st_ctime=2012/06/17-01:32:49}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7351000
+374   read(3, "# Default values for useradd(8)\n#\n# The SHELL variable specifies the default login shell on your\n# system.\n# Similar to DHSELL in adduser. However, we use \"sh\" here because\n# useradd is a low level utility and should be as general\n# as possible\nSHELL=/bin/sh\n#\n# The default group for users\n# 100=users on Debian systems\n# Same as USERS_GID in adduser\n# This argument is used when the -n flag is specified.\n# The default behavior (when -n and -g are not specified) is to create a\n# primary user group with the same name as the user being added to the\n# system.\n# GROUP=100\n#\n# The default home directory. Same as DHOME for adduser\n# HOME=/home\n#\n# The number of days after a password expires until the account \n# is permanently disabled\n# INACTIVE=-1\n#\n# The default expire date\n# EXPIRE=\n#\n# The SKEL variable specifies the directory containing \"skeletal\" user\n# files; in other words, files such as a sample .profile that will be\n# copied to the new user's home directory when it is created.\n# SKEL=/etc/skel\n#\n# Defines w"..., 4096) = 1118
+374   read(3, "", 4096)                 = 0
+374   close(3)                          = 0
+374   munmap(0xb7351000, 4096)          = 0
+374   open("/etc/login.defs", O_RDONLY|O_LARGEFILE) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=391851, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=24, st_size=10551, st_atime=2013/05/12-17:17:01, st_mtime=2012/04/08-22:40:08, st_ctime=2012/06/17-01:32:48}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7351000
+374   read(3, "#\n# /etc/login.defs - Configuration control definitions for the login package.\n#\n# Three items must be defined:  MAIL_DIR, ENV_SUPATH, and ENV_PATH.\n# If unspecified, some arbitrary (and possibly incorrect) value will\n# be assumed.  All other items are optional - if not specified then\n# the described action or option will be inhibited.\n#\n# Comment lines (lines beginning with \"#\") and blank lines are ignored.\n#\n# Modified for Linux.  --marekm\n\n# REQUIRED for useradd/userdel/usermod\n#   Directory where mailboxes reside, _or_ name of file, relative to the\n#   home directory.  If you _do_ define MAIL_DIR and MAIL_FILE,\n#   MAIL_DIR takes precedence.\n#\n#   Essentially:\n#      - MAIL_DIR defines the location of users mail spool files\n#        (for mbox use) by appending the username to MAIL_DIR as defined\n#        below.\n#      - MAIL_FILE defines the location of the users mail spool files as the\n#        fully-qualified filename obtained by prepending the user home\n#        directory before $MAIL_FILE\n#\n# NOTE: Th"..., 4096) = 4096
+374   read(3, " issuing \n# the \"mesg y\" command.\n\nTTYGROUP\ttty\nTTYPERM\t\t0600\n\n#\n# Login configuration initializations:\n#\n#\tERASECHAR\tTerminal ERASE character ('\\010' = backspace).\n#\tKILLCHAR\tTerminal KILL character ('\\025' = CTRL/U).\n#\tUMASK\t\tDefault \"umask\" value.\n#\n# The ERASECHAR and KILLCHAR are used only on System V machines.\n# \n# UMASK is the default umask value for pam_umask and is used by\n# useradd and newusers to set the mode of the new home directories.\n# 022 is the \"historical\" value in Debian for UMASK\n# 027, or even 077, could be considered better for privacy\n# There is no One True Answer here : each sysadmin must make up his/her\n# mind.\n#\n# If USERGROUPS_ENAB is set to \"yes\", that will modify this UMASK default value\n# for private user groups, i. e. the uid is the same as gid, and username is\n# the same as the primary group name: for these, the user permissions will be\n# used as group permissions, e. g. 022 will become 002.\n#\n# Prefix these values with \"0\" to get octal, \"0x\" to get hexadecimal.\n#\nERASECHAR\t017"..., 4096) = 4096
+374   read(3, " algorithm compatible with the one used by recent releases of FreeBSD.\n# It supports passwords of unlimited length and longer salt strings.\n# Set to \"no\" if you need to copy encrypted passwords to other systems\n# which don't understand the new algorithm.  Default is \"no\".\n#\n# This variable is deprecated. You should use ENCRYPT_METHOD.\n#\n#MD5_CRYPT_ENAB\tno\n\n#\n# If set to MD5 , MD5-based algorithm will be used for encrypting password\n# If set to SHA256, SHA256-based algorithm will be used for encrypting password\n# If set to SHA512, SHA512-based algorithm will be used for encrypting password\n# If set to DES, DES-based algorithm will be used for encrypting password (default)\n# Overrides the MD5_CRYPT_ENAB option\n#\n# Note: It is recommended to use a value consistent with\n# the PAM modules configuration.\n#\nENCRYPT_METHOD SHA512\n\n#\n# Only used if ENCRYPT_METHOD is set to SHA256 or SHA512.\n#\n# Define the number of SHA rounds.\n# With a lot of rounds, it is more difficult to brute forcing the password.\n# But note also "..., 4096) = 2359
+374   read(3, "", 4096)                 = 0
+374   close(3)                          = 0
+374   munmap(0xb7351000, 4096)          = 0
+374   socket(PF_FILE, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+374   connect(3, {sa_family=AF_FILE, path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+374   close(3)                          = 0
+374   socket(PF_FILE, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+374   connect(3, {sa_family=AF_FILE, path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+374   close(3)                          = 0
+374   open("/etc/nsswitch.conf", O_RDONLY|O_CLOEXEC) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=391870, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=513, st_atime=2013/05/12-01:08:53, st_mtime=2012/04/23-07:38:56, st_ctime=2012/06/17-01:32:48}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7351000
+374   read(3, "# /etc/nsswitch.conf\n#\n# Example configuration of GNU Name Service Switch functionality.\n# If you have the `glibc-doc-reference' and `info' packages installed, try:\n# `info libc \"Name Service Switch\"' for information about this file.\n\npasswd:         compat\ngroup:          compat\nshadow:         compat\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n", 4096) = 513
+374   read(3, "", 4096)                 = 0
+374   close(3)                          = 0
+374   munmap(0xb7351000, 4096)          = 0
+374   open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=452200, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=200, st_size=99146, st_atime=2013/05/12-16:21:19, st_mtime=2013/05/03-16:10:53, st_ctime=2013/05/03-16:10:53}) = 0
+374   mmap2(NULL, 99146, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7339000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libnss_compat.so.2", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\300\r\0\0004\0\0\0\210r\0\0\0\0\0\0004\0 \0\t\0(\0\36\0\35\0\6\0\0\0004\0\0\0004\0\0\0004\0\0\0 \1\0\0 \1\0\0\5\0\0\0\4\0\0\0\3\0\0\0\243]\0\0\243]\0\0\243]\0\0\23\0\0\0\23\0\0\0\4\0\0\0\1\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\344l\0\0\344l\0\0\5\0\0\0\0\20\0\0\1\0\0\0\330n\0\0\330~\0\0\330~\0\0\220\2\0\0X\3\0\0\6\0\0\0\0\20\0\0\2\0\0\0\354n\0\0\354~\0\0\354~\0\0\360\0\0\0\360\0\0\0\6\0\0\0\4\0\0\0\4\0\0\0T\1\0\0T\1\0\0T\1\0\0D\0\0\0D\0\0\0\4\0\0\0\4\0\0\0P\345td\270]\0\0\270]\0\0\270]\0\0\304\1\0\0\304\1\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345td\330n\0\0\330~\0\0\330~\0\0(\1\0\0(\1\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0j\310\261\3527\234\264\324\300$C'B\366\242p\240\232T\311\4\0\0\0\20\0\0\0\1\0\0\0GNU\0\0\0\0\0\2\0\0\0\6\0\0\0\30\0\0\0\32\0\0\0#\0\0\0\4\0\0\0\7\0\0\0Q\0\200\2@\t\21\r\0\4\33\200\21H\262\201#\0\0\0$\0\0\0%\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&\0\0\0'\0\0\0(\0\0\0\0\0\0\0*\0\0\0\0\0\0\0\0\0\0\0,\0\0\0-\0\0\0.\0\0\0", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=407756, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=64, st_size=30520, st_atime=2013/05/12-01:08:53, st_mtime=2012/10/05-16:40:10, st_ctime=2012/11/09-15:32:29}) = 0
+374   mmap2(NULL, 33328, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7330000
+374   mmap2(0xb7337000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6) = 0xb7337000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libnsl.so.1", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0`1\0\0004\0\0\0\300b\1\0\0\0\0\0004\0 \0\t\0(\0\36\0\35\0\6\0\0\0004\0\0\0004\0\0\0004\0\0\0 \1\0\0 \1\0\0\5\0\0\0\4\0\0\0\3\0\0\0@\36\1\0@\36\1\0@\36\1\0\23\0\0\0\23\0\0\0\4\0\0\0\1\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\330P\1\0\330P\1\0\5\0\0\0\0\20\0\0\1\0\0\0\300^\1\0\300n\1\0\300n\1\0\350\2\0\0()\0\0\6\0\0\0\0\20\0\0\2\0\0\0\324^\1\0\324n\1\0\324n\1\0\350\0\0\0\350\0\0\0\6\0\0\0\4\0\0\0\4\0\0\0T\1\0\0T\1\0\0T\1\0\0D\0\0\0D\0\0\0\4\0\0\0\4\0\0\0P\345tdT\36\1\0T\36\1\0T\36\1\0\254\5\0\0\254\5\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345td\300^\1\0\300n\1\0\300n\1\0@\1\0\0@\1\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\205h\300\343\230\22g\273\224\235\200f\326\34\2462.@&\31\4\0\0\0\20\0\0\0\1\0\0\0GNU\0\0\0\0\0\2\0\0\0\6\0\0\0\30\0\0\0\374\0\0\0p\0\0\0 \0\0\0\n\0\0\0\1\1$\232 'Q\0@ \0\0\f\1\1\n\1\n\0\0\240:X\0@\1\16$\10\4\200\n`\260\23 @\24\21\20@\3442\324\4H\346\0\1`\3@\260\272\2019\30\235\340\0\0\332\200\0044\2\201J\20{\203+\200\22 d\21\1\0\2\200\306 d`A\n\4", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=425373, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=184, st_size=92016, st_atime=2013/05/12-01:08:53, st_mtime=2012/10/05-16:40:10, st_ctime=2012/11/09-15:32:29}) = 0
+374   mmap2(NULL, 104424, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7316000
+374   mmap2(0xb732c000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x15) = 0xb732c000
+374   mmap2(0xb732e000, 6120, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb732e000
+374   close(3)                          = 0
+374   mprotect(0xb732c000, 4096, PROT_READ) = 0
+374   mprotect(0xb7337000, 4096, PROT_READ) = 0
+374   munmap(0xb7339000, 99146)         = 0
+374   open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=452200, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=200, st_size=99146, st_atime=2013/05/12-16:21:19, st_mtime=2013/05/03-16:10:53, st_ctime=2013/05/03-16:10:53}) = 0
+374   mmap2(NULL, 99146, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb7339000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libnss_nis.so.2", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0p\31\0\0004\0\0\0\354\241\0\0\0\0\0\0004\0 \0\t\0(\0\36\0\35\0\6\0\0\0004\0\0\0004\0\0\0004\0\0\0 \1\0\0 \1\0\0\5\0\0\0\4\0\0\0\3\0\0\0\344\202\0\0\344\202\0\0\344\202\0\0\23\0\0\0\23\0\0\0\4\0\0\0\1\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0p\231\0\0p\231\0\0\5\0\0\0\0\20\0\0\1\0\0\0\314\236\0\0\314\256\0\0\314\256\0\0\4\2\0\0p\3\0\0\6\0\0\0\0\20\0\0\2\0\0\0\340\236\0\0\340\256\0\0\340\256\0\0\370\0\0\0\370\0\0\0\6\0\0\0\4\0\0\0\4\0\0\0T\1\0\0T\1\0\0T\1\0\0D\0\0\0D\0\0\0\4\0\0\0\4\0\0\0P\345td\370\202\0\0\370\202\0\0\370\202\0\0d\2\0\0d\2\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345td\314\236\0\0\314\256\0\0\314\256\0\0004\1\0\0004\1\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\33\252\27\254\356\310\323\365Ml1A\326\211sg\307\0\7\226\4\0\0\0\20\0\0\0\1\0\0\0GNU\0\0\0\0\0\2\0\0\0\6\0\0\0\30\0\0\0g\0\0\0001\0\0\0\20\0\0\0\t\0\0\0\2\0\0H  \26\20\0\0@g\3\0\3\6\30\24\0248A\30&\243\301\200\212\0048\21\10 C@\310\224\344\20\311\244\10\0\4\0\0@\0P!\0\0\204\0\0\0\0@\v\0y\243\0D\202\0\0\0\0001\0\0\0002\0\0\0\0\0\0\0003\0\0\0004\0\0\0", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=425326, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=88, st_size=42652, st_atime=2013/05/12-01:08:53, st_mtime=2012/10/05-16:40:10, st_ctime=2012/11/09-15:32:29}) = 0
+374   mmap2(NULL, 45628, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb776f000
+374   mmap2(0xb7779000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x9) = 0xb7779000
+374   close(3)                          = 0
+374   access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+374   open("/lib/i386-linux-gnu/libnss_files.so.2", O_RDONLY|O_CLOEXEC) = 3
+374   read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\20\32\0\0004\0\0\0\20\263\0\0\0\0\0\0004\0 \0\t\0(\0\36\0\35\0\6\0\0\0004\0\0\0004\0\0\0004\0\0\0 \1\0\0 \1\0\0\5\0\0\0\4\0\0\0\3\0\0\0\21\215\0\0\21\215\0\0\21\215\0\0\23\0\0\0\23\0\0\0\4\0\0\0\1\0\0\0\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\10\253\0\0\10\253\0\0\5\0\0\0\0\20\0\0\1\0\0\0\330\256\0\0\330\276\0\0\330\276\0\0\30\3\0\0,\5\0\0\6\0\0\0\0\20\0\0\2\0\0\0\354\256\0\0\354\276\0\0\354\276\0\0\350\0\0\0\350\0\0\0\6\0\0\0\4\0\0\0\4\0\0\0T\1\0\0T\1\0\0T\1\0\0D\0\0\0D\0\0\0\4\0\0\0\4\0\0\0P\345td$\215\0\0$\215\0\0$\215\0\0D\3\0\0D\3\0\0\4\0\0\0\4\0\0\0Q\345td\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\6\0\0\0\4\0\0\0R\345td\330\256\0\0\330\276\0\0\330\276\0\0(\1\0\0(\1\0\0\4\0\0\0\1\0\0\0\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\213\230\373L\310=\260&f\344+\367I{\205\322\352\332\200O\4\0\0\0\20\0\0\0\1\0\0\0GNU\0\0\0\0\0\2\0\0\0\6\0\0\0\30\0\0\0k\0\0\0-\0\0\0\20\0\0\0\t\0\0\0\"F\340\24\260\241\245\1\31\10\3000\203\6\212\10\0\200\322@]\1(\nx\10 \"\220\200\30,\7\3\205\24)!\22<\0\24\0\31\0\0\2\2\210@\0\200@0\210\201@@\200\0B\0\6\300-\0\0\0.\0\0\0\0\0\0\0/\0\0\0000\0\0\0001\0\0\0", 512) = 512
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=407768, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=96, st_size=47040, st_atime=2013/05/12-01:08:53, st_mtime=2012/10/05-16:40:10, st_ctime=2012/11/09-15:32:29}) = 0
+374   mmap2(NULL, 50180, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb7309000
+374   mmap2(0xb7314000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xa) = 0xb7314000
+374   close(3)                          = 0
+374   mprotect(0xb7314000, 4096, PROT_READ) = 0
+374   mprotect(0xb7779000, 4096, PROT_READ) = 0
+374   munmap(0xb7339000, 99146)         = 0
+374   open("/etc/passwd", O_RDONLY|O_CLOEXEC) = 3
+374   _llseek(3, 0, [0], SEEK_CUR)      = 0
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 1914, PROT_READ, MAP_SHARED, 3, 0) = 0xb776e000
+374   _llseek(3, 1914, [1914], SEEK_SET) = 0
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   munmap(0xb776e000, 1914)          = 0
+374   close(3)                          = 0
+374   socket(PF_FILE, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+374   connect(3, {sa_family=AF_FILE, path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+374   close(3)                          = 0
+374   socket(PF_FILE, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+374   connect(3, {sa_family=AF_FILE, path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+374   close(3)                          = 0
+374   open("/etc/group", O_RDONLY|O_CLOEXEC) = 3
+374   _llseek(3, 0, [0], SEEK_CUR)      = 0
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 1029, PROT_READ, MAP_SHARED, 3, 0) = 0xb776e000
+374   _llseek(3, 1029, [1029], SEEK_SET) = 0
+374   fstat64(3, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   munmap(0xb776e000, 1029)          = 0
+374   close(3)                          = 0
+374   open("/etc/.pwd.lock", O_WRONLY|O_CREAT|O_CLOEXEC, 0600) = 3
+374   rt_sigaction(SIGALRM, {0xb768f870, ~[], 0}, {SIG_DFL, [], 0}, 8) = 0
+374   rt_sigprocmask(SIG_UNBLOCK, [ALRM], [], 8) = 0
+374   alarm(15)                         = 0
+374   fcntl64(3, F_SETLKW, {type=F_WRLCK, whence=SEEK_SET, start=0, len=0}) = 0
+374   alarm(0)                          = 15
+374   rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+374   rt_sigaction(SIGALRM, {SIG_DFL, [], 0}, NULL, 8) = 0
+374   getpid()                          = 374
+374   open("/etc/passwd.374", O_WRONLY|O_CREAT|O_EXCL|O_LARGEFILE, 0600) = 4
+374   write(4, "374\0", 4)              = 4
+374   close(4)                          = 0
+374   link("/etc/passwd.374", "/etc/passwd.lock") = 0
+374   stat64("/etc/passwd.374", {st_dev=makedev(8, 6), st_ino=395198, st_mode=S_IFREG|0600, st_nlink=2, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=4, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   unlink("/etc/passwd.374")         = 0
+374   open("/etc/passwd", O_RDWR|O_NOCTTY|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW) = 4
+374   fcntl64(4, F_GETFL)               = 0x28802 (flags O_RDWR|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW)
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   _llseek(4, 0, [0], SEEK_CUR)      = 0
+374   fcntl64(4, F_SETFD, FD_CLOEXEC)   = 0
+374   open("/proc/filesystems", O_RDONLY|O_LARGEFILE) = 5
+374   fstat64(5, {st_dev=makedev(0, 3), st_ino=4026532018, st_mode=S_IFREG|0444, st_nlink=1, st_uid=0, st_gid=0, st_blksize=1024, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776d000
+374   read(5, "nodev\tsysfs\nnodev\trootfs\nnodev\tbdev\nnodev\tproc\nnodev\tcgroup\nnodev\tcpuset\nnodev\ttmpfs\nnodev\tdevtmpfs\nnodev\tdebugfs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tpipefs\nnodev\tanon_inodefs\nnodev\tdevpts\n\text3\n\text4\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tpstore\nnodev\tmqueue\nnodev\tbinfmt_misc\n\tvfat\n", 1024) = 328
+374   read(5, "", 1024)                 = 0
+374   close(5)                          = 0
+374   munmap(0xb776d000, 4096)          = 0
+374   read(4, "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/bin/sh\nbin:x:2:2:bin:/bin:/bin/sh\nsys:x:3:3:sys:/dev:/bin/sh\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/bin/sh\nman:x:6:12:man:/var/cache/man:/bin/sh\nlp:x:7:7:lp:/var/spool/lpd:/bin/sh\nmail:x:8:8:mail:/var/mail:/bin/sh\nnews:x:9:9:news:/var/spool/news:/bin/sh\nuucp:x:10:10:uucp:/var/spool/uucp:/bin/sh\nproxy:x:13:13:proxy:/bin:/bin/sh\nwww-data:x:33:33:www-data:/var/www:/bin/sh\nbackup:x:34:34:backup:/var/backups:/bin/sh\nlist:x:38:38:Mailing List Manager:/var/list:/bin/sh\nirc:x:39:39:ircd:/var/run/ircd:/bin/sh\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh\nnobody:x:65534:65534:nobody:/nonexistent:/bin/sh\nlibuuid:x:100:101::/var/lib/libuuid:/bin/sh\nsyslog:x:101:103::/home/syslog:/bin/false\nmessagebus:x:102:105::/var/run/dbus:/bin/false\ncolord:x:103:108:colord colour management daemon,,,:/var/lib/colord:/bin/false\nlightdm:x:104:111:Light Display Manager:/var/lib/lightdm:/bin/false\nwhoopsie:x:105:114::/nonexi"..., 4096) = 1914
+374   read(4, "", 4096)                 = 0
+374   open("/etc/group.374", O_WRONLY|O_CREAT|O_EXCL|O_LARGEFILE, 0600) = 5
+374   write(5, "374\0", 4)              = 4
+374   close(5)                          = 0
+374   link("/etc/group.374", "/etc/group.lock") = 0
+374   stat64("/etc/group.374", {st_dev=makedev(8, 6), st_ino=395278, st_mode=S_IFREG|0600, st_nlink=2, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=4, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   unlink("/etc/group.374")          = 0
+374   open("/etc/group", O_RDWR|O_NOCTTY|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW) = 5
+374   fcntl64(5, F_GETFL)               = 0x28802 (flags O_RDWR|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW)
+374   fstat64(5, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776d000
+374   _llseek(5, 0, [0], SEEK_CUR)      = 0
+374   fcntl64(5, F_SETFD, FD_CLOEXEC)   = 0
+374   open("/proc/filesystems", O_RDONLY|O_LARGEFILE) = 6
+374   fstat64(6, {st_dev=makedev(0, 3), st_ino=4026532018, st_mode=S_IFREG|0444, st_nlink=1, st_uid=0, st_gid=0, st_blksize=1024, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776c000
+374   read(6, "nodev\tsysfs\nnodev\trootfs\nnodev\tbdev\nnodev\tproc\nnodev\tcgroup\nnodev\tcpuset\nnodev\ttmpfs\nnodev\tdevtmpfs\nnodev\tdebugfs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tpipefs\nnodev\tanon_inodefs\nnodev\tdevpts\n\text3\n\text4\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tpstore\nnodev\tmqueue\nnodev\tbinfmt_misc\n\tvfat\n", 1024) = 328
+374   read(6, "", 1024)                 = 0
+374   close(6)                          = 0
+374   munmap(0xb776c000, 4096)          = 0
+374   read(5, "root:x:0:\ndaemon:x:1:\nbin:x:2:\nsys:x:3:\nadm:x:4:savvas\ntty:x:5:\ndisk:x:6:\nlp:x:7:\nmail:x:8:\nnews:x:9:\nuucp:x:10:\nman:x:12:\nproxy:x:13:\nkmem:x:15:\ndialout:x:20:\nfax:x:21:\nvoice:x:22:\ncdrom:x:24:savvas\nfloppy:x:25:\ntape:x:26:\nsudo:x:27:savvas\naudio:x:29:pulse\ndip:x:30:savvas\nwww-data:x:33:\nbackup:x:34:\noperator:x:37:\nlist:x:38:\nirc:x:39:\nsrc:x:40:\ngnats:x:41:\nshadow:x:42:\nutmp:x:43:\nvideo:x:44:\nsasl:x:45:\nplugdev:x:46:savvas\nstaff:x:50:\ngames:x:60:\nusers:x:100:\nnogroup:x:65534:\nlibuuid:x:101:\ncrontab:x:102:\nsyslog:x:103:\nfuse:x:104:savvas\nmessagebus:x:105:\nbluetooth:x:106:\nscanner:x:107:\ncolord:x:108:\nlpadmin:x:109:savvas\nssl-cert:x:110:\nlightdm:x:111:\nnopasswdlogin:x:112:\nnetdev:x:113:\nwhoopsie:x:114:\nmlocate:x:115:\nssh:x:116:\navahi-autoipd:x:117:\navahi:x:118:\npulse:x:119:\npulse-access:x:120:\nutempter:x:121:\nrtkit:x:122:\nsaned:x:123:\nsavvas:x:1000:\nsambashare:x:124:savvas\nSlmodemd:x:125:\nguest-ifr9H6:x:126:\nmine:x:1001:savvas\nvboxusers:x:127:savvas\nwireshark:x:1002:\nhaldaemon:x:128:\npowerdev:x:129:\nandreas:x:1"..., 4096) = 1029
+374   read(5, "", 4096)                 = 0
+374   open("/etc/gshadow.374", O_WRONLY|O_CREAT|O_EXCL|O_LARGEFILE, 0600) = 6
+374   write(6, "374\0", 4)              = 4
+374   close(6)                          = 0
+374   link("/etc/gshadow.374", "/etc/gshadow.lock") = 0
+374   stat64("/etc/gshadow.374", {st_dev=makedev(8, 6), st_ino=404642, st_mode=S_IFREG|0600, st_nlink=2, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=4, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   unlink("/etc/gshadow.374")        = 0
+374   open("/etc/gshadow", O_RDWR|O_NOCTTY|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW) = 6
+374   fcntl64(6, F_GETFL)               = 0x28802 (flags O_RDWR|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW)
+374   fstat64(6, {st_dev=makedev(8, 6), st_ino=395288, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=854, st_atime=2013/05/12-18:47:57, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776c000
+374   _llseek(6, 0, [0], SEEK_CUR)      = 0
+374   fcntl64(6, F_SETFD, FD_CLOEXEC)   = 0
+374   open("/proc/filesystems", O_RDONLY|O_LARGEFILE) = 7
+374   fstat64(7, {st_dev=makedev(0, 3), st_ino=4026532018, st_mode=S_IFREG|0444, st_nlink=1, st_uid=0, st_gid=0, st_blksize=1024, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776b000
+374   read(7, "nodev\tsysfs\nnodev\trootfs\nnodev\tbdev\nnodev\tproc\nnodev\tcgroup\nnodev\tcpuset\nnodev\ttmpfs\nnodev\tdevtmpfs\nnodev\tdebugfs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tpipefs\nnodev\tanon_inodefs\nnodev\tdevpts\n\text3\n\text4\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tpstore\nnodev\tmqueue\nnodev\tbinfmt_misc\n\tvfat\n", 1024) = 328
+374   read(7, "", 1024)                 = 0
+374   close(7)                          = 0
+374   munmap(0xb776b000, 4096)          = 0
+374   read(6, "root:*::\ndaemon:*::\nbin:*::\nsys:*::\nadm:*::savvas\ntty:*::\ndisk:*::\nlp:*::\nmail:*::\nnews:*::\nuucp:*::\nman:*::\nproxy:*::\nkmem:*::\ndialout:*::\nfax:*::\nvoice:*::\ncdrom:*::savvas\nfloppy:*::\ntape:*::\nsudo:*::savvas\naudio:*::pulse\ndip:*::savvas\nwww-data:*::\nbackup:*::\noperator:*::\nlist:*::\nirc:*::\nsrc:*::\ngnats:*::\nshadow:*::\nutmp:*::\nvideo:*::\nsasl:*::\nplugdev:*::savvas\nstaff:*::\ngames:*::\nusers:*::\nnogroup:*::\nlibuuid:!::\ncrontab:!::\nsyslog:!::\nfuse:!::savvas\nmessagebus:!::\nbluetooth:!::\nscanner:!::\ncolord:!::\nlpadmin:!::savvas\nssl-cert:!::\nlightdm:!::\nnopasswdlogin:!::\nnetdev:!::\nwhoopsie:!::\nmlocate:!::\nssh:!::\navahi-autoipd:!::\navahi:!::\npulse:!::\npulse-access:!::\nutempter:!::\nrtkit:!::\nsaned:!::\nsavvas:!::\nsambashare:!::savvas\nSlmodemd:!::\nguest-ifr9H6:!::\nmine:!::savvas\nvboxusers:!::savvas\nwireshark:!::\nhaldaemon:!::\npowerdev:!::\nandreas:!::\n", 4096) = 854
+374   read(6, "", 4096)                 = 0
+374   open("/etc/passwd", O_RDONLY|O_CLOEXEC) = 7
+374   open("/etc/default/nss", O_RDONLY|O_CLOEXEC) = 8
+374   fstat64(8, {st_dev=makedev(8, 6), st_ino=392953, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1756, st_atime=2013/05/12-02:38:08, st_mtime=2012/04/19-19:10:10, st_ctime=2012/06/17-01:32:48}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776b000
+374   read(8, "# /etc/default/nss\n# This file can theoretically contain a bunch of customization variables\n# for Name Service Switch in the GNU C library.  For now there are only\n# four variables:\n#\n# NETID_AUTHORITATIVE\n#   If set to TRUE, the initgroups() function will accept the information\n#   from the netid.byname NIS map as authoritative.  This can speed up the\n#   function significantly if the group.byname map is large.  The content\n#   of the netid.byname map is used AS IS.  The system administrator has\n#   to make sure it is correctly generated.\n#NETID_AUTHORITATIVE=TRUE\n#\n# SERVICES_AUTHORITATIVE\n#   If set to TRUE, the getservbyname{,_r}() function will assume\n#   services.byservicename NIS map exists and is authoritative, particularly\n#   that it contains both keys with /proto and without /proto for both\n#   primary service names and service aliases.  The system administrator\n#   has to make sure it is correctly generated.\n#SERVICES_AUTHORITATIVE=TRUE\n#\n# SETENT_BATCH_READ\n#  If set to TRUE, various setXXent() f"..., 4096) = 1756
+374   read(8, "", 4096)                 = 0
+374   close(8)                          = 0
+374   munmap(0xb776b000, 4096)          = 0
+374   _llseek(7, 0, [0], SEEK_CUR)      = 0
+374   fstat64(7, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 1914, PROT_READ, MAP_SHARED, 7, 0) = 0xb776b000
+374   _llseek(7, 1914, [1914], SEEK_SET) = 0
+374   fstat64(7, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   munmap(0xb776b000, 1914)          = 0
+374   close(7)                          = 0
+374   open("/etc/shadow.374", O_WRONLY|O_CREAT|O_EXCL|O_LARGEFILE, 0600) = 7
+374   write(7, "374\0", 4)              = 4
+374   close(7)                          = 0
+374   link("/etc/shadow.374", "/etc/shadow.lock") = 0
+374   stat64("/etc/shadow.374", {st_dev=makedev(8, 6), st_ino=408552, st_mode=S_IFREG|0600, st_nlink=2, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=4, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   unlink("/etc/shadow.374")         = 0
+374   open("/etc/shadow", O_RDWR|O_NOCTTY|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW) = 7
+374   fcntl64(7, F_GETFL)               = 0x28802 (flags O_RDWR|O_NONBLOCK|O_LARGEFILE|O_NOFOLLOW)
+374   fstat64(7, {st_dev=makedev(8, 6), st_ino=452760, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=1167, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776b000
+374   _llseek(7, 0, [0], SEEK_CUR)      = 0
+374   fcntl64(7, F_SETFD, FD_CLOEXEC)   = 0
+374   open("/proc/filesystems", O_RDONLY|O_LARGEFILE) = 8
+374   fstat64(8, {st_dev=makedev(0, 3), st_ino=4026532018, st_mode=S_IFREG|0444, st_nlink=1, st_uid=0, st_gid=0, st_blksize=1024, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:52:16, st_ctime=2013/05/12-18:52:16}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776a000
+374   read(8, "nodev\tsysfs\nnodev\trootfs\nnodev\tbdev\nnodev\tproc\nnodev\tcgroup\nnodev\tcpuset\nnodev\ttmpfs\nnodev\tdevtmpfs\nnodev\tdebugfs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tpipefs\nnodev\tanon_inodefs\nnodev\tdevpts\n\text3\n\text4\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tpstore\nnodev\tmqueue\nnodev\tbinfmt_misc\n\tvfat\n", 1024) = 328
+374   read(8, "", 1024)                 = 0
+374   close(8)                          = 0
+374   munmap(0xb776a000, 4096)          = 0
+374   read(7, "root:!:15508:0:99999:7:::\ndaemon:*:15453:0:99999:7:::\nbin:*:15453:0:99999:7:::\nsys:*:15453:0:99999:7:::\nsync:*:15453:0:99999:7:::\ngames:*:15453:0:99999:7:::\nman:*:15453:0:99999:7:::\nlp:*:15453:0:99999:7:::\nmail:*:15453:0:99999:7:::\nnews:*:15453:0:99999:7:::\nuucp:*:15453:0:99999:7:::\nproxy:*:15453:0:99999:7:::\nwww-data:*:15453:0:99999:7:::\nbackup:*:15453:0:99999:7:::\nlist:*:15453:0:99999:7:::\nirc:*:15453:0:99999:7:::\ngnats:*:15453:0:99999:7:::\nnobody:*:15453:0:99999:7:::\nlibuuid:!:15453:0:99999:7:::\nsyslog:*:15453:0:99999:7:::\nmessagebus:*:15453:0:99999:7:::\ncolord:*:15453:0:99999:7:::\nlightdm:*:15453:0:99999:7:::\nwhoopsie:*:15453:0:99999:7:::\navahi-autoipd:*:15453:0:99999:7:::\navahi:*:15453:0:99999:7:::\nusbmux:*:15453:0:99999:7:::\nkernoops:*:15453:0:99999:7:::\npulse:*:15453:0:99999:7:::\nrtkit:*:15453:0:99999:7:::\nspeech-dispatcher:!:15453:0:99999:7:::\nhplip:*:15453:0:99999:7:::\nsaned:*:15453:0:99999:7:::\nsavvas:$6$aLpo3oDJ$wVlzUnXqflOMFTyP6GlH9n8e057maoojT4bzpO6zhA.fTcc/8GgIbSoi.PiuMiIgsgXMpJr0YJMVQG/cv5zX2.:"..., 4096) = 1167
+374   read(7, "", 4096)                 = 0
+374   open("/etc/group", O_RDONLY|O_CLOEXEC) = 8
+374   _llseek(8, 0, [0], SEEK_CUR)      = 0
+374   fstat64(8, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 1029, PROT_READ, MAP_SHARED, 8, 0) = 0xb776a000
+374   _llseek(8, 1029, [1029], SEEK_SET) = 0
+374   munmap(0xb776a000, 1029)          = 0
+374   close(8)                          = 0
+374   open("/etc/group", O_RDONLY|O_CLOEXEC) = 8
+374   _llseek(8, 0, [0], SEEK_CUR)      = 0
+374   fstat64(8, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 1029, PROT_READ, MAP_SHARED, 8, 0) = 0xb776a000
+374   _llseek(8, 1029, [1029], SEEK_SET) = 0
+374   fstat64(8, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   munmap(0xb776a000, 1029)          = 0
+374   close(8)                          = 0
+374   time(NULL)                        = 1368399136
+374   open("/etc/localtime", O_RDONLY|O_CLOEXEC) = 8
+374   fstat64(8, {st_dev=makedev(8, 6), st_ino=395244, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=3519, st_atime=2013/05/12-17:08:02, st_mtime=2013/01/20-03:15:25, st_ctime=2013/01/20-03:15:25}) = 0
+374   fstat64(8, {st_dev=makedev(8, 6), st_ino=395244, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=3519, st_atime=2013/05/12-17:08:02, st_mtime=2013/01/20-03:15:25, st_ctime=2013/01/20-03:15:25}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776a000
+374   read(8, "TZif2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\4\0\0\0\4\0\0\0\0\0\0\0\353\0\0\0\4\0\0\0\20\236\246\36p\237\272\353`\240\206\0p\241\232\315`\242e\342p\243\203\351\340\244j\256p\2455\247`\246S\312\360\247\25\211`\2503\254\360\250\376\245\340\252\23\216\360\252\336\207\340\253\363p\360\254\276i\340\255\323R\360\256\236K\340\257\2634\360\260~-\340\261\234Qp\262gJ`\263|3p\264G,`\265\\\25p\266'\16`\267;\367p\270\6\360`\271\33\331p\271\346\322`\273\4\365\360\273\306\264`\274\344\327\360\275\257\320\340\276\304\271\360\277\217\262\340\300\244\233\360\301o\224\340\302\204}\360\303Ov\340\304d_\360\305/X\340\306M|p\307\17:\340\310-^p\310\370W`\312\r@p\312\3309`\313\210\360p\322#\364p\322`\373\340\323u\344\360\324@\335\340\325U\306\360\326 \277\340\3275\250\360\330\0\241\340\331\25\212\360\331\340\203\340\332\376\247p\333\300e\340\334\336\211p\335\251\202`\336\276kp\337\211d`\340\236Mp\341iF`\342~/p\343I(`\344^\21p\345W.\340\346G-\360\3477\20\340\350'\17\360\351\26\362\340\352\6\361\360\352\366\324\340\353\346\323\360\354\326\266\340\355\306\265\360\356\277\323`\357\257\322p\360\237\265`\361\217\264p\362\177\227`\363o\226p\364_y`\365Oxp\366?[`\367/Zp\370(w\340\371\17<p\372\10Y\340\372\370X\360\373\350;\340\374\330:\360\375\310\35\340\376\270\34\360\377\247\377\340\0\227\376\360\1\207\341\340\2w\340\360\3p\376`\4`\375p\5P\340`\6@\337p\0070\302`\7\215\31p\t\20\244`\t\255\224\360\n\360\206`\v\340\205p\f\331\242\340\r\300gp\16\271\204\340\17\251\203\360\20\231f\340\21\211e\360\22yH\340\23iG\360\24Y*\340\25I)\360\0269\f\340\27)\v\360\30\")`\31\10\355\360\32\2\v`\32\362\np\33\341\355`\34\321\354p\35\301\317`\36\261\316p\37\241\261` v\0\360!\201\223`\"U\342\360#j\257\340$5\304\360%J\221\340&\25\246\360'*s\340'\376\303p)\nU\340)\336\245p*\3527\340+\276\207p,\323T`-\236ip.\2636`/~Kp0\223\30`1gg\3602r\372`3GI\3604R\334`5'+\36062\276`7\7\r\3608\33\332\3408\346\357\3609\373\274\340:\306\321\360;\333\236\340<\257\356p=\273\200\340>\217\320p?\233b\340@o\262pA\204\177`BO\224pCda`D/vpEDC`E\363\250\360G-_\340G\323\212\360I\rA\340I\263l\360J\355#\340K\234\211pL\326@`M|kpN\266\"`O\\MpP\226\4`Q</pRu\346`S\34\21pTU\310`T\373\363pV5\252`V\345\17\360X\36\306\340X\304\361\360Y\376\250\340Z\244\323\360[\336\212\340\\\204\265\360]\276l\340^d\227\360_\236N\340`M\264pa\207k`b-\226pcgM`d\rxpeG/`e\355Zpg'\21`g\315<pi\6\363`i\255\36pj\346\325`k\226:\360l\317\361\340mv\34\360n\257\323\340oU\376\360p\217\265\340q5\340\360ro\227\340s\25\302\360tOy\340t\376\337pv8\226`v\336\301px\30x`x\276\243py\370Z`z\236\205p{\330<`|~gp}\270\36`~^Ip\177\230\0`\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1\0\1"..., 4096) = 3519
+374   _llseek(8, -24, [3495], SEEK_CUR) = 0
+374   read(8, "\nEST5EDT,M3.2.0,M11.1.0\n", 4096) = 24
+374   close(8)                          = 0
+374   munmap(0xb776a000, 4096)          = 0
+374   socket(PF_FILE, SOCK_DGRAM|SOCK_CLOEXEC, 0) = 8
+374   connect(8, {sa_family=AF_FILE, path="/dev/log"}, 110) = 0
+374   send(8, "<86>May 12 18:52:16 useradd[374]: new group: name=pavlos, GID=1004", 66, MSG_NOSIGNAL) = 66
+374   time(NULL)                        = 1368399136
+374   time(NULL)                        = 1368399136
+374   send(8, "<86>May 12 18:52:16 useradd[374]: new user: name=pavlos, UID=1002, GID=1004, home=/home/pavlos, shell=/bin/sh", 109, MSG_NOSIGNAL) = 109
+374   open("/etc/passwd", O_RDONLY|O_CLOEXEC) = 9
+374   _llseek(9, 0, [0], SEEK_CUR)      = 0
+374   fstat64(9, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   mmap2(NULL, 1914, PROT_READ, MAP_SHARED, 9, 0) = 0xb776a000
+374   _llseek(9, 1914, [1914], SEEK_SET) = 0
+374   fstat64(9, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   munmap(0xb776a000, 1914)          = 0
+374   close(9)                          = 0
+374   access("/var/log/faillog", F_OK)  = 0
+374   open("/var/log/faillog", O_RDWR|O_LARGEFILE) = 9
+374   _llseek(9, 24048, [24048], SEEK_SET) = 0
+374   write(9, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 24) = 24
+374   fsync(9)                          = 0
+374   close(9)                          = 0
+374   access("/var/log/lastlog", F_OK)  = 0
+374   open("/var/log/lastlog", O_RDWR|O_LARGEFILE) = 9
+374   _llseek(9, 292584, [292584], SEEK_SET) = 0
+374   write(9, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 292) = 292
+374   fsync(9)                          = 0
+374   close(9)                          = 0
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   umask(077)                        = 022
+374   open("/etc/passwd-", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 9
+374   umask(022)                        = 077
+374   _llseek(4, 0, [0], SEEK_SET)      = 0
+374   read(4, "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/bin/sh\nbin:x:2:2:bin:/bin:/bin/sh\nsys:x:3:3:sys:/dev:/bin/sh\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/bin/sh\nman:x:6:12:man:/var/cache/man:/bin/sh\nlp:x:7:7:lp:/var/spool/lpd:/bin/sh\nmail:x:8:8:mail:/var/mail:/bin/sh\nnews:x:9:9:news:/var/spool/news:/bin/sh\nuucp:x:10:10:uucp:/var/spool/uucp:/bin/sh\nproxy:x:13:13:proxy:/bin:/bin/sh\nwww-data:x:33:33:www-data:/var/www:/bin/sh\nbackup:x:34:34:backup:/var/backups:/bin/sh\nlist:x:38:38:Mailing List Manager:/var/list:/bin/sh\nirc:x:39:39:ircd:/var/run/ircd:/bin/sh\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh\nnobody:x:65534:65534:nobody:/nonexistent:/bin/sh\nlibuuid:x:100:101::/var/lib/libuuid:/bin/sh\nsyslog:x:101:103::/home/syslog:/bin/false\nmessagebus:x:102:105::/var/run/dbus:/bin/false\ncolord:x:103:108:colord colour management daemon,,,:/var/lib/colord:/bin/false\nlightdm:x:104:111:Light Display Manager:/var/lib/lightdm:/bin/false\nwhoopsie:x:105:114::/nonexi"..., 4096) = 1914
+374   fstat64(9, {st_dev=makedev(8, 6), st_ino=413833, st_mode=S_IFREG|0600, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-17:17:01, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776a000
+374   read(4, "", 4096)                 = 0
+374   write(9, "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/bin/sh\nbin:x:2:2:bin:/bin:/bin/sh\nsys:x:3:3:sys:/dev:/bin/sh\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/bin/sh\nman:x:6:12:man:/var/cache/man:/bin/sh\nlp:x:7:7:lp:/var/spool/lpd:/bin/sh\nmail:x:8:8:mail:/var/mail:/bin/sh\nnews:x:9:9:news:/var/spool/news:/bin/sh\nuucp:x:10:10:uucp:/var/spool/uucp:/bin/sh\nproxy:x:13:13:proxy:/bin:/bin/sh\nwww-data:x:33:33:www-data:/var/www:/bin/sh\nbackup:x:34:34:backup:/var/backups:/bin/sh\nlist:x:38:38:Mailing List Manager:/var/list:/bin/sh\nirc:x:39:39:ircd:/var/run/ircd:/bin/sh\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh\nnobody:x:65534:65534:nobody:/nonexistent:/bin/sh\nlibuuid:x:100:101::/var/lib/libuuid:/bin/sh\nsyslog:x:101:103::/home/syslog:/bin/false\nmessagebus:x:102:105::/var/run/dbus:/bin/false\ncolord:x:103:108:colord colour management daemon,,,:/var/lib/colord:/bin/false\nlightdm:x:104:111:Light Display Manager:/var/lib/lightdm:/bin/false\nwhoopsie:x:105:114::/nonexi"..., 1914) = 1914
+374   fsync(9)                          = 0
+374   close(9)                          = 0
+374   munmap(0xb776a000, 4096)          = 0
+374   utime("/etc/passwd-", [2013/05/12-18:47:58, 2013/05/12-18:47:56]) = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   umask(0777)                       = 022
+374   open("/etc/passwd+", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 0777
+374   fchown32(4, 0, 0)                 = 0
+374   fchmod(4, 0644)                   = 0
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=452758, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:17, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   write(4, "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/bin/sh\nbin:x:2:2:bin:/bin:/bin/sh\nsys:x:3:3:sys:/dev:/bin/sh\nsync:x:4:65534:sync:/bin:/bin/sync\ngames:x:5:60:games:/usr/games:/bin/sh\nman:x:6:12:man:/var/cache/man:/bin/sh\nlp:x:7:7:lp:/var/spool/lpd:/bin/sh\nmail:x:8:8:mail:/var/mail:/bin/sh\nnews:x:9:9:news:/var/spool/news:/bin/sh\nuucp:x:10:10:uucp:/var/spool/uucp:/bin/sh\nproxy:x:13:13:proxy:/bin:/bin/sh\nwww-data:x:33:33:www-data:/var/www:/bin/sh\nbackup:x:34:34:backup:/var/backups:/bin/sh\nlist:x:38:38:Mailing List Manager:/var/list:/bin/sh\nirc:x:39:39:ircd:/var/run/ircd:/bin/sh\ngnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh\nnobody:x:65534:65534:nobody:/nonexistent:/bin/sh\nlibuuid:x:100:101::/var/lib/libuuid:/bin/sh\nsyslog:x:101:103::/home/syslog:/bin/false\nmessagebus:x:102:105::/var/run/dbus:/bin/false\ncolord:x:103:108:colord colour management daemon,,,:/var/lib/colord:/bin/false\nlightdm:x:104:111:Light Display Manager:/var/lib/lightdm:/bin/false\nwhoopsie:x:105:114::/nonexi"..., 1955) = 1955
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   lstat64("/etc/passwd", {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1914, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:56, st_ctime=2013/05/12-18:47:57}) = 0
+374   rename("/etc/passwd+", "/etc/passwd") = 0
+374   fstat64(7, {st_dev=makedev(8, 6), st_ino=452760, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=1167, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   fstat64(7, {st_dev=makedev(8, 6), st_ino=452760, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=1167, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   umask(077)                        = 022
+374   open("/etc/shadow-", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 077
+374   _llseek(7, 0, [0], SEEK_SET)      = 0
+374   read(7, "root:!:15508:0:99999:7:::\ndaemon:*:15453:0:99999:7:::\nbin:*:15453:0:99999:7:::\nsys:*:15453:0:99999:7:::\nsync:*:15453:0:99999:7:::\ngames:*:15453:0:99999:7:::\nman:*:15453:0:99999:7:::\nlp:*:15453:0:99999:7:::\nmail:*:15453:0:99999:7:::\nnews:*:15453:0:99999:7:::\nuucp:*:15453:0:99999:7:::\nproxy:*:15453:0:99999:7:::\nwww-data:*:15453:0:99999:7:::\nbackup:*:15453:0:99999:7:::\nlist:*:15453:0:99999:7:::\nirc:*:15453:0:99999:7:::\ngnats:*:15453:0:99999:7:::\nnobody:*:15453:0:99999:7:::\nlibuuid:!:15453:0:99999:7:::\nsyslog:*:15453:0:99999:7:::\nmessagebus:*:15453:0:99999:7:::\ncolord:*:15453:0:99999:7:::\nlightdm:*:15453:0:99999:7:::\nwhoopsie:*:15453:0:99999:7:::\navahi-autoipd:*:15453:0:99999:7:::\navahi:*:15453:0:99999:7:::\nusbmux:*:15453:0:99999:7:::\nkernoops:*:15453:0:99999:7:::\npulse:*:15453:0:99999:7:::\nrtkit:*:15453:0:99999:7:::\nspeech-dispatcher:!:15453:0:99999:7:::\nhplip:*:15453:0:99999:7:::\nsaned:*:15453:0:99999:7:::\nsavvas:$6$aLpo3oDJ$wVlzUnXqflOMFTyP6GlH9n8e057maoojT4bzpO6zhA.fTcc/8GgIbSoi.PiuMiIgsgXMpJr0YJMVQG/cv5zX2.:"..., 4096) = 1167
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=391873, st_mode=S_IFREG|0600, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-17:17:01, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   read(7, "", 4096)                 = 0
+374   write(4, "root:!:15508:0:99999:7:::\ndaemon:*:15453:0:99999:7:::\nbin:*:15453:0:99999:7:::\nsys:*:15453:0:99999:7:::\nsync:*:15453:0:99999:7:::\ngames:*:15453:0:99999:7:::\nman:*:15453:0:99999:7:::\nlp:*:15453:0:99999:7:::\nmail:*:15453:0:99999:7:::\nnews:*:15453:0:99999:7:::\nuucp:*:15453:0:99999:7:::\nproxy:*:15453:0:99999:7:::\nwww-data:*:15453:0:99999:7:::\nbackup:*:15453:0:99999:7:::\nlist:*:15453:0:99999:7:::\nirc:*:15453:0:99999:7:::\ngnats:*:15453:0:99999:7:::\nnobody:*:15453:0:99999:7:::\nlibuuid:!:15453:0:99999:7:::\nsyslog:*:15453:0:99999:7:::\nmessagebus:*:15453:0:99999:7:::\ncolord:*:15453:0:99999:7:::\nlightdm:*:15453:0:99999:7:::\nwhoopsie:*:15453:0:99999:7:::\navahi-autoipd:*:15453:0:99999:7:::\navahi:*:15453:0:99999:7:::\nusbmux:*:15453:0:99999:7:::\nkernoops:*:15453:0:99999:7:::\npulse:*:15453:0:99999:7:::\nrtkit:*:15453:0:99999:7:::\nspeech-dispatcher:!:15453:0:99999:7:::\nhplip:*:15453:0:99999:7:::\nsaned:*:15453:0:99999:7:::\nsavvas:$6$aLpo3oDJ$wVlzUnXqflOMFTyP6GlH9n8e057maoojT4bzpO6zhA.fTcc/8GgIbSoi.PiuMiIgsgXMpJr0YJMVQG/cv5zX2.:"..., 1167) = 1167
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   utime("/etc/shadow-", [2013/05/12-18:47:58, 2013/05/12-18:47:57]) = 0
+374   close(7)                          = 0
+374   munmap(0xb776b000, 4096)          = 0
+374   umask(0777)                       = 022
+374   open("/etc/shadow+", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 0777
+374   fchown32(4, 0, 42)                = 0
+374   fchmod(4, 0640)                   = 0
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=452759, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:17, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   write(4, "root:!:15508:0:99999:7:::\ndaemon:*:15453:0:99999:7:::\nbin:*:15453:0:99999:7:::\nsys:*:15453:0:99999:7:::\nsync:*:15453:0:99999:7:::\ngames:*:15453:0:99999:7:::\nman:*:15453:0:99999:7:::\nlp:*:15453:0:99999:7:::\nmail:*:15453:0:99999:7:::\nnews:*:15453:0:99999:7:::\nuucp:*:15453:0:99999:7:::\nproxy:*:15453:0:99999:7:::\nwww-data:*:15453:0:99999:7:::\nbackup:*:15453:0:99999:7:::\nlist:*:15453:0:99999:7:::\nirc:*:15453:0:99999:7:::\ngnats:*:15453:0:99999:7:::\nnobody:*:15453:0:99999:7:::\nlibuuid:!:15453:0:99999:7:::\nsyslog:*:15453:0:99999:7:::\nmessagebus:*:15453:0:99999:7:::\ncolord:*:15453:0:99999:7:::\nlightdm:*:15453:0:99999:7:::\nwhoopsie:*:15453:0:99999:7:::\navahi-autoipd:*:15453:0:99999:7:::\navahi:*:15453:0:99999:7:::\nusbmux:*:15453:0:99999:7:::\nkernoops:*:15453:0:99999:7:::\npulse:*:15453:0:99999:7:::\nrtkit:*:15453:0:99999:7:::\nspeech-dispatcher:!:15453:0:99999:7:::\nhplip:*:15453:0:99999:7:::\nsaned:*:15453:0:99999:7:::\nsavvas:$6$aLpo3oDJ$wVlzUnXqflOMFTyP6GlH9n8e057maoojT4bzpO6zhA.fTcc/8GgIbSoi.PiuMiIgsgXMpJr0YJMVQG/cv5zX2.:"..., 1195) = 1195
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   lstat64("/etc/shadow", {st_dev=makedev(8, 6), st_ino=452760, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=1167, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   rename("/etc/shadow+", "/etc/shadow") = 0
+374   fstat64(5, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   fstat64(5, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   umask(077)                        = 022
+374   open("/etc/group-", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 077
+374   _llseek(5, 0, [0], SEEK_SET)      = 0
+374   read(5, "root:x:0:\ndaemon:x:1:\nbin:x:2:\nsys:x:3:\nadm:x:4:savvas\ntty:x:5:\ndisk:x:6:\nlp:x:7:\nmail:x:8:\nnews:x:9:\nuucp:x:10:\nman:x:12:\nproxy:x:13:\nkmem:x:15:\ndialout:x:20:\nfax:x:21:\nvoice:x:22:\ncdrom:x:24:savvas\nfloppy:x:25:\ntape:x:26:\nsudo:x:27:savvas\naudio:x:29:pulse\ndip:x:30:savvas\nwww-data:x:33:\nbackup:x:34:\noperator:x:37:\nlist:x:38:\nirc:x:39:\nsrc:x:40:\ngnats:x:41:\nshadow:x:42:\nutmp:x:43:\nvideo:x:44:\nsasl:x:45:\nplugdev:x:46:savvas\nstaff:x:50:\ngames:x:60:\nusers:x:100:\nnogroup:x:65534:\nlibuuid:x:101:\ncrontab:x:102:\nsyslog:x:103:\nfuse:x:104:savvas\nmessagebus:x:105:\nbluetooth:x:106:\nscanner:x:107:\ncolord:x:108:\nlpadmin:x:109:savvas\nssl-cert:x:110:\nlightdm:x:111:\nnopasswdlogin:x:112:\nnetdev:x:113:\nwhoopsie:x:114:\nmlocate:x:115:\nssh:x:116:\navahi-autoipd:x:117:\navahi:x:118:\npulse:x:119:\npulse-access:x:120:\nutempter:x:121:\nrtkit:x:122:\nsaned:x:123:\nsavvas:x:1000:\nsambashare:x:124:savvas\nSlmodemd:x:125:\nguest-ifr9H6:x:126:\nmine:x:1001:savvas\nvboxusers:x:127:savvas\nwireshark:x:1002:\nhaldaemon:x:128:\npowerdev:x:129:\nandreas:x:1"..., 4096) = 1029
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=391833, st_mode=S_IFREG|0600, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-17:17:01, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   read(5, "", 4096)                 = 0
+374   write(4, "root:x:0:\ndaemon:x:1:\nbin:x:2:\nsys:x:3:\nadm:x:4:savvas\ntty:x:5:\ndisk:x:6:\nlp:x:7:\nmail:x:8:\nnews:x:9:\nuucp:x:10:\nman:x:12:\nproxy:x:13:\nkmem:x:15:\ndialout:x:20:\nfax:x:21:\nvoice:x:22:\ncdrom:x:24:savvas\nfloppy:x:25:\ntape:x:26:\nsudo:x:27:savvas\naudio:x:29:pulse\ndip:x:30:savvas\nwww-data:x:33:\nbackup:x:34:\noperator:x:37:\nlist:x:38:\nirc:x:39:\nsrc:x:40:\ngnats:x:41:\nshadow:x:42:\nutmp:x:43:\nvideo:x:44:\nsasl:x:45:\nplugdev:x:46:savvas\nstaff:x:50:\ngames:x:60:\nusers:x:100:\nnogroup:x:65534:\nlibuuid:x:101:\ncrontab:x:102:\nsyslog:x:103:\nfuse:x:104:savvas\nmessagebus:x:105:\nbluetooth:x:106:\nscanner:x:107:\ncolord:x:108:\nlpadmin:x:109:savvas\nssl-cert:x:110:\nlightdm:x:111:\nnopasswdlogin:x:112:\nnetdev:x:113:\nwhoopsie:x:114:\nmlocate:x:115:\nssh:x:116:\navahi-autoipd:x:117:\navahi:x:118:\npulse:x:119:\npulse-access:x:120:\nutempter:x:121:\nrtkit:x:122:\nsaned:x:123:\nsavvas:x:1000:\nsambashare:x:124:savvas\nSlmodemd:x:125:\nguest-ifr9H6:x:126:\nmine:x:1001:savvas\nvboxusers:x:127:savvas\nwireshark:x:1002:\nhaldaemon:x:128:\npowerdev:x:129:\nandreas:x:1"..., 1029) = 1029
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   utime("/etc/group-", [2013/05/12-18:47:58, 2013/05/12-18:47:57]) = 0
+374   close(5)                          = 0
+374   munmap(0xb776d000, 4096)          = 0
+374   umask(0777)                       = 022
+374   open("/etc/group+", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 0777
+374   fchown32(4, 0, 0)                 = 0
+374   fchmod(4, 0644)                   = 0
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=452760, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:17, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   write(4, "root:x:0:\ndaemon:x:1:\nbin:x:2:\nsys:x:3:\nadm:x:4:savvas\ntty:x:5:\ndisk:x:6:\nlp:x:7:\nmail:x:8:\nnews:x:9:\nuucp:x:10:\nman:x:12:\nproxy:x:13:\nkmem:x:15:\ndialout:x:20:\nfax:x:21:\nvoice:x:22:\ncdrom:x:24:savvas\nfloppy:x:25:\ntape:x:26:\nsudo:x:27:savvas\naudio:x:29:pulse\ndip:x:30:savvas\nwww-data:x:33:\nbackup:x:34:\noperator:x:37:\nlist:x:38:\nirc:x:39:\nsrc:x:40:\ngnats:x:41:\nshadow:x:42:\nutmp:x:43:\nvideo:x:44:\nsasl:x:45:\nplugdev:x:46:savvas\nstaff:x:50:\ngames:x:60:\nusers:x:100:\nnogroup:x:65534:\nlibuuid:x:101:\ncrontab:x:102:\nsyslog:x:103:\nfuse:x:104:savvas\nmessagebus:x:105:\nbluetooth:x:106:\nscanner:x:107:\ncolord:x:108:\nlpadmin:x:109:savvas\nssl-cert:x:110:\nlightdm:x:111:\nnopasswdlogin:x:112:\nnetdev:x:113:\nwhoopsie:x:114:\nmlocate:x:115:\nssh:x:116:\navahi-autoipd:x:117:\navahi:x:118:\npulse:x:119:\npulse-access:x:120:\nutempter:x:121:\nrtkit:x:122:\nsaned:x:123:\nsavvas:x:1000:\nsambashare:x:124:savvas\nSlmodemd:x:125:\nguest-ifr9H6:x:126:\nmine:x:1001:savvas\nvboxusers:x:127:savvas\nwireshark:x:1002:\nhaldaemon:x:128:\npowerdev:x:129:\nandreas:x:1"..., 1044) = 1044
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   lstat64("/etc/group", {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0644, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=8, st_size=1029, st_atime=2013/05/12-18:47:58, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   rename("/etc/group+", "/etc/group") = 0
+374   fstat64(6, {st_dev=makedev(8, 6), st_ino=395288, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=854, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   fstat64(6, {st_dev=makedev(8, 6), st_ino=395288, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=854, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   umask(077)                        = 022
+374   open("/etc/gshadow-", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 077
+374   _llseek(6, 0, [0], SEEK_SET)      = 0
+374   read(6, "root:*::\ndaemon:*::\nbin:*::\nsys:*::\nadm:*::savvas\ntty:*::\ndisk:*::\nlp:*::\nmail:*::\nnews:*::\nuucp:*::\nman:*::\nproxy:*::\nkmem:*::\ndialout:*::\nfax:*::\nvoice:*::\ncdrom:*::savvas\nfloppy:*::\ntape:*::\nsudo:*::savvas\naudio:*::pulse\ndip:*::savvas\nwww-data:*::\nbackup:*::\noperator:*::\nlist:*::\nirc:*::\nsrc:*::\ngnats:*::\nshadow:*::\nutmp:*::\nvideo:*::\nsasl:*::\nplugdev:*::savvas\nstaff:*::\ngames:*::\nusers:*::\nnogroup:*::\nlibuuid:!::\ncrontab:!::\nsyslog:!::\nfuse:!::savvas\nmessagebus:!::\nbluetooth:!::\nscanner:!::\ncolord:!::\nlpadmin:!::savvas\nssl-cert:!::\nlightdm:!::\nnopasswdlogin:!::\nnetdev:!::\nwhoopsie:!::\nmlocate:!::\nssh:!::\navahi-autoipd:!::\navahi:!::\npulse:!::\npulse-access:!::\nutempter:!::\nrtkit:!::\nsaned:!::\nsavvas:!::\nsambashare:!::savvas\nSlmodemd:!::\nguest-ifr9H6:!::\nmine:!::savvas\nvboxusers:!::savvas\nwireshark:!::\nhaldaemon:!::\npowerdev:!::\nandreas:!::\n", 4096) = 854
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=413834, st_mode=S_IFREG|0600, st_nlink=1, st_uid=0, st_gid=0, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-18:47:56, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   read(6, "", 4096)                 = 0
+374   write(4, "root:*::\ndaemon:*::\nbin:*::\nsys:*::\nadm:*::savvas\ntty:*::\ndisk:*::\nlp:*::\nmail:*::\nnews:*::\nuucp:*::\nman:*::\nproxy:*::\nkmem:*::\ndialout:*::\nfax:*::\nvoice:*::\ncdrom:*::savvas\nfloppy:*::\ntape:*::\nsudo:*::savvas\naudio:*::pulse\ndip:*::savvas\nwww-data:*::\nbackup:*::\noperator:*::\nlist:*::\nirc:*::\nsrc:*::\ngnats:*::\nshadow:*::\nutmp:*::\nvideo:*::\nsasl:*::\nplugdev:*::savvas\nstaff:*::\ngames:*::\nusers:*::\nnogroup:*::\nlibuuid:!::\ncrontab:!::\nsyslog:!::\nfuse:!::savvas\nmessagebus:!::\nbluetooth:!::\nscanner:!::\ncolord:!::\nlpadmin:!::savvas\nssl-cert:!::\nlightdm:!::\nnopasswdlogin:!::\nnetdev:!::\nwhoopsie:!::\nmlocate:!::\nssh:!::\navahi-autoipd:!::\navahi:!::\npulse:!::\npulse-access:!::\nutempter:!::\nrtkit:!::\nsaned:!::\nsavvas:!::\nsambashare:!::savvas\nSlmodemd:!::\nguest-ifr9H6:!::\nmine:!::savvas\nvboxusers:!::savvas\nwireshark:!::\nhaldaemon:!::\npowerdev:!::\nandreas:!::\n", 854) = 854
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   utime("/etc/gshadow-", [2013/05/12-18:52:16, 2013/05/12-18:47:57]) = 0
+374   close(6)                          = 0
+374   munmap(0xb776c000, 4096)          = 0
+374   umask(0777)                       = 022
+374   open("/etc/gshadow+", O_WRONLY|O_CREAT|O_TRUNC|O_LARGEFILE, 0666) = 4
+374   umask(022)                        = 0777
+374   fchown32(4, 0, 42)                = 0
+374   fchmod(4, 0640)                   = 0
+374   fstat64(4, {st_dev=makedev(8, 6), st_ino=404900, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:17, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   write(4, "root:*::\ndaemon:*::\nbin:*::\nsys:*::\nadm:*::savvas\ntty:*::\ndisk:*::\nlp:*::\nmail:*::\nnews:*::\nuucp:*::\nman:*::\nproxy:*::\nkmem:*::\ndialout:*::\nfax:*::\nvoice:*::\ncdrom:*::savvas\nfloppy:*::\ntape:*::\nsudo:*::savvas\naudio:*::pulse\ndip:*::savvas\nwww-data:*::\nbackup:*::\noperator:*::\nlist:*::\nirc:*::\nsrc:*::\ngnats:*::\nshadow:*::\nutmp:*::\nvideo:*::\nsasl:*::\nplugdev:*::savvas\nstaff:*::\ngames:*::\nusers:*::\nnogroup:*::\nlibuuid:!::\ncrontab:!::\nsyslog:!::\nfuse:!::savvas\nmessagebus:!::\nbluetooth:!::\nscanner:!::\ncolord:!::\nlpadmin:!::savvas\nssl-cert:!::\nlightdm:!::\nnopasswdlogin:!::\nnetdev:!::\nwhoopsie:!::\nmlocate:!::\nssh:!::\navahi-autoipd:!::\navahi:!::\npulse:!::\npulse-access:!::\nutempter:!::\nrtkit:!::\nsaned:!::\nsavvas:!::\nsambashare:!::savvas\nSlmodemd:!::\nguest-ifr9H6:!::\nmine:!::savvas\nvboxusers:!::savvas\nwireshark:!::\nhaldaemon:!::\npowerdev:!::\nandreas:!::\npavlos:!::\n", 865) = 865
+374   fsync(4)                          = 0
+374   close(4)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   lstat64("/etc/gshadow", {st_dev=makedev(8, 6), st_ino=395288, st_mode=S_IFREG|0640, st_nlink=1, st_uid=0, st_gid=42, st_blksize=4096, st_blocks=8, st_size=854, st_atime=2013/05/12-18:52:16, st_mtime=2013/05/12-18:47:57, st_ctime=2013/05/12-18:47:57}) = 0
+374   rename("/etc/gshadow+", "/etc/gshadow") = 0
+374   unlink("/etc/shadow.lock")        = 0
+374   unlink("/etc/passwd.lock")        = 0
+374   unlink("/etc/group.lock")         = 0
+374   unlink("/etc/gshadow.lock")       = 0
+374   vfork()                           = 375
+375   execve("/usr/sbin/nscd", ["/usr/sbin/nscd", "nscd", "-i", "passwd"], [] <unfinished ...>
+374   waitpid(375,  <unfinished ...>
+375   <... execve resumed> )            = -1 ENOENT (No such file or directory)
+375   exit_group(127)                   = ?
+374   <... waitpid resumed> [{WIFEXITED(s) && WEXITSTATUS(s) == 127}], 0) = 375
+374   --- SIGCHLD (Child exited) @ 0 (0) ---
+374   vfork()                           = 376
+376   execve("/usr/sbin/nscd", ["/usr/sbin/nscd", "nscd", "-i", "group"], [] <unfinished ...>
+374   waitpid(376,  <unfinished ...>
+376   <... execve resumed> )            = -1 ENOENT (No such file or directory)
+376   exit_group(127)                   = ?
+374   <... waitpid resumed> [{WIFEXITED(s) && WEXITSTATUS(s) == 127}], 0) = 376
+374   --- SIGCHLD (Child exited) @ 0 (0) ---
+374   close(3)                          = 0
+374   open("/proc/filesystems", O_RDONLY|O_LARGEFILE) = 3
+374   fstat64(3, {st_dev=makedev(0, 3), st_ino=4026532018, st_mode=S_IFREG|0444, st_nlink=1, st_uid=0, st_gid=0, st_blksize=1024, st_blocks=0, st_size=0, st_atime=2013/05/12-18:52:17, st_mtime=2013/05/12-18:52:17, st_ctime=2013/05/12-18:52:17}) = 0
+374   mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb776e000
+374   read(3, "nodev\tsysfs\nnodev\trootfs\nnodev\tbdev\nnodev\tproc\nnodev\tcgroup\nnodev\tcpuset\nnodev\ttmpfs\nnodev\tdevtmpfs\nnodev\tdebugfs\nnodev\tsecurityfs\nnodev\tsockfs\nnodev\tpipefs\nnodev\tanon_inodefs\nnodev\tdevpts\n\text3\n\text4\nnodev\tramfs\nnodev\thugetlbfs\nnodev\tecryptfs\n\tfuseblk\nnodev\tfuse\nnodev\tfusectl\nnodev\tpstore\nnodev\tmqueue\nnodev\tbinfmt_misc\n\tvfat\n", 1024) = 328
+374   read(3, "", 1024)                 = 0
+374   close(3)                          = 0
+374   munmap(0xb776e000, 4096)          = 0
+374   vfork()                           = 377
+374   waitpid(377,  <unfinished ...>
+377   execve("/usr/sbin/nscd", ["/usr/sbin/nscd", "nscd", "-i", "passwd"], []) = -1 ENOENT (No such file or directory)
+377   exit_group(127)                   = ?
+374   <... waitpid resumed> [{WIFEXITED(s) && WEXITSTATUS(s) == 127}], 0) = 377
+374   --- SIGCHLD (Child exited) @ 0 (0) ---
+374   vfork()                           = 378
+374   waitpid(378,  <unfinished ...>
+378   execve("/usr/sbin/nscd", ["/usr/sbin/nscd", "nscd", "-i", "group"], []) = -1 ENOENT (No such file or directory)
+378   exit_group(127)                   = ?
+374   <... waitpid resumed> [{WIFEXITED(s) && WEXITSTATUS(s) == 127}], 0) = 378
+374   --- SIGCHLD (Child exited) @ 0 (0) ---
+374   exit_group(0)                     = ?

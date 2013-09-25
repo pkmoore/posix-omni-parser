@@ -202,11 +202,14 @@ class StraceParser(Parser.Parser):
       -f (R) Trace child processes as they are created by currently traced 
              processes as a line_parts of the fork(2) system call.
       
-      Note: The parser requires each traced system call to include the process id.
-            This is achieved by using both the -f and -o options when tracing an 
-            application.
+      Note:  The parser requires each traced system call to include the process
+             id. This is achieved by using both the -f and -o options when
+             tracing an application. Hence these two options are required. The
+             reason we need the pid in each system call is because we use it to
+             identify the corresponding unfinished syscall for every resuming
+             syscalls.
 
-      Example strace output with different options. Required options -v -f and -o 
+      Example strace output with different options. Required options -f and -o 
       are included in each of the following examples.
 
       with no extra options (other than -o and -f):
@@ -220,9 +223,10 @@ class StraceParser(Parser.Parser):
           "ORBIT_SOCKETDIR=/tmp/orbit-ssavv"..., "XDG_MENU_PREFIX=gnome-", 
           "SHELL=/usr/local/bin/bash", "TERM=xterm", "WINDOWID=25165827", 
           "SHLVL=3", "ICAROOT=/opt/Citrix/ICAClient", "HOME=/homes/ssavvide", 
-          "JDK_HOME=/etc/java-config-2/curr"..., "GNOME_DESKTOP_SESSION_ID=this-is"..., 
-          "LOGNAME=ssavvide", "LESS=-R -M --shift 5", "CUR_WIDTH=77", 
-          "CVS_RSH=ssh", "GCC_SPECS=", "DBUS_SESSION_BUS_ADDRESS=unix:ab"..., 
+          "JDK_HOME=/etc/java-config-2/curr"..., 
+          "GNOME_DESKTOP_SESSION_ID=this-is"..., "LOGNAME=ssavvide", 
+          "LESS=-R -M --shift 5", "CUR_WIDTH=77", "CVS_RSH=ssh", "GCC_SPECS=", 
+          "DBUS_SESSION_BUS_ADDRESS=unix:ab"..., 
           "DBUS_SYSTEM_BUS_ADDRESS=unix:pat"..., "COLORTERM=gnome-terminal", 
           "OLDPWD=/homes/ssavvide/programmi"...]) = 0
 
@@ -274,7 +278,7 @@ class StraceParser(Parser.Parser):
       Name of Option    Possible Values           Corresponding strace Option
       -------------------------------------------------------------------------
       "output"          True/False                -o
-      "fork"            True/False           -f
+      "fork"            True/False                -f
       "verbose"         True/False                -v
       "string_size"     None/int                  -s
       "timestamp"       None/"r"/"t"/"tt"/"ttt"   -r / -t / -tt / -ttt
@@ -339,18 +343,18 @@ class StraceParser(Parser.Parser):
         trace_line = line
         break
 
-      # if no suitable trace line is found to extract the options, then return
-      # the initial values of trace_options which assumes that no options were
-      # used with the utility.
-      if trace_line == None:
-        return trace_options
-
     except IOError:
       raise IOError("Unable to read trace file when trying to determine the " + 
                     "trace options.")
     finally:
       fh.close()
 
+    # if no suitable trace line is found to extract the options, then return
+    # the initial values of trace_options which assumes that no options were
+    # used with the utility.
+    if trace_line == None:
+      return trace_options
+      
     # check if the general format of a trace line is correct.
     # example: 8085  open("syscalls.txt", O_RDONLY|O_CREAT, 0664) = 3
     if (trace_line.find('(') == -1 or trace_line.find(')') == -1 
