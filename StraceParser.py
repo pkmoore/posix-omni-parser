@@ -161,7 +161,7 @@ class StraceParser(Parser.Parser):
           # remove the double quotes
           part = part.strip("\"")
           
-          # return the path excluding the "HOME="" label in front of it.
+          # return the path excluding the "HOME="" label in front of it. 
           return part[part.find("HOME=")+5:]
 
     return None

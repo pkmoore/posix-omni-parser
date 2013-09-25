@@ -1,12 +1,9 @@
 """
-<Program Name>
-  syscall_definition.py
-
 <Started>
   June 2013
 
 <Author>
-  Savvas Savvides <ssavvide@purdue.edu>
+  Savvas Savvides <savvas@purdue.edu>
 
 <Purpose>
   Parse the definition of a system call into a SyscallDefinition object.
@@ -253,7 +250,6 @@ class Definition:
         parameters_string += ", " + str(par)
 
     return self.ret_type + " " + self.name + "(" + parameters_string + ")"
-
 
 
 
