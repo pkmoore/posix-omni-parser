@@ -63,8 +63,11 @@ class TrussParser(Parser.Parser):
     """
 
     super(TrussParser, self).__init__(trace_path)
-  
 
+
+  
+  def _get_home_environment(self):
+    raise Exception("NOT IMPLEMENTED YET")
 
 
   def _detect_trace_options(self):
@@ -413,10 +416,6 @@ class TrussParser(Parser.Parser):
       trace_options["elapsed_time"] = True
 
     return trace_options
-
-
-
-
 
 
   def parse_trace(self):

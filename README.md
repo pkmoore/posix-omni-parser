@@ -13,10 +13,12 @@ Trace Object
   extracted information from a trace file.
 
   Example using this module:
-
+    
+    ```python
     import Trace
     trace = Trace.Trace(path_to_trace)
     print(trace)
+    ```
 
   The Trace object represents an entire system call trace, which means that it 
     holds all the information extracted from a system call trace file created by
@@ -24,6 +26,7 @@ Trace Object
     utility on Solaris or the dtrace utility on BSD and OSX platforms.
 
   <Attributes>
+
     self.trace_path:
       The path to the file containing the traced system calls.
     
@@ -91,7 +94,8 @@ TrussParser Object
   call parsed from the truss output file.
 
   Example using this module:
-
+    
+    ```python
     import TrussParser
 
     parser = TrussParser.TrussParser(path_to_trace)
@@ -99,7 +103,7 @@ TrussParser Object
 
     # this will return a list of Syscall objects.
     syscalls = parser.parse_trace()
-
+    ```
 
 Syscall Object
 --------------
@@ -109,6 +113,7 @@ Syscall Object
     calls independently on which utility was used to generate the trace file.
 
   <Attributes>
+    
     self.original_line:
       A string holding the original line from which this object was created.
 
