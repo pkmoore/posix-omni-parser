@@ -6,7 +6,8 @@
   Savvas Savvides <savvas@purdue.edu>
 
 <Purpose>
-  
+  Acts as the parent for all parsers. Defines some abstract methods required by
+  all parsers and some helper methods that can be used by any parser.
 
 """
 

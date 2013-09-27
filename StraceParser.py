@@ -106,6 +106,16 @@ class StraceParser(Parser.Parser):
     self._re_unfinished_syscall = re.compile(r"([^(]+)\((.*)\<unfinished .*")
     self._re_resumed_syscall = re.compile(r"\<\.\.\. ([^ ]+) resumed\> (.*)\)[ ]+=[ ]+([a-fx\d\-?]+)(.*)")
     self._re_complete_syscall = re.compile(r"([^(]+)\((.*)\)[ ]+=[ ]+([a-fx\d\-?]+)(.*)")
+
+    # In the above we have:
+    # ([^()]+)\( -- group that matches at least one character of anything except
+    #               the opening bracket. (everything up to first bracket
+    #               ie: pid, options and name)
+    # \((.*)\) -- a group that matches any character. The group must appear 
+    #             within brackets (parameters)
+    # =[ ]+([a-fx\d\-?]+) -- a group that matches at least on character of all  
+    #                        the ones given. (return part)
+    # (.*) -- group that captures anything that comes after the return part.
     
 
   def _get_home_environment(self):
@@ -577,6 +587,7 @@ class StraceParser(Parser.Parser):
     return syscalls
 
 
+
   def _parse_line(self, line, unfinished_syscalls):
     """
     <Purpose>
@@ -650,7 +661,7 @@ class StraceParser(Parser.Parser):
     # timestamp.
     line_parts["timestamp"] = None
     if self.trace_options["timestamp"]:
-      line_parts["timestamp"], remaining_line = remaining_line.split(None, 1)
+      line_parts["timestamp"], remaining_line = float(remaining_line.split(None, 1))
       
     # if the inst_pointer option is set, the next part of the line will be the
     # inst_pointer.
@@ -695,6 +706,7 @@ class StraceParser(Parser.Parser):
                                                            line_parts["name"], 
                                                            line_parts["args"]))
 
+      # we don't need anything else from the line.
       remaining_line = ''
     
     elif " resumed>" in remaining_line:
@@ -743,11 +755,13 @@ class StraceParser(Parser.Parser):
       remaining_line = m.group(4)
     
     # fix the arguments of some specific system calls.
-    line_parts = self._fix_args(line_parts)
+    self._fix_args(line_parts)
+
+    # initialize elapsed_time
+    line_parts["elapsed_time"] = None
 
     # if the type of the syscall is unfinished then there is nothing else to
     # parse.
-    line_parts["elapsed_time"] = None
     if line_parts["type"] == Syscall.Syscall.UNFINISHED:
       return line_parts
 
@@ -782,7 +796,7 @@ class StraceParser(Parser.Parser):
       # and it is all-caps.
       assert error_label.startswith('E') and error_label.isupper(), "Invalid format of error_label `" + error_label + "`"
 
-    # In some rare cases, a syscall will not return but it will include an error
+    # In some rare cases, a syscall will not return but still include an error
     # label.
     # 
     # Example:
@@ -799,6 +813,9 @@ class StraceParser(Parser.Parser):
     # value of the syscall followed by the error label if one exists, or None if
     # it doesn't.
     line_parts["return"] = (r, error_label)
+
+    # fix the return part of some specific system calls.
+    remaining_line = self._fix_return(line_parts, remaining_line)
 
     # finally, if the elapsed_time option is set we should extract the elapsed
     # time data. Because the remaining line could optionally include some
@@ -867,8 +884,7 @@ class StraceParser(Parser.Parser):
       None
 
     <Returns>
-      line_parts:
-        The updated line_parts.
+      None
 
     """
 
@@ -911,47 +927,47 @@ class StraceParser(Parser.Parser):
       # -1823071587}, f_namelen=255, f_frsize=4096}) = 0
       if parameters[1].isdigit():
         parameters.pop(1)
+    """
 
-    # if the syscall is getdents, keep only the first and last parameters. These
-    # are the file descriptor and the buffer size.
-    if syscall_name.startswith("getdents"):
-      parameters = [parameters[0], parameters[-1]]
 
-    # TODO: add support for fcntl third parameter according to second parameter.
-    if syscall_name.startswith("fcntl"):
-      # keep only the first two paramenters
-      parameters = [parameters[0], parameters[1]]
+  def _fix_return(self, line_parts, remaining_line):
+    """
+    <Purpose>
+      Fix the return part of some specific system calls.
 
-    # Get the return part.
-    straceReturn = line[line.rfind('=')+1:].strip()
-    if syscall_name.startswith("fcntl") and straceReturn.find("(flags ") != -1:
+    <Arguments>
+      line_parts:
+        The parts of the trace line based on which the changes will occur.
+
+    <Exceptions>
+      None
+    
+    <Side Effects>
+      None
+
+    <Returns>
+      remaining_line:
+        The updated remaining line.
+
+    """
+    # the return part of fcntl can be a hex number followed by a set of flag
+    # names. we want to keep the flag names as the return part.
+    if line_parts["name"].startswith("fcntl") and remaining_line.find("(flags ") != -1:
       # handle fcntl return part. I.e use the set of flags instead
       # of their hex representation.
       # example:
       # fcntl64(4, F_GETFL) = 0x402 (flags O_RDWR|O_APPEND)
       # replace the hex part: 0x402 with the flags O_RDWR|O_APPEND
       # get the part between '(flags' and ')'
-      straceReturn = straceReturn[straceReturn.find("(flags ")+7:
-                                  straceReturn.rfind(")")]
-      straceReturn = (straceReturn, None)
-    else:
-      spaced_results = straceReturn.split(" ")
-      if len(spaced_results) > 1:
-        # keep only the first part.
-        straceReturn = straceReturn[:straceReturn.find(" ")]
-      try: 
-        straceReturn = int(straceReturn) # result can also be a '?'
-      except ValueError:
-        pass
-      # in case of an error include the error name as well.
-      if straceReturn == -1 and len(spaced_results) > 1:
-        straceReturn = (straceReturn, spaced_results[1])
-      else:
-        # if no error, use None as the second return value
-        straceReturn = (straceReturn, None)
-    """
+      flags = remaining_line[remaining_line.find("(flags ")+7:
+                                  remaining_line.rfind(")")]
+       remaining_line = remaining_line[remaining_line.rfind(")"):]
 
-    return line_parts
+      if "|" in flags:
+        flags = flags.split("|")
+      line_parts["return"] = (flags, ine_parts["return"][1])
+
+    return remaining_line
 
 
   def __repr__(self):
