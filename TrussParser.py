@@ -120,6 +120,8 @@ class TrussParser(Parser.Parser):
       -f:
         1794:   write(1, " - r w - r - - r - -    ".., 66)      = 66
 
+      (from this point onwards the -f option is included plus the stated option)
+      
       -a:
         without:
           1815:   execve("/usr/bin/ls", 0x08047558, 0x08047568)  argc = 3
@@ -259,6 +261,7 @@ class TrussParser(Parser.Parser):
       represents the seconds since epoch (seconds.fraction(4 digits))
     """
 
+    # initialize options as if they were NOT given.
     trace_options = {}
     trace_options["exec_argv"] = False
     trace_options["exec_env"] = False
@@ -319,7 +322,6 @@ class TrussParser(Parser.Parser):
         # if the trace_line we got is an exec syscall then let's examine the two
         # subsequent lines so that we can check whether the -a and -e options
         # were used.
-        exec_lines = []
         if "exec" in trace_line:
           for _ in range(2):
             line = fh.readline()
@@ -356,6 +358,7 @@ class TrussParser(Parser.Parser):
     # the syscall name. This excludes the -a and -e options that apply only to 
     # exec syscalls.
     options_string = trace_line[:trace_line.find("(")]
+    
     # break the string to individual options and remove the last part which
     # should be the name of the syscall.
     options = options_string.split()
@@ -371,7 +374,37 @@ class TrussParser(Parser.Parser):
       if "/" in option:
         trace_options["lwpid"] = True
 
-    # check for -d -D -E
+    # at this point trace_options should include the time related options only.
+    # check for -D -E
+    if trace_options["timestamp"] != None:
+      # we already know this from the first line of the trace so remove the
+      # timestamp from the trace options.
+      trace_options.pop(0)
 
+    if len(trace_options) > 2:
+      # there should be a maximum of 2 options left now.
+      raise Exception("Unexpected format when detecting trace options")
+    elif len(trace_options) == 2:
+      trace_options["lwp_elapsed_time"] = True
+      trace_options["elapsed_time"] = True
+    elif len(trace_options) == 1:
+      # BUG: it's not straightforward to differentiate between the -D and -E
+      # format based on a single line. For now we assume without checking that
+      # the option corresponds to the elapsed time. We can potentially read more
+      # lines to determine whether the option corresponds to -D or -E.
+      trace_options["elapsed_time"] = True
 
     return trace_options
+
+
+
+
+
+
+  def parse_trace(self):
+    """
+    Cases to consider:
+    ------------------
+    1869:   execve(0x08047FF0, 0x08047558, 0x08047568)  argc = 3
+    1869:        0x08047FF0: "/usr/bin/ls"
+    """

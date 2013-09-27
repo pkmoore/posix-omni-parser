@@ -1,3 +1,15 @@
+"""
+<Started>
+  July 2013
+
+<Author>
+  Savvas Savvides <savvas@purdue.edu>
+
+<Purpose>
+  
+
+"""
+
 import sys
 
 DEBUG = False
@@ -272,7 +284,7 @@ def _string_to_flags(flags_string):
   """
   flags_list = []
 
-  # if no flags are set a zero is given. Return an mpty list to indicate this.
+  # if no flags are set a zero is given. Return an empty list to indicate this.
   if flags_string == '0':
     return flags_list
   
