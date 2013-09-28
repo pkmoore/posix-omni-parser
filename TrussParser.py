@@ -67,13 +67,40 @@ class TrussParser(Parser.Parser):
 
   
   def _get_home_environment(self):
+    """
+    <Purpose>
+      Read the first line of the trace file. If that line represents the execve
+      system call then examine it to see whether the HOME environment variable
+      is set. If it is set, extract it and return it, otherwise return None. The
+      HOME environment variable is sometimes set to a path other than the
+      current directory i.e the directory in which the traced application was
+      executed.
+
+    <Arguments>
+      None
+
+    <Exceptions>
+      IOError:
+        Unable to read from the trace file.
+    
+    <Side Effects>
+      None
+
+    <Returns>
+      The HOME env path as defined in the execve system call, or None if the 
+      HOME path was not found.
+    """
+
     raise Exception("NOT IMPLEMENTED YET")
 
 
   def _detect_trace_options(self):
     """
     <Purpose>
-
+      Read the first few lines of the trace file and try to determine to the 
+      degree possible which options must have been used with the tracing utility
+      (i.e truss). These options will be later used to help parsing each line to
+      different parts.
 
       Truss options (taken from truss man page):
 
@@ -420,8 +447,83 @@ class TrussParser(Parser.Parser):
 
   def parse_trace(self):
     """
+    <Purpose>
+      Read each line of the trace file and parse it into a Syscall object.
+
+    <Arguments>
+      None
+
+    <Exceptions>
+      None
+    
+    <Side Effects>
+      None
+
+    <Returns>
+      syscalls:
+        A list of Sycall objects, each containing all the information extracted 
+        from the trace, regarding a specific system call execution.
+    """
+
+
+
+    """
     Cases to consider:
     ------------------
     1869:   execve(0x08047FF0, 0x08047558, 0x08047568)  argc = 3
     1869:        0x08047FF0: "/usr/bin/ls"
     """
+
+
+
+  def __repr__(self):
+    """
+      Generate a string representation for this parser.
+      First generate a string for the options and then return a string 
+      describing the entire parser.
+      
+      Name of Option      Possible Values      Corresponding truss Option
+      -------------------------------------------------------------------------
+      "exec_argv"         True/False           -a
+      "exec_env"          True/False           -e
+      "output"            True/False           -o
+      "fork"              True/False           -f
+      "lwpid"             True/False           -l
+      "verbose"           True/False           -vall
+      "read"              True/False           -rall
+      "write"             True/False           -wall
+      "timestamp"         None/float           -d
+      "lwp_elapsed_time"  True/False           -D
+      "elapsed_time"      True/False           -E
+    """
+
+    # all possible options excluding the timestamp option.
+    possible_options = {
+      "exec_argv"        : "-a",
+      "exec_env"         : "-e",
+      "output"           : "-o",
+      "fork"             : "-f",
+      "lwpid"            : "-l",
+      "verbose"          : "-vall",
+      "read"             : "-rall",
+      "write"            : "-wall",
+      #"timestamp"        : "-d",
+      "lwp_elapsed_time" : "-D",
+      "elapsed_time"     : "-E"
+    }
+
+    trace_options_string = ""
+    for option in possible_options:
+      if self.trace_options[option]:
+        trace_options_string += possible_options[option] + " "
+      
+    if self.trace_options["timestamp"]:
+      trace_options_string += "-d(" + str(self.trace_options["timestamp"]) + ")"
+
+    trace_options_string = trace_options_string.strip()
+
+    representation = "<" + self.__class__.__name__ \
+                   + " trace_path=`" + self.trace_path + "`" \
+                   + " trace_options=" + trace_options_string + ">"
+
+    return representation

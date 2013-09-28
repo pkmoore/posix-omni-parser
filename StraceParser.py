@@ -587,7 +587,6 @@ class StraceParser(Parser.Parser):
     return syscalls
 
 
-
   def _parse_line(self, line, unfinished_syscalls):
     """
     <Purpose>
@@ -984,7 +983,7 @@ class StraceParser(Parser.Parser):
     if self.trace_options["fork"]:
       trace_options_string += "-f"
 
-    representation = "<StraceParser" \
+    representation = "<" + self.__class__.__name__ \
                    + " trace_path=`" + self.trace_path + "`" \
                    + " trace_options=" + trace_options_string + ">"
 
