@@ -15,8 +15,6 @@ import parsing_classes
 DEBUG = False
 
 
-
-
 class UnfinishedSyscall:
   """
   If a syscall is interrupted or blocked, it will be split in multiple lines.
@@ -49,8 +47,6 @@ class UnfinishedSyscall:
   def __repr__(self):
     return "UnfinishedSyscall: " + self.pid + \
            " " + self.name + " " + str(self.args)
-
-
 
 
 class Syscall:
@@ -110,6 +106,7 @@ class Syscall:
   # them.
   COMPLETE = 2 
 
+  
   def __init__(self, syscall_definitions, line, line_parts):
     """
     <Purpose>
@@ -168,6 +165,14 @@ class Syscall:
     
     if "elapsed_time" in line_parts:
       self.elapsed_time = line_parts["elapsed_time"]
+
+
+  def isSuccessful(self):
+    """
+    If the first item of the return part is -1 or ? it means the syscall 
+    returned an error or did not return. Otherwise it was successful.
+    """
+    return self.ret[0] != -1 and self.ret[0] != "?"
 
 
   def __repr__(self):
