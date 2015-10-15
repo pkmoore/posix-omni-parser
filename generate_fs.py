@@ -1,4 +1,5 @@
 """
+" ""
 <Started>
   March 2013
 
@@ -25,20 +26,21 @@
   generate_fs calls removes all existing Lind fs files and initializes the
   lind.metadata file.
 
-"""
+" ""
 
 import os
 import sys
 
-import lind_test_server
 from lind_fs_constants import *
+import lind_test_server
+
 
 DEBUG = False
 
 
 
 def generate_fs(syscalls, home_env=None):
-  """
+  " ""
   <Purpose>
     This is the only public function of this module. It takes a list of
     Syscall objects as an argument and generates a Lind fs based on the
@@ -61,7 +63,7 @@ def generate_fs(syscalls, home_env=None):
   <Returns>
     None
 
-  """
+  " ""
 
   # load an initial lind file system.
   lind_test_server._blank_fs_init()
@@ -72,7 +74,7 @@ def generate_fs(syscalls, home_env=None):
   # fs and False means the file was seen but wasn't added to the lind fs. We
   # keep track of all the paths met so far for two reasons. Firstly, we want to
   # construct the INITIAL file system state, so we only deal with the first
-  # occurence of each path. For example consider the following sequence of 
+  # occurence of each path. For example consider the following sequence of
   # traced system calls example:
   #
   #   11443 open("test.txt", O_RDONLY) = -1 ENOENT (No such file or directory)
@@ -86,30 +88,30 @@ def generate_fs(syscalls, home_env=None):
   # system state did not include this file, even though the file is eventually
   # created.
   #
-  # The second reason we keep track of all the paths met and whether they were 
-  # added in the lind fs is to confirm whether the lind fs was constructed 
+  # The second reason we keep track of all the paths met and whether they were
+  # added in the lind fs is to confirm whether the lind fs was constructed
   # successfully.
   seen_paths = {}
 
   # a list of system calls that include a filepath in their arguments. We only
   # care about these system calls so only the actions representing of these
   # system calls will be examined.
-  syscalls_with_path = ['open', 'creat', 'statfs', 'access', 'stat', 'link', 
+  syscalls_with_path = ['open', 'creat', 'statfs', 'access', 'stat', 'link',
                         'unlink', 'chdir', 'rmdir', 'mkdir']
-  
+
   for action in actions:
     # the general format of an action is the following:
     # (syscall_name, (arguments tuple), (return tuple))
-    # 
+    #
     # Example successful syscall action:
-    # ('open_syscall', ('syscalls.txt', ['O_RDONLY', 'O_CREAT'], 
-    #    ['S_IWUSR', 'S_IRUSR', 'S_IWGRP', 'S_IRGRP', 'S_IROTH']), 
+    # ('open_syscall', ('syscalls.txt', ['O_RDONLY', 'O_CREAT'],
+    #    ['S_IWUSR', 'S_IRUSR', 'S_IWGRP', 'S_IRGRP', 'S_IROTH']),
     #            (3, None))
     #
     # Example unsuccessful syscall actions:
-    # ('access_syscall', ('/etc/ld.so.nohwcap', ['F_OK']), 
+    # ('access_syscall', ('/etc/ld.so.nohwcap', ['F_OK']),
     #                  (-1, 'ENOENT'))
-    # ('mkdir_syscall', ('syscalls_dir', ['S_IRWXU', 'S_IRWXG', 
+    # ('mkdir_syscall', ('syscalls_dir', ['S_IRWXU', 'S_IRWXG',
     #        'S_IXOTH', 'S_IROTH']), (-1, 'EEXIST'))
     syscall_name, syscall_parameters, syscall_result = action
 
@@ -118,7 +120,7 @@ def generate_fs(syscalls, home_env=None):
 
     # each syscall name should end with _syscall
     if not syscall_name.endswith("_syscall"):
-      raise Exception("Unexpected name of system call '" + 
+      raise Exception("Unexpected name of system call '" +
                       syscall_name + "'")
 
     # remove the _syscall part from the syscall name
@@ -140,7 +142,7 @@ def generate_fs(syscalls, home_env=None):
         open_flags = action[1][1]
         if "O_CREAT" in open_flags:
           o_creat = True
-      
+
       # Similarly, if the system call is creat, set the o_creat flag to True
       if syscall_name == "creat":
         o_creat = True
@@ -149,15 +151,15 @@ def generate_fs(syscalls, home_env=None):
       path = action[1][0]
 
       # We want the initial file system state. So deal only with the earliest
-      # syscall pertaining to a path.      
+      # syscall pertaining to a path.
       if path not in seen_paths:
         # if the syscall was successful, copy file/dir into the lind fs.
         if syscall_result != (-1, 'ENOENT'):
           path, path_added = _copy_path_into_lind(path, home_path, o_creat)
-          
+
           # remember this path was seen and whether it was added to the lind fs.
           seen_paths[path] = path_added
-        
+
         else:
           # remember this path was seen but not added to the lind fs.
           seen_paths[path] = False
@@ -172,28 +174,28 @@ def generate_fs(syscalls, home_env=None):
           # already, so we add it in the lind fs.
           if syscall_result == (-1, 'EEXIST'):
             path2, path_added = _copy_path_into_lind(path2, home_path, o_creat)
-            
+
             # remember this path was seen and whether it was added to the lind fs.
             seen_paths[path2] = path_added
-          
+
           else:
             # remember this path was seen but not added to the lind fs.
             seen_paths[path2] = False
 
-      """
-        TODO: Can add support for symlink here. Slightly more tricky due to 
-        return part and error messages.
-      """
 
-      # change the home directory and the lind current directory so that future 
+        # TODO: Can add support for symlink here. Slightly more tricky due to 
+        # return part and error messages.
+   
+
+      # change the home directory and the lind current directory so that future
       # references to relative paths will be handled correctly.
       if syscall_name == 'chdir':
         home_path = os.path.join(home_path, path)
         home_path = os.path.normpath(home_path)
         lind_test_server.chdir_syscall(home_path)
 
-      
-  
+
+
   if DEBUG:
     print
     print "Seen Paths"
@@ -222,7 +224,7 @@ def generate_fs(syscalls, home_env=None):
     if seen_paths[seen_path]:
       # the file should be in lind fs.
       if abs_seen_path not in all_lind_paths:
-        raise Exception("Expected file '" + abs_seen_path + 
+        raise Exception("Expected file '" + abs_seen_path +
                         "' not found in Lind fs")
     else:
       # file should not be in lind fs.
@@ -230,16 +232,16 @@ def generate_fs(syscalls, home_env=None):
         raise Exception("Unexpected file '" + abs_seen_path + "' in Lind fs")
 
 
-"""
+" ""
 Check if the file/dir exists. If it exists copy it to the lind fs. If not raise 
 an exception.
-"""
+" ""
 def _copy_path_into_lind(path, home_path, o_creat):
   path = os.path.join(home_path, path)
   path = os.path.normpath(path)
 
   if not os.path.exists(path):
-    # if the O_CREAT flag was set in the system call or if we are dealing with 
+    # if the O_CREAT flag was set in the system call or if we are dealing with
     # the creat syscall, allow the program to proceed even if the file does not
     # exist.
     if o_creat:
@@ -254,14 +256,14 @@ def _copy_path_into_lind(path, home_path, o_creat):
     _cp_dir_into_lind(path)
 
   return path, True
-  
 
 
 
 
 
 
-"""
+
+" ""
 The rest of this program was adjusted from lind_fs_utils.py
 
 Author: Justin Cappos
@@ -270,25 +272,25 @@ Module: File system utilities.   Copies files into the Lind FS from a POSIX
         lists files in the fs, etc.
 
 Start Date: Feb 28th, 2012
-"""
+" ""
 
 def _mirror_stat_data(posixfn, lindfn):
   # internal function to take a lind filename (or dirname, etc.) and change
   # it to have similar metadata to a posixfn.   This includes perms, uid, gid
 
   statdata = os.stat(posixfn)
-  
-  # I only want the file perms, not things like 'IS_DIR'.  
+
+  # I only want the file perms, not things like 'IS_DIR'.
   # BUG (?): I think this ignores SETUID, SETGID, sticky bit, etc.
   lind_test_server.chmod_syscall(lindfn, S_IRWXA & statdata[0])
 
   # Note: chown / chgrp aren't implemented!!!   We would call them here.
-  #lind_test_server.chown_syscall(lindfn, statdata[4])
-  #lind_test_server.chgrp_syscall(lindfn, statdata[5])
+  # lind_test_server.chown_syscall(lindfn, statdata[4])
+  # lind_test_server.chgrp_syscall(lindfn, statdata[5])
 
 
 def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
-  """
+  " ""
    <Purpose>
       Copies a file from POSIX into the Lind FS.   It takes the abs path to 
       the file ('/etc/passwd') and looks for it in the POSIX FS off of the 
@@ -314,8 +316,8 @@ def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
 
    <Returns>
       None
-  """
-  
+  " ""
+
   # check for the file.
   posixfn = os.path.join(rootpath, fullfilename)
 
@@ -324,12 +326,12 @@ def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
 
   if not os.path.isfile(posixfn):
     raise IOError("POSIX FS path is not a file: '" + posixfn + "'")
-  
+
 
   # now, we should check / make intermediate dirs if needed...
   # we will walk through the components of the dir and look for them...
 
-  # this removes '.', '///', and similar.   
+  # this removes '.', '///', and similar.
   # BUG: On Windows, this converts '/' -> '\'.   I don't think lind FS handles
   # '\'...
 
@@ -339,7 +341,7 @@ def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
   # go through the directories and check if they are there, possibly creating
   # needed ones...
   currentdir = ''
-  
+
   # NOT os.path.split!   I want each dir!!!
   for thisdir in normalizedlinddirname.split('/'):
     currentdir += thisdir + '/'
@@ -349,19 +351,19 @@ def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
       if IS_DIR(lind_test_server.stat_syscall(currentdir)[2]):
         # all is well
         continue
-      # otherwise, it exists, but isn't a dir...   
+      # otherwise, it exists, but isn't a dir...
       raise IOError("LIND FS path exists and isn't a dir: '" + currentdir + "'")
 
     except lind_test_server.SyscallError, e:
       # must be missing dir or else let the caller see this!
-      if e[1] != "ENOENT":   
+      if e[1] != "ENOENT":
         raise
 
       # okay, do I create it?
       if not createmissingdirs:
         raise IOError("LIND FS path does not exist but should not be created: '" + currentdir + "'")
 
-      # otherwise, make it ...  
+      # otherwise, make it ...
       lind_test_server.mkdir_syscall(currentdir, S_IRWXA)
       # and copy over the perms, etc.
       _mirror_stat_data(os.path.join(rootpath, currentdir), currentdir)
@@ -373,8 +375,8 @@ def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
   posixfo.close()
 
   # make the new file, truncating any existing contents...
-  lindfd = lind_test_server.open_syscall(normalizedlindfn, 
-                O_CREAT|O_EXCL|O_TRUNC|O_WRONLY, S_IRWXA)
+  lindfd = lind_test_server.open_syscall(normalizedlindfn,
+                O_CREAT | O_EXCL | O_TRUNC | O_WRONLY, S_IRWXA)
 
   # should write all at once...
   datalen = lind_test_server.write_syscall(lindfd, filecontents)
@@ -387,7 +389,7 @@ def _cp_file_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
 
 
 def _cp_dir_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
-  
+
   # check for the file.
   posixfn = os.path.join(rootpath, fullfilename)
 
@@ -396,11 +398,11 @@ def _cp_dir_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
 
   if os.path.isfile(posixfn):
     raise IOError("POSIX FS path is not a directory: '" + posixfn + "'")
-  
+
   # now, we should check / make intermediate dirs if needed...
   # we will walk through the components of the dir and look for them...
 
-  # this removes '.', '///', and similar.   
+  # this removes '.', '///', and similar.
   # BUG: On Windows, this converts '/' -> '\'.   I don't think lind FS handles
   # '\'...
 
@@ -409,7 +411,7 @@ def _cp_dir_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
   # go through the directories and check if they are there, possibly creating
   # needed ones...
   currentdir = ''
-  
+
   # NOT os.path.split!   I want each dir!!!
   for thisdir in normalizedlindfn.split('/'):
     currentdir += thisdir + '/'
@@ -419,26 +421,26 @@ def _cp_dir_into_lind(fullfilename, rootpath='.', createmissingdirs=True):
       if IS_DIR(lind_test_server.stat_syscall(currentdir)[2]):
         # all is well
         continue
-      # otherwise, it exists, but isn't a dir...   
+      # otherwise, it exists, but isn't a dir...
       raise IOError("LIND FS path exists and isn't a dir: '" + currentdir + "'")
 
     except lind_test_server.SyscallError, e:
       # must be missing dir or else let the caller see this!
-      if e[1] != "ENOENT":   
+      if e[1] != "ENOENT":
         raise
 
       # okay, do I create it?
       if not createmissingdirs:
         raise IOError("LIND FS path does not exist but should not be created: '" + currentdir + "'")
 
-      # otherwise, make it ...  
-      lind_test_server.mkdir_syscall(currentdir,S_IRWXA)
+      # otherwise, make it ...
+      lind_test_server.mkdir_syscall(currentdir, S_IRWXA)
       # and copy over the perms, etc.
       _mirror_stat_data(os.path.join(rootpath, currentdir), currentdir)
 
 
 def list_all_lind_paths(startingdir='/'):
-  """
+  " ""
    <Purpose>
       Returns a list of all files / dirs in the lind fs.   Each has an absolute
       name.   This is similar to 'find startingdir'.
@@ -455,8 +457,8 @@ def list_all_lind_paths(startingdir='/'):
    <Returns>
       A list of strings that correspond to absolute names.   For example:
       ['/','/etc/','/etc/passwd']
-  """
-  
+  " ""
+
   # BUG: This code may need to be revisited with symlinks...
 
   # this will throw exceptions when given bad data...
@@ -467,11 +469,11 @@ def list_all_lind_paths(startingdir='/'):
 
 def _find_all_paths_recursively(startingpath):
   # helper for list_all_lind_paths.   It recursively looks at all child dirs
-  
+
   knownitems = []
 
   # I need to open the dir to use getdents...
-  dirfd = lind_test_server.open_syscall(startingpath,0,0)
+  dirfd = lind_test_server.open_syscall(startingpath, 0, 0)
 
   # build a list of all dents.   These have an odd format:
   #  [(inode, filename, d_type (DT_DIR, DR_REG, etc.), length of entry), ...]
@@ -481,10 +483,10 @@ def _find_all_paths_recursively(startingpath):
   # Note: the length parameter is odd, it's related to data structure space, so
   # it doesn't map to python cleanly.   So long as it's > the largest possible
   # entry size, this code should work though.
-  thesedents = lind_test_server.getdents_syscall(dirfd,10000)
+  thesedents = lind_test_server.getdents_syscall(dirfd, 10000)
   while thesedents:
     mydentslist += thesedents
-    thesedents = lind_test_server.getdents_syscall(dirfd,10000)
+    thesedents = lind_test_server.getdents_syscall(dirfd, 10000)
 
   lind_test_server.close_syscall(dirfd)
 
@@ -495,16 +497,16 @@ def _find_all_paths_recursively(startingpath):
   for dent in mydentslist:
     # ignore '.' and '..' because they aren't interesting and we don't want
     # to loop forever.
-    if dent[1]=='.' or dent[1]=='..':
+    if dent[1] == '.' or dent[1] == '..':
       continue
-   
-    thisitem = startingpath+'/'+dent[1]
+
+    thisitem = startingpath + '/' + dent[1]
 
     # add it...
     knownitems.append(thisitem)
 
     # if it's a directory, recurse...
-    if dent[2]==DT_DIR:
+    if dent[2] == DT_DIR:
       knownitems = knownitems + _find_all_paths_recursively(thisitem)
 
   return knownitems
@@ -519,3 +521,5 @@ def main():
 
 if __name__ == "__main__":
   main()
+
+"""

@@ -1,6 +1,6 @@
 posix-omni-parser
 =================
-The posix-omni-parser aims to parse the traced system calls from various
+The posix-omni-parser tool aims to parse the traced system calls from various
 interposing utilities (eg strace on Linux, truss on Solaris, dtrace on BSD
 and Mac OSX) on different POSIX-compliant platforms into a more useful 
 representation.
@@ -8,7 +8,7 @@ representation.
 
 Trace Object
 ------------
-<Purpose>
+
   This module contains the Trace object, which is used to capture all the
   extracted information from a trace file.
 
