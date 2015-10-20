@@ -204,7 +204,7 @@ class SockPath(ParsingClass):
     """
 
     def __init__(self, value):
-        # three types of address paths (see "man 7 unix" for more information)
+        # types of address paths (see "man 7 unix" for more information)
         #
         # unnamed:
         # 14039 getsockname(3, {sa_family=AF_FILE, NULL}, [2]) = 0
@@ -212,6 +212,9 @@ class SockPath(ParsingClass):
         # 14037 connect(4, {sa_family=AF_FILE, path="/var/run/nscd/socket"}, 110) = -1 ENOENT
         # abstract:
         # 14037 connect(6, {sa_family=AF_FILE, path=@"/tmp/.X11-unix/X0"}, 20 )= 0
+        #
+        # for AF_LOCAL: sun
+        # 11597 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
         if value == "NULL":
             self.type = "unnamed"
             self.value = value
@@ -221,12 +224,65 @@ class SockPath(ParsingClass):
         elif value.startswith("path="):
             self.type = "abstract"
             self.value = value[value.find("path=\"") + 6:value.rfind("\"}")]
+        elif value.startswith("sun_path="):
+            self.type = "sun"
+            self.value = value[value.find("sun_path=\"") + 10:value.rfind("\"}")]
         else:
             raise Exception("Unexpected value when parsing SockPath object: " + value)
 
     def __repr__(self):
         return "<" + self.__class__.__name__ + " type: " + str(self.type) + \
              " value: " + str(self.value) + ">"
+
+
+class SockData(ParsingClass):
+    """
+    A SockPath object can only appear as part of the Sockaddr object.
+    """
+
+    def __init__(self, value):
+        # Example:
+        # sa_data="\0\0\0\0\0\0\0\0\0\0\0\0\0\0"}
+
+        assert value.startswith("sa_data="), "invalid SockData value"
+        assert value.endswith("}"), "invalid SockGroups value"
+
+        # geta data inside double quotes
+        self.value = value[value.find("sa_data=\"") + 9:-2]
+
+
+class SockPid(ParsingClass):
+    """
+    A SockPid object can only appear as part of the Sockaddr object.
+    """
+
+    def __init__(self, value):
+        # Example:
+        # pid=0
+
+        assert value.startswith("pid="), "invalid SockPid value"
+
+        try:
+            self.value = int(value[value.find("pid=") + 4:])
+        except ValueError:
+            raise Exception("Unexpected pid format: " + str(value))
+
+
+class SockGroups(ParsingClass):
+    """
+    A SockGroups object can only appear as part of the Sockaddr object.
+    """
+
+    def __init__(self, value):
+        # Example:
+        # groups=00000000}
+
+        assert value.startswith("groups="), "invalid SockGroups value"
+        assert value.endswith("}"), "invalid SockGroups value"
+
+        # remove closing curly bracket
+        value = value[:-1]
+        self.value = value[value.find("groups=") + 7:]
 
 
 class Sockaddr(ParsingClass):
@@ -239,25 +295,38 @@ class Sockaddr(ParsingClass):
         14039 getsockname(3, {sa_family=AF_FILE, NULL}, [2]) = 0
         14039 connect(3, {sa_family=AF_FILE, path=@"/tmp/.X11-unix/X0"}, 20)
         19176 bind(3, {sa_family=AF_INET, sin_port=htons(25588), sin_addr=inet_addr("127.0.0.1")}, 16) = 0
+        
+        11597 bind(3, {sa_family=AF_NETLINK, pid=0, groups=00000000}, 12) = 0
+        11597 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+        11597 connect(3, {sa_family=AF_UNSPEC, sa_data="\0\0\0\0\0\0\0\0\0\0\0\0\0\0"}, 16) = 0
+        11597 connect(3, {sa_family=AF_INET6, sin6_port=htons(6666), inet_pton(AF_INET6, "::1", &sin6_addr), sin6_flowinfo=0, sin6_scope_id=0}, 28) = -1 ENETUNREACH (Network is unreachable)
         """
 
-        # if the system call has an error, its structures are not dereferenced so we
-        # get the hex number of the memory location of the structure. In this case
-        # we return immediately leaving the self.value of the object to None, so
-        # that we can later identify this condition.
+        # if the system call has an error, its structures are not dereferenced so we get the hex
+        # number of the memory location of the structure. In this case we return immediately
+        # leaving the self.value of the object to None, so that we can later identify this
+        # condition.
         if string_args[0].startswith("0x"):
             return
 
-        # let's consume all the string_args that belong to the sockaddr
-        # structure.
+        # 11597 accept(3, 0, NULL)                = 4
+        if string_args[0] == "0":
+            string_args.pop(0)
+            self.value = "NULL"
+            return
+
+        # let's consume all the string_args that belong to the sockaddr structure.
         sockaddr_args = []
         sockaddr_args.append(string_args.pop(0))
 
         # the first argument of sockaddr should start with a '{'
-        assert sockaddr_args[0].startswith("{"), "First argument of sockaddr " + "structure does not start with a '{'"
+        assert sockaddr_args[0].startswith("{"), "First argument of sockaddr " + \
+            "structure does not start with a '{'" + "in arguments: " + str(sockaddr_args)
 
         # and the last one should end with a '}'
         while True:
+
+            # keep extracting tokens until the closing curly bracket is found
             sockaddr_args.append(string_args.pop(0))
 
             if sockaddr_args[-1].endswith("}"):
@@ -270,22 +339,38 @@ class Sockaddr(ParsingClass):
         sa_family = sockaddr_args.pop(0)
         self.value.append(SockFamily(sa_family))
 
-        if "_FILE" in sa_family:
+        if sa_family.endswith("_FILE") :
             # sockaddr should include a path.
             # 14037 connect(6, {sa_family=AF_FILE, path=@"/tmp/.X11-unix/X0"}, 20 )= 0
             self.value.append(SockPath(sockaddr_args.pop(0)))
-
-            # there should be no more items in the sockaddr_args list
-            assert len(sockaddr_args) == 0, "Additional arguments found when " + "parsing SockPath of Sockaddr object: " + str(sockaddr_args)
-        else:
+        elif sa_family.endswith("_LOCAL") :
+            # sockaddr should include a path.
+            # 11597 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+            self.value.append(SockPath(sockaddr_args.pop(0)))
+        elif sa_family.endswith("_UNSPEC") :
+            # sockaddr should include data bytes.
+            # 11597 connect(3, {sa_family=AF_UNSPEC, sa_data="\0\0\0\0\0\0\0\0\0\0\0\0\0\0"}, 16) = 0
+            self.value.append(SockData(sockaddr_args.pop(0)))
+        elif sa_family.endswith("_INET"):
             # sockaddr should include IP and port
             # 7123  bind(3, {sa_family=AF_INET, sin_port=htons(25588),
             #                        sin_addr=inet_addr("127.0.0.1")}, 16) = 0
             self.value.append(SockPort(sockaddr_args.pop(0)))
             self.value.append(SockIP(sockaddr_args.pop(0)))
+        elif sa_family.endswith("_NETLINK"):
+            # sockaddr should include pid and groups
+            # 11597 bind(3, {sa_family=AF_NETLINK, pid=0, groups=00000000}, 12) = 0
+            self.value.append(SockPid(sockaddr_args.pop(0)))
+            self.value.append(SockGroups(sockaddr_args.pop(0)))
+        else:
+            if DEBUG:
+                print "Socket address family \"" + sa_family + "\" of Sockaddr structure not fully parsed"
 
-            # there should be no more items in the sockaddr_args list
-            assert len(sockaddr_args) == 0, "Additional arguments found when " + "parsing IP and port of Sockaddr object: " + str(sockaddr_args)
+            while (len(sockaddr_args) > 0):
+                self.value.append(sockaddr_args.pop(0))
+
+        # there should be no more items in the sockaddr_args list
+        assert len(sockaddr_args) == 0, "Additional arguments found when parsing Sockaddr object: " + str(sockaddr_args)
 
 
 
@@ -411,11 +496,13 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
             return Int
 
     elif definition_parameter.type == "sockaddr":
+        print "========= " + syscall_name
         # argument is a sockaddr
         return Sockaddr
 
-        sys.stderr.write("No CLASS for: '" + definition_parameter.type + " " +
-                       definition_parameter.name + "' created yet :(\n")
+    if DEBUG:
+        print "No CLASS for: '" + definition_parameter.type + " " + \
+                       definition_parameter.name + "' created yet :(\n"
 
     return UnimplementedType
 
