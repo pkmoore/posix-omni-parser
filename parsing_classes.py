@@ -10,8 +10,6 @@
 
 """
 
-import sys
-
 
 DEBUG = False
 
