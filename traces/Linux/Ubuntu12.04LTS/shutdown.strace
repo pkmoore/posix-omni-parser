@@ -63,5 +63,5 @@
 7169  shutdown(5, 1 /* send */ <unfinished ...>
 7170  _exit(0)                          = ?
 7169  <... shutdown resumed> )          = 0
-7169  shutdown(5, 2 /* send and receive */) = 0
+7169  shutdown(6, 2 /* send and receive */) = 0
 7169  exit_group(0)                     = ?

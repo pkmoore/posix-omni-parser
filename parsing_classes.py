@@ -121,6 +121,90 @@ class FileDescriptor(ParsingClass):
         self.value = fd
 
 
+class PollFD(ParsingClass):
+    def __init__(self, fd, events, revents=None):
+
+        # Definition of poll:
+        # int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+        #
+        # pollfd structure:
+        # struct pollfd {
+        #  int    fd;       /* file descriptor */
+        #  short  events;   /* events to look for */
+        #  short  revents;  /* events returned */
+        # };
+        #
+        # Example poll trace (strace):
+        # 26896 poll([{fd=4, events=POLLIN}, {fd=0, events=POLLIN}], 2, -1) = 1 ([{fd=4, revents=POLLIN}])
+
+        # Note that revents is included in the result of the syscall trace and might not be
+        # provided at all.
+        self.value = [fd, events, revents]
+
+
+class PollFDPointer(ParsingClass):
+    def __init__(self, string_args):
+
+        # Definition of poll:
+        # int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+        #
+        # pollfd structure:
+        # struct pollfd {
+        #  int    fd;       /* file descriptor */
+        #  short  events;   /* events to look for */
+        #  short  revents;  /* events returned */
+        # };
+        #
+        # Example poll trace (strace):
+        # 26896 poll([{fd=4, events=POLLIN}, {fd=0, events=POLLIN}], 2, -1) = 1 ([{fd=4, revents=POLLIN}])
+        #
+        # At this point this line will be partially edited to include the returned structure as part
+        # of the input parameters. More specifically the revents parameters are moved after their
+        # corresponding events parameters
+        #
+        # Example arguments:
+        # ['[{fd=4', 'events=POLLIN}', 'revents=POLLIN}', '{fd=0', 'events=POLLIN}]', '2', '-1']
+
+        # the first argument must start with "[{fd="
+        assert string_args[0].startswith("[{fd="), "Unexpected argument in PollFD"
+
+        # there may be multiple PollFD items like in the example above We will use a simple
+        # structure of [PollFD1, PollFD2, etc]. We can further modularize this later.
+        self.value = []
+
+        # keep parsing until "]" is found indicating the end of the structure
+        done = False
+        while not done:
+
+            # first argument is the fd of the pollfd structure
+            fd = string_args.pop(0)
+
+            # sanitize fd
+            fd = fd.strip("[")[4:]
+            try:
+                fd = int(fd)
+            except ValueError:
+                raise Exception("Unexpected format when parsing fd in PollFD:", fd)
+
+            # second argument is the events of the pollfd structure
+            events = string_args.pop(0)
+
+            # if events end with a closing square bracket (]) this must be the last pollfd structure
+            # in the array so set the flag to exit the loop
+            if events.endswith("]"):
+                done = True
+
+            # sanitize events
+            events = events.strip("}]")[7:]
+
+            revents = None
+            if len(string_args) > 0 and string_args[0].startswith("revents="):
+                revents = string_args.pop(0)
+                revents = revents.strip("}")[8:]
+
+            self.value.append(PollFD(fd, events, revents))
+
+
 class Filepath(ParsingClass):
     def __init__(self, string_args):
         self.value = string_args.pop(0)
@@ -133,7 +217,7 @@ class Flags(ParsingClass):
 
 class SockFamily(ParsingClass):
     """
-A SockFamily object can only appear as part of the Sockaddr object.
+    A SockFamily object can only appear as part of the Sockaddr object.
     """
     def __init__(self, value):
         if "sa_family=" not in value:
@@ -466,6 +550,16 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
             # argument is a file path.
             return Filepath
 
+    elif definition_parameter.type == "pollfd":
+        # int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+        # 26896 poll([{fd=4, events=POLLIN}, {fd=0, events=POLLIN}], 2, -1) = 1 ([{fd=4, revents=POLLIN}])
+
+        if not definition_parameter.pointer:
+            raise Exception("non-pointer pollfd not supported")
+
+        return PollFDPointer
+
+
     elif definition_parameter.type == "int" or definition_parameter.type.endswith("_t"):
         # number type
         if "fd" in definition_parameter.name:
@@ -496,7 +590,6 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
             return Int
 
     elif definition_parameter.type == "sockaddr":
-        print "========= " + syscall_name
         # argument is a sockaddr
         return Sockaddr
 
@@ -513,6 +606,7 @@ def _cast_syscall_arg(syscall_name, definition_parameter, string_args):
     if len(string_args) == 0:
         return MissingValue(definition_parameter, string_args)
 
+    # detect the class to wrap this parameter in based on the definition of the parameter.
     parsing_class = _get_parsing_class(syscall_name, definition_parameter, string_args[0])
 
     arg = parsing_class(string_args)
@@ -542,10 +636,11 @@ def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
     # find the syscall definition for this syscall.
     syscall_definition = None
     for sd in syscall_definitions:
-        if syscall_name == sd.name:
+        if syscall_name == sd.name or syscall_name.strip("_") == sd.name:
             syscall_definition = sd
             break
 
+    print "Syscall Name:", syscall_name
     casted_args = []
     if syscall_definition.definition != None:
         for definition_parameter in syscall_definition.definition.parameters:

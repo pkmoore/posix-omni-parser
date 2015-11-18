@@ -98,8 +98,10 @@ class Syscall:
 
     # an unfinished system call
     UNFINISHED = 0
-    # a resuming syscall. It's unfinished version must have been preceded.
+
+    # a resuming syscall. Its unfinished version must have been met earlier.
     RESUMED = 1
+
     # a directly completed syscall. That is, there was no intermediate unfinished
     # step. A resumed and a complete syscall are essentially the same in terms of
     # the information they hold but the type indicates this distinction between
@@ -139,6 +141,7 @@ class Syscall:
 
         self.original_line = line
 
+        # TODO: better use an enum here
         self.type = line_parts["type"]
         assert self.type == Syscall.UNFINISHED or self.type == Syscall.RESUMED or self.type == Syscall.COMPLETE, "Unrecognized syscall type"
 

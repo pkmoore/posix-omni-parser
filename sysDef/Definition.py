@@ -86,7 +86,7 @@ class Definition:
             parameter = SyscallParameter(param_string)
 
             # test whether the parameter was parsed completely and correctly.
-            assert(str(parameter) == param_string)
+            assert(repr(parameter) == param_string)
 
             self.parameters.append(parameter)
 
@@ -102,9 +102,9 @@ class Definition:
         first = True
         for par in self.parameters:
             if(first):
-                parameters_string += str(par)
+                parameters_string += repr(par)
                 first = False
             else:
-                parameters_string += ", " + str(par)
+                parameters_string += ", " + repr(par)
 
         return self.ret_type + " " + self.name + "(" + parameters_string + ")"

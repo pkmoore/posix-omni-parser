@@ -741,6 +741,7 @@ class StraceParser(Parser):
             remaining_line = m.group(4)
 
         else:
+            # this must be a completed/full syscall unlike the previous cases
             line_parts["type"] = Syscall.Syscall.COMPLETE
 
             m = self._re_complete_syscall.match(remaining_line)
@@ -759,20 +760,20 @@ class StraceParser(Parser):
         # initialize elapsed_time
         line_parts["elapsed_time"] = None
 
-        # if the type of the syscall is unfinished then there is nothing else to
-        # parse.
+        # if the type of the syscall is unfinished then there is nothing else to parse.
         if line_parts["type"] == Syscall.Syscall.UNFINISHED:
             return line_parts
 
         # at this point the remaining line should include the error label eg ENOENT
         # in case of an error, followed by the elapsed time of the system call
-        # (within angle bracets <>), if the elapsed time option was set. Between
-        # these two, there could be extra information within brackets, eg a
-        # desription of an error  or the labels of a flag value.
+        # within angle bracets <>, if the elapsed time option was set. Between
+        # these two, there could be extra information within brackets, e.g. a
+        # desription of an error or the labels of a flag value.
         #
         # Examles:
         # 16707 1371659593.864971 [b7726cb1] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory) <0.000023>
         # 16707 1371659593.868020 [b770e424] fcntl64(4, F_GETFL) = 0x402 (flags O_RDWR|O_APPEND) <0.000009>
+        # 26896 poll([{fd=4, events=POLLIN}, {fd=0, events=POLLIN}], 2, -1) = 1 ([{fd=4, revents=POLLIN}])
 
         # the return part should be a positive number or a '-1' or a hex or a '?'
         r = line_parts["return"]
@@ -813,8 +814,9 @@ class StraceParser(Parser):
         # it doesn't.
         line_parts["return"] = (r, error_label)
 
-        # fix the return part of some specific system calls.
-        remaining_line = self._fix_return(line_parts, remaining_line)
+        # in a few system calls the remaining part holds additional information, e.g in poll system
+        # call which has a value-return parameter.
+        remaining_line = self._parse_remaining_line(line_parts, remaining_line)
 
         # finally, if the elapsed_time option is set we should extract the elapsed
         # time data. Because the remaining line could optionally include some
@@ -893,6 +895,7 @@ class StraceParser(Parser):
         #
         # Example shutdown syscall.
         # 7169  shutdown(5, 0 /* receive */) = 0
+        # 26896 shutdown(4, SHUT_RD)              = 0
         #
         # In essence, treat:
         # 7169  shutdown(5, 0 /* receive */) = 0
@@ -905,7 +908,8 @@ class StraceParser(Parser):
             # use the dictionary to change the option number to its corresponding flag
             # by parsing the option number. The option number is the first character
             # of the second argument in the args list.
-            line_parts["args"][1] = shutdown_flags[int(line_parts["args"][1][0])]
+            if line_parts["args"][1][0].isdigit():
+                line_parts["args"][1] = shutdown_flags[int(line_parts["args"][1][0])]
 
         # Definition of restart_syscall:
         # long sys_restart_syscall(void);
@@ -931,7 +935,7 @@ class StraceParser(Parser):
         """
 
 
-    def _fix_return(self, line_parts, remaining_line):
+    def _parse_remaining_line(self, line_parts, remaining_line):
         """
         <Purpose>
           Fix the return part of some specific system calls.
@@ -951,11 +955,12 @@ class StraceParser(Parser):
             The updated remaining line.
         
         """
-        # the return part of fcntl can be a hex number followed by a set of flag
-        # names. we want to keep the flag names as the return part.
+
         if line_parts["name"].startswith("fcntl") and remaining_line.find("(flags ") != -1:
-            # handle fcntl return part. I.e use the set of flags instead
-            # of their hex representation.
+            # the return part of fcntl can be a hex number followed by a set of flag
+            # names. we want to keep the flag names as the return part.
+            # handle fcntl return part. I.e use the set of flags instead of their hex
+            # representation.
             # example:
             # fcntl64(4, F_GETFL) = 0x402 (flags O_RDWR|O_APPEND)
             # replace the hex part: 0x402 with the flags O_RDWR|O_APPEND
@@ -966,6 +971,27 @@ class StraceParser(Parser):
             if "|" in flags:
                 flags = flags.split("|")
             line_parts["return"] = (flags, line_parts["return"][1])
+
+        elif (line_parts["name"] == "poll" or line_parts["name"] == "ppoll") and remaining_line.find("([") != -1:
+            # 26896 poll([{fd=4, events=POLLIN}, {fd=0, events=POLLIN}], 2, -1) = 1 ([{fd=4, revents=POLLIN}])
+
+            # update the pollfd structure with the revents values.
+            pollfds = remaining_line[remaining_line.find("([") + 2:remaining_line.rfind("])")]
+            remaining_line = remaining_line[remaining_line.rfind("])"):]
+
+            pollfds = pollfds.split(", ")
+            done = False
+            while len(pollfds) != 0:
+                fd = pollfds.pop(0)
+                revents = pollfds.pop(0)
+
+                # find the pollfs including this fd
+                index = 0
+                for arg in line_parts["args"]:
+                    if arg.find(fd) != -1:
+                        line_parts["args"].insert(index + 2, revents)
+
+                    index += 1
 
         return remaining_line
 
