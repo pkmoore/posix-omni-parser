@@ -980,7 +980,6 @@ class StraceParser(Parser):
             remaining_line = remaining_line[remaining_line.rfind("])"):]
 
             pollfds = pollfds.split(", ")
-            done = False
             while len(pollfds) != 0:
                 fd = pollfds.pop(0)
                 revents = pollfds.pop(0)
