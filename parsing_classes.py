@@ -111,6 +111,9 @@ class Hex(ParsingClass):
 class FileDescriptor(ParsingClass):
     def __init__(self, string_args):
         fd = string_args.pop(0)
+        # pipe() fd array leaves brackets around its contents
+        fd = fd.strip("[]")
+
         try:
             fd = int(fd)
         except ValueError:
