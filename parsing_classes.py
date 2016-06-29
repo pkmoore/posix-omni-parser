@@ -114,8 +114,11 @@ class FileDescriptor(ParsingClass):
         try:
             fd = int(fd)
         except ValueError:
-            raise Exception("Unexpected format when parsing FileDescriptor:", fd)
-
+            # AT_FDCWD is a valid value for the openat() file descriptor
+            # parameter
+            if fd != "AT_FDCWD":
+                raise Exception("Unexpected format when parsing "
+                                "FileDescriptor:", fd)
         self.value = fd
 
 
