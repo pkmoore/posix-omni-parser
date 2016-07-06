@@ -230,7 +230,7 @@ class SyscallParameter:
         if(self.pointer):
             representation += "pointer, "
 
-        representation += "name:" + self.name
+        representation += "name:" + str(self.name)
 
         # square brackets come right after the name.
         if(self.array):
