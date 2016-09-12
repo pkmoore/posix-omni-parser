@@ -644,7 +644,8 @@ def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
             syscall_definition = sd
             break
 
-    print "Syscall Name:", syscall_name
+    if DEBUG:
+        print "Syscall Name:", syscall_name
     casted_args = []
     if syscall_definition.definition != None:
         for definition_parameter in syscall_definition.definition.parameters:
