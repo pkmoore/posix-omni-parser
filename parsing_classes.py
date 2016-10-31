@@ -216,7 +216,12 @@ class Filepath(ParsingClass):
 
 class Flags(ParsingClass):
     def __init__(self, string_args):
-        self.value = _string_to_flags(string_args.pop(0))
+        # Deal with flags values strace doesn't support but storing their
+        # numeric value as a string
+        if len(string_args) == 1 and string_args[0].isdigit():
+            self.value = string_args[0]
+        else:
+            self.value = _string_to_flags(string_args.pop(0))
 
 
 class SockFamily(ParsingClass):
