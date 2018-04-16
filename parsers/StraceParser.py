@@ -390,6 +390,10 @@ class StraceParser(Parser):
 
         # front_parts should include the name of the syscall, the pid and optionally
         # other information based on options used with the strace utility.
+        # HACK HACK HACK:  Parsing fails for complicated calls (e.g.
+        # getsockopt(). So we chop off the garbage knowing we will always use
+        # the same command switches
+        front_parts = front_parts[:2]
         if len(front_parts) < 1 or len(front_parts) > 4:
             # if the string before the first openning bracket has less than 1 parts or
             # more than 4 parts, the format of the trace line is incorrect.
