@@ -403,7 +403,7 @@ def main():
 
   # remove system calls that are not handled by checkAPI
   index = 0
-  while index < len(syscalls)
+  while index < len(syscalls):
     if syscalls[index].name not in handled_syscalls.keys:
       syscalls.pop(index)
     else:

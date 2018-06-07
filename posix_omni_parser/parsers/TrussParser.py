@@ -27,8 +27,8 @@
     syscalls = parser.parse_trace()
 """
 
-import Syscall
-from parsers.Parser import Parser
+from .. import Syscall
+from .Parser import Parser
 
 
 DEBUG = False
