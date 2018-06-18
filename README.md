@@ -1,3 +1,9 @@
+What is this fork?
+==================
+The purpose of this fork is to make make minor fixes that I need for my work on
+CrashSimulator.  Additionally, I've done some reorganizing so this package can
+be installed as a package and imported without Python path manipulations.
+
 posix-omni-parser
 =================
 The posix-omni-parser tool aims to parse the traced system calls from various
