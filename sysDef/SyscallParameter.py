@@ -3,77 +3,77 @@ class SyscallParameter:
     """
     <Purpose>
       This object is used to describe a parameter of system call definitions.
-    
+
     <Attributes>
       self.type:
         the data type of the argument, this can be for example int or char
-    
+
       self.name:
         this is the name given to the parameter, for example pathname or domain
-    
+
       self.ellipsis:
         ellipsis can appear in some syscalls indicating additional unspecified
-        arguments may be required 
+        arguments may be required
         e.g. int fcntl(int fd, int cmd, ...)
-    
+
       self.enum:
         long ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data)
-    
+
       self.array:
         int execve(const char *filename, char *const argv[], char *const envp[])
-    
+
       self.const:
         int execve(const char *filename, char *const argv[], char *const envp[])
-    
+
       self.union:
         long nfsservctl(int cmd, struct nfsctl_arg *argp, union nfsctl_res *resp)
-    
+
       self.struct:
         int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
-    
+
       self.pointer:
         int access(const char *pathname, int mode)
-    
+
       self.unsigned:
         int getdents(unsigned int fd, struct linux_dirent *dirp, unsigned int count)
-    
+
       self.function:
         int clone(int (*fn)(void *), void *child_stack, int flags, void *arg, ...)
-    
+
       self.const_pointer:
         int execve(const char *filename, char *const argv[], char *const envp[])
-    
+
     """
 
     def __init__(self, parameter_string):
         """
         <Purpose>
           Creates a SyscallParameter object.
-        
+
           The passed parameter_string is made up from the parameter type and a
           parameter name. We need both the type and the name along with some other
-          derived information, to fully describe the parameter. 
-          
+          derived information, to fully describe the parameter.
+
           Example:
           Full definition: int open(const char *pathname, int flags);
           Example parameter string: const char *pathname
-          
+
           In this example the name of the parameter is pathname and the type of the
           parameter is char. The type should be further described as const and
           pointer.
-        
+
         <Arguments>
           parameter_string:
-            The string part from a system call definition that describes a single 
+            The string part from a system call definition that describes a single
             parameter.
-        
+
         <Exceptions>
           An Exception will be raised if the format of the parameter string is not
           recognized.
-        
+
         <Side Effects>
           None
-        
+
         <Returns>
           None
         """
@@ -112,8 +112,14 @@ class SyscallParameter:
             self.name = parameter_string[parameter_string.find(" (*"):].strip()
 
         else:
-            # otherwise name is the right-most part and everything else is the type.
-            self.type, self.name = parameter_string.rsplit(None, 1)
+            try:
+                # otherwise name is the right-most part and everything else is the type.
+                self.type, self.name = parameter_string.rsplit(None, 1)
+            except ValueError:
+                # if a single keyword / constant is passed, skip parameter-checking
+                self.type = None
+                self.name = parameter_string
+                return
 
         # if the name starts with a "*" the parameter is a pointer.
         if(self.name.startswith("*")):
