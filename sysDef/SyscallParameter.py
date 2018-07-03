@@ -42,6 +42,11 @@ class SyscallParameter:
       self.const_pointer:
         int execve(const char *filename, char *const argv[], char *const envp[])
 
+      self.short:
+        unsigned char inb(unsigned short int port)
+
+      self.long:
+        void insl(unsigned short int port, void *addr, unsigned long int count)
     """
 
     def __init__(self, parameter_string):
