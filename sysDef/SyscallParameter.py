@@ -1,4 +1,3 @@
-
 class SyscallParameter:
     """
     <Purpose>
@@ -93,6 +92,8 @@ class SyscallParameter:
         self.unsigned = False
         self.function = False
         self.const_pointer = False
+        self.short = False
+        self.long = False
 
         # a parameter could be the ellipsis ("...")
         if(parameter_string == "..."):
@@ -145,6 +146,10 @@ class SyscallParameter:
                 self.union = True
             elif(item == "enum"):
                 self.enum = True
+            elif(item == "short"):
+                self.short = True
+            elif(item == "long"):
+                self.long = True
             else:
                 # it could be a constant pointer eg char *const argv[] in execve in
                 # which case the item variable holds the correct type of the pointer and
@@ -181,6 +186,13 @@ class SyscallParameter:
 
         if(self.unsigned):
             representation += "unsigned "
+
+        # short / long modifier comes immediately before type
+        if(self.short):
+            representation += "short "
+
+        if(self.long):
+            representation += "long "
 
         representation += str(self.type) + " "
 
@@ -226,6 +238,13 @@ class SyscallParameter:
 
         if(self.unsigned):
             representation += "unsigned, "
+
+        # short / long modifier comes immediately before type
+        if(self.short):
+            representation += "short, "
+
+        if(self.long):
+            representation += "long, "
 
         representation += str(self.type) + ", "
 
