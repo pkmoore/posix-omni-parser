@@ -48,6 +48,19 @@ from Definition import Definition
 # controls printing
 DEBUG = False
 
+class SyscallManualException(Exception):
+    """
+    <Purpose>
+      A SyscallManualException is a custom exception that is passed specifically
+      when parsing the man page definition is erroneous. This may be the case
+      for system calls that are unimplemented and therefore erroneous, but we
+      do not want to interrupt program execution and continue parsing.
+
+    <Attributes>
+      None
+    """
+    pass
+
 
 class SyscallManual:
     """
@@ -227,7 +240,7 @@ class SyscallManual:
         # page given above for more information.
         while True:
             if len(man_page_lines) == 0:
-                raise Exception("Reached end of man page while looking for SYNOPSIS ine")
+                raise SyscallManualException("Reached end of man page while looking for SYNOPSIS line for {}.".format(syscall_name))
 
             # read the first line
             line = man_page_lines[0]
@@ -250,7 +263,7 @@ class SyscallManual:
         all_definitions = []
         while True:
             if len(man_page_lines) == 0:
-                raise Exception("Reached end of man page while looking for DESCRIPTION line.")
+                raise SyscallManualException("Reached end of man page while looking for DESCRIPTION line for {}.".format(syscall_name))
 
             line = man_page_lines.pop(0).strip()
 
