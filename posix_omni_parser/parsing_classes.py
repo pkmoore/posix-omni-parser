@@ -6,10 +6,15 @@
   Savvas Savvides <savvas@purdue.edu>
 
 <Purpose>
-  
+
+    This module is responsible for converting different parameters within system
+    calls into viable objects. This allows strace segments to not be interpeted
+    as raw text, but rather a serializable structure that can be interpreted by
+    syscallreplay.
 
 """
 
+import socket
 
 DEBUG = False
 
@@ -245,7 +250,7 @@ class SockFamily(ParsingClass):
 class SockPort(ParsingClass):
     """
     A SockPort object can only appear as part of the Sockaddr object.
-    
+
     sin_port=htons(25588)
     """
     def __init__(self, value):
@@ -267,7 +272,7 @@ class SockPort(ParsingClass):
 class SockIP(ParsingClass):
     """
     A SockPort object can only appear as part of the Sockaddr object.
-    
+
     sin_addr=inet_addr("127.0.0.1")
     """
     def __init__(self, value):
@@ -282,7 +287,6 @@ class SockIP(ParsingClass):
             raise Exception("Unexpected argument when parsing SockIP object " + value)
 
         # Let's check if the value we have is indeed an IP address.
-        import socket
         try:
             socket.inet_aton(value)
         except socket.error:
@@ -350,10 +354,9 @@ class SockPid(ParsingClass):
     """
 
     def __init__(self, value):
-        # Example:
-        # pid=0
 
-        assert value.startswith("pid="), "invalid SockPid value"
+        # some bind() calls can either have "pid=0", or "nl_pid=0"
+        assert value.startswith("pid=") or value.startswith("nl_pid"), "invalid SockPid value"
 
         try:
             self.value = int(value[value.find("pid=") + 4:])
@@ -367,10 +370,9 @@ class SockGroups(ParsingClass):
     """
 
     def __init__(self, value):
-        # Example:
-        # groups=00000000}
 
-        assert value.startswith("groups="), "invalid SockGroups value"
+        # some bind() calls can either have "groups=00000000", or "nl_groups=00000000"
+        assert value.startswith("groups=") or value.startswith("nl_groups"), "invalid SockGroups value"
         assert value.endswith("}"), "invalid SockGroups value"
 
         # remove closing curly bracket
@@ -384,11 +386,11 @@ class Sockaddr(ParsingClass):
 
         """
         Examples showing strace output of syscalls including the sockaddr structure:
-        
+
         14039 getsockname(3, {sa_family=AF_FILE, NULL}, [2]) = 0
         14039 connect(3, {sa_family=AF_FILE, path=@"/tmp/.X11-unix/X0"}, 20)
         19176 bind(3, {sa_family=AF_INET, sin_port=htons(25588), sin_addr=inet_addr("127.0.0.1")}, 16) = 0
-        
+
         11597 bind(3, {sa_family=AF_NETLINK, pid=0, groups=00000000}, 12) = 0
         11597 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
         11597 connect(3, {sa_family=AF_UNSPEC, sa_data="\0\0\0\0\0\0\0\0\0\0\0\0\0\0"}, 16) = 0
@@ -546,7 +548,7 @@ def _mode_to_flags(mode):
 
 def _get_parsing_class(syscall_name, definition_parameter, value):
     """
-    Examine the definition type to figure out which class should be used to 
+    Examine the definition type to figure out which class should be used to
     describe this argument.
     """
 
