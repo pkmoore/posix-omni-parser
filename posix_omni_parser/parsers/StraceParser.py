@@ -64,7 +64,7 @@ class StraceParser(Parser):
         the strace output represents a system call.
     """
 
-    def __init__(self, trace_path):
+    def __init__(self, trace_path, pickle_file):
         """
         <Purpose>
           Creates an StraceParser object containing all the information needed to
@@ -74,20 +74,18 @@ class StraceParser(Parser):
           trace_path:
             The path to the trace file containing the traced system calls. This file
             should contain the output of the strace utility.
-        
-        <Exceptions>
-          IOError:
-            If the pickle file containing the system call definitions is not found.
-            (this file should come as part of this program)
-        
-        <Side Effects>
+          pickle_file:
+            The path to the pickle file containing the parsed system call
+            representations.
+
+				<Side Effects>
           None
         
         <Returns>
           None
         """
 
-        Parser.__init__(self, trace_path)
+        Parser.__init__(self, trace_path, pickle_file)
 
         # regex compiled for _parse_line
         #

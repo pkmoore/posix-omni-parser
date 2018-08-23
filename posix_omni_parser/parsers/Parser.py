@@ -16,7 +16,7 @@ import pickle
 
 class Parser():
 
-    def __init__(self, trace_path):
+    def __init__(self, trace_path, pickle_file):
         """
         <Purpose>
           Creates an Parser object which acts as the parent of parsers targeting
@@ -26,12 +26,10 @@ class Parser():
           trace_path:
             The path to the trace file containing the traced system calls. This file
             should contain the output of the strace utility.
-        
-        <Exceptions>
-          IOError:
-            If the pickle file containing the system call definitions is not found.
-            (this file should come as part of this program)
-        
+          pickle_file:
+            The path to the pickle file containing the parsed system call 
+            representations.
+
         <Side Effects>
           None
         
@@ -43,17 +41,7 @@ class Parser():
 
         # get the system call definitions from the pickle file. These will be used
         # to parse the parameters of each system call.
-        self.syscall_definitions = None
-        pickle_file = None
-        try:
-            pickle_file = open("syscall_definitions.pickle", 'rb')
-            self.syscall_definitions = pickle.load(pickle_file)
-        except IOError:
-            raise IOError("The pickle file holding the system call definitions " +
-                        "was not found.")
-        finally:
-            if pickle_file != None:
-                pickle_file.close()
+        self.syscall_definitions = pickle.load(open(pickle_file, 'rb'))
 
         # detect the options used in with the tracing utility. These options will be later used to
         # parse all the trace lines of the file.
