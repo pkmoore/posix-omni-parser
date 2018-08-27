@@ -1,3 +1,0 @@
-- no send probe
-- send /recv probes not found in dtrace
-- structures dereferencing gives error sometimes
