@@ -54,7 +54,7 @@ class Trace:
         in trace file.
     """
 
-    def __init__(self, trace_path=None):
+    def __init__(self, trace_path, pickle_file):
         """
         <Purpose>
           Creates a trace object containing all the information extracted from a 
@@ -63,13 +63,16 @@ class Trace:
         <Arguments>
           trace_path:
             The path to the trace file containing all needed information.
+          pickle_file:
+            The path to the pickle file containing the parsed system call
+            representations.
         
         <Exceptions>
           IOError:
-            If no trace_path is given.
+            If no trace_path or pickle_file is given
           
           IOError:
-            If the trace_path given is not a file.
+            If the trace_path or pickle_file given is not a file
         
         <Side Effects>
           None
@@ -79,21 +82,28 @@ class Trace:
         """
 
         self.trace_path = trace_path
+        self.pickle_file = pickle_file
 
         # Were we given a trace path?
         if self.trace_path == None:
             raise IOError("A trace file is needed to initialize a Trace object")
 
-        # does this file exist?
+				# Were we given a pickle file path?
+        if self.pickle_file == None:
+            raise IOError("A pickle file is needed to initialize a Trace object")
+
+        # do these file exist?
         if not os.path.exists(self.trace_path):
 						raise IOError("Could not find trace file `" + self.trace_path + "`")
+        if not os.path.exists(self.pickle_file):
+            raise IOError("Could not find pickle file `" + self.pickle_file + "`")
 
         # detect tracing utility used to generate the trace file. peek here to avoid
         # re-initializing the file.
         self.tracing_utility = "strace"
 
         # set strace parser
-        self.parser = StraceParser(self.trace_path)
+        self.parser = StraceParser(self.trace_path, self.pickle_file)
 
         # parse system calls
         self.syscalls = self.parser.parse_trace()
