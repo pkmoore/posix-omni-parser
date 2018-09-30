@@ -19,11 +19,46 @@ import socket
 DEBUG = False
 
 class ParsingClass:
+
     def __repr__(self):
         return "<" + self.__class__.__name__ + " " + str(self.value) + ">"
 
     def __str__(self):
         return str(self.value)
+
+    def to_ast(self, arg_num):
+        """
+        <Purpose>
+          CRASHSIMULATOR MODIFIED
+
+          Method that turns argument into serialized object for better consumption
+          as an AST during mutation.
+
+        <Returns>
+          A Python dictionary with the following attributes when represented in JSON:
+            args: [
+              {
+                "arg_num": 1,
+                "class": ArgClass,
+                "value": 0x10
+              },
+              ...
+            ]
+
+        """
+        # get the class of the parsed argument
+        arg_class = self.__class__.__name__
+
+        # check class type to ensure exceptions don't occur when serializing
+        if arg_class == "MissingValue":
+            return dict({"arg_num": arg_num,
+                         "class": arg_class,
+                         "value": None})
+
+        # otherwise, return normally
+        return dict({"arg_num": arg_num,
+                     "class": self.__class__.__name__,
+                     "value": str(self.value)})
 
 
 # This class is used to wrap all arguments for which a specific type is not yet
