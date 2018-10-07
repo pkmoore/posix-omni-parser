@@ -174,10 +174,6 @@ class Trace:
       # load the AST object back into a posix-omni-parser object
       self.syscalls = self.parser.parse_trace()
 
-      # ensure that the original syscalls and the newly parsed system calls
-      # are not the same
-      assert not self.orig_syscalls == self.syscalls
-
 
     def __repr__(self):
         representation = "<Trace\nplatform=" + self.platform \

@@ -80,6 +80,6 @@ class ASTParser(Parser):
 
         for syscall_ast in ast_obj:
             syscalls.append(Syscall.Syscall(self.syscall_definitions, None,
-                                        syscall_ast))
+                                        syscall_ast, parse_mode=1))
 
         return syscalls

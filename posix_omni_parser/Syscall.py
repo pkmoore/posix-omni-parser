@@ -109,7 +109,7 @@ class Syscall:
     COMPLETE = 2
 
 
-    def __init__(self, syscall_definitions, line, line_parts):
+    def __init__(self, syscall_definitions, line, line_parts, parse_mode=0):
         """
         <Purpose>
           Initialize a Syscall object. Create the data fields of the object. If the
@@ -128,6 +128,11 @@ class Syscall:
           line_parts:
             A list containing the parts of the trace line. E.g: type, pid, name,
             args, return, timestamp, etc ...
+
+          parse_mode:
+            CRASHSIMULATOR-MODIFIED
+
+            Used as a flag to parse as a regular trace or AST.
 
         <Exceptions>
           None
@@ -148,7 +153,6 @@ class Syscall:
         self.pid = line_parts["pid"]
         self.name = line_parts["name"]
 
-
         # at this point all system call arguments are represented as strings. Let's
         # cast them into more meaningful classes.
 
@@ -157,9 +161,23 @@ class Syscall:
         # and set the self.args parameter to an arbitrary None, as we don't care
         # about it.
         if "syscall_" not in self.name:
-            self.args = parsing_classes.cast_args(self.name, line_parts["type"],
-                                                  syscall_definitions,
-                                                  line_parts["args"])
+
+            # check parse mode. if parse_mode == 1, then parse the AST such that
+            # its argument values are all stored in a buffer, making it easy for
+            # parsing_classes to work with.
+            if parse_mode != 0:
+                arg_list = []
+                for arg in line_parts["args"]:
+                    if arg["value"] is not None:
+                        arg_list.append(arg["value"])
+
+                self.args = parsing_classes.cast_args(self.name, self.type,
+                                                      syscall_definitions,
+                                                      arg_list)
+            else:
+                self.args = parsing_classes.cast_args(self.name, self.type,
+                                                      syscall_definitions,
+                                                      line_parts["args"])
         else:
             self.args = None
 
