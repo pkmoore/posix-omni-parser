@@ -399,9 +399,6 @@ class SyscallManual:
                 if(stripped_name == stripped_syscall_name):
                     similar_definitions.append(definition)
 
-            # it seems that there is at most one such definition but let's assert to be certain.
-            assert len(similar_definitions) <= 1
-
             if(len(similar_definitions) == 0):
                 return self.NOT_FOUND, None
 
