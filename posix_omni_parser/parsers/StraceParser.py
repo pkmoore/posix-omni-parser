@@ -796,7 +796,9 @@ class StraceParser(Parser):
 
             # a basic check on the format of error label is whether it starts with 'E'
             # and it is all-caps.
-            assert error_label.startswith('E') and error_label.isupper(), "Invalid format of error_label `" + error_label + "`"
+            assert ((error_label.startswith('E') and error_label.isupper()) or ('errno' in error_label)), "Invalid format of error_label `" + error_label + "`"
+            if 'errno' in error_label:
+                error_label = error_label + ' ' + remaining_line.split(None, 1)[0]
 
         # In some rare cases, a syscall will not return but still include an error
         # label.
