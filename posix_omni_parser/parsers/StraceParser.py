@@ -572,6 +572,10 @@ class StraceParser(Parser):
                 # skip empty lines
                 if line == '':
                     continue
+                    
+                # skip comments
+                if line[0] == '#' or line[0:2] == "//":
+                   continue
 
                 if DEBUG:
                     print line
