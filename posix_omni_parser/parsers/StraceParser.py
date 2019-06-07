@@ -113,6 +113,10 @@ class StraceParser(Parser):
         # =[ ]+([a-fx\d\-?]+) -- a group that matches at least on character of all
         #                        the ones given. (return part)
         # (.*) -- group that captures anything that comes after the return part.
+        
+        # Added this because parse_line only parses one line, and if that line is a
+        # unfinished syscall, then it need to be recorded
+        self.unfinished_syscalls = []
 
 
     def _get_home_environment(self):
@@ -559,7 +563,7 @@ class StraceParser(Parser):
         syscalls = []
 
         # this list will hold all pending (i.e unfinished) syscalls
-        unfinished_syscalls = []
+        # unfinished_syscalls = []
 
         try:
             # open the trace file.
@@ -580,7 +584,8 @@ class StraceParser(Parser):
                 if DEBUG:
                     print line
 
-                line_parts = self._parse_line(line, unfinished_syscalls)
+                # line_parts = self._parse_line(line, unfinished_syscalls)
+                line_parts = self._parse_line(line)
 
                 # the line_parts will be set to None if the trace line is not a valid
                 # system call trace. So we just ignore the line entirely.
@@ -592,8 +597,28 @@ class StraceParser(Parser):
 
         return syscalls
 
+    def parse_line(self, line):
+      line = line.strip()
 
-    def _parse_line(self, line, unfinished_syscalls):
+      # skip empty lines
+      if line == '':
+          continue
+          
+      # skip comments
+      if line[0] == '#' or line[0:2] == "//":
+          continue
+
+      if DEBUG:
+          print line
+
+      line_parts = self._parse_line(line)
+
+      if line_parts != None:
+        return Syscall.Syscall(self.syscall_definitions, line, line_parts)
+      # pid can never be -1, so if -1 then Syscall is none
+      return Syscall.Syscall("-1", "-1", "-1")
+
+    def _parse_line(self, line):
         """
         <Purpose>
           Given a trace line, break it down into the different parts that make up a
@@ -707,7 +732,7 @@ class StraceParser(Parser):
             line_parts["return"] = None
 
             # save unfinished syscall so that it can be reconstructed when resumed.
-            unfinished_syscalls.append(Syscall.UnfinishedSyscall(line_parts["pid"],
+            self.unfinished_syscalls.append(Syscall.UnfinishedSyscall(line_parts["pid"],
                                                                  line_parts["name"],
                                                                  line_parts["args"]))
 
@@ -727,9 +752,9 @@ class StraceParser(Parser):
             # there should be a saved unfinished syscall corresponding to this
             # resuming syscall. Let's find its index so we can pop it.
             unfinished_syscalls_index = None
-            for index in range(0, len(unfinished_syscalls)):
+            for index in range(0, len(self.unfinished_syscalls)):
                 if (Syscall.UnfinishedSyscall(line_parts["pid"], line_parts["name"], "")
-                       == unfinished_syscalls[index]):
+                       == self.unfinished_syscalls[index]):
                     unfinished_syscalls_index = index
                     break
 
@@ -740,7 +765,7 @@ class StraceParser(Parser):
                               + line + "`")
 
             # merge the args of the unfinished syscall with this resuming syscall.
-            line_parts["args"] = unfinished_syscalls.pop(unfinished_syscalls_index).args \
+            line_parts["args"] = self.unfinished_syscalls.pop(unfinished_syscalls_index).args \
                                   + self._parse_args(m.group(2))
 
             line_parts["return"] = m.group(3)
