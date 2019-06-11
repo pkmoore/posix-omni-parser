@@ -602,21 +602,21 @@ class StraceParser(Parser):
 
       # skip empty lines
       if line == '':
-          continue
+        return None
           
       # skip comments
       if line[0] == '#' or line[0:2] == "//":
-          continue
+        return None
 
       if DEBUG:
-          print line
+        print line
 
       line_parts = self._parse_line(line)
 
       if line_parts != None:
         return Syscall.Syscall(self.syscall_definitions, line, line_parts)
       # pid can never be -1, so if -1 then Syscall is none
-      return Syscall.Syscall("-1", "-1", "-1")
+      return None
 
     def _parse_line(self, line):
         """
