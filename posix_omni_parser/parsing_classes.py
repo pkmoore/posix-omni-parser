@@ -224,7 +224,7 @@ class Flags(ParsingClass):
         # Deal with flags values strace doesn't support but storing their
         # numeric value as a string
         if len(string_args) == 1 and string_args[0].isdigit():
-            self.value = string_args[0]
+            self.value = string_args.pop(0)
         else:
             self.value = _string_to_flags(string_args.pop(0))
 
@@ -668,7 +668,6 @@ def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
             # arguments.
             if syscall_type == "unfinished" and len(string_args) == 0:
                 break
-
             ca = _cast_syscall_arg(syscall_name, definition_parameter, string_args)
             casted_args.append(ca)
 
