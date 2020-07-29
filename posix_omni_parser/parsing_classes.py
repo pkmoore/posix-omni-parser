@@ -224,9 +224,16 @@ class Flags(ParsingClass):
         # Deal with flags values strace doesn't support but storing their
         # numeric value as a string
         if len(string_args) == 1 and string_args[0].isdigit():
-            self.value = string_args.pop(0)
+            self.value = [string_args.pop(0)]
         else:
             self.value = _string_to_flags(string_args.pop(0))
+
+    def __str__(self):
+      if len(self.value) == 1:
+        return str(self.value[0])
+      else:
+        return '|'.join(self.value)
+
 
 
 class SockFamily(ParsingClass):
