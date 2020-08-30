@@ -237,10 +237,10 @@ class Flags(ParsingClass):
             self.value = _string_to_flags(string_args.pop(0))
 
     def __str__(self):
-      if len(self.value) == 1:
-        return str(self.value[0])
-      else:
-        return '|'.join(self.value)
+        if len(self.value) == 1:
+            return str(self.value[0])
+        else:
+            return '|'.join(self.value)
 
 
 
@@ -483,6 +483,43 @@ class Sockaddr(ParsingClass):
         assert len(sockaddr_args) == 0, "Additional arguments found when parsing Sockaddr object: " + str(sockaddr_args)
 
 
+class Stat(ParsingClass):
+    def __init__(self, string_args):
+        self.value = None
+
+        # Error condition, struct not parsed by strace.  Pointer value returned instead
+        if string_args[0].startswith("0x"):
+            return
+
+        stat_args = []
+        stat_args.append(string_args.pop(0))
+
+        assert stat_args[0].startswith("{"), "First argument of stat structure does not start with a '{'" + "in arguments: " + str(stat_args)
+
+        while True:
+            stat_args.append(string_args.pop(0))
+
+            if stat_args[-1].endswith("}"):
+                break
+
+        stat_args[0] = stat_args[0].lstrip("{")
+        stat_args[-1] = stat_args[-1].rstrip("}")
+
+        for i in range(len(stat_args)):
+            if stat_args[i].startswith("st_dev=makedev("):
+                stat_args[i] = stat_args[i] + ", " + stat_args[i+1]
+                stat_args.pop(i+1)
+                # break out here because we've shortened the list and will
+                # get an index out of range if we continue
+                break
+
+        self.value = stat_args
+
+        assert len(stat_args) == 15, "We did not get 15 arguments for stat structure.  Got instead: " + str(len(stat_args)) + "args -> "+ str(stat_args)
+
+    def __getitem__(self, index):
+        return self.value[index]
+
 
 def _string_to_flags(flags_string):
     """
@@ -619,9 +656,13 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
         # argument is a sockaddr
         return Sockaddr
 
+    elif definition_parameter.struct == True and definition_parameter.type == "stat":
+        return Stat
+
     if DEBUG:
         print "No CLASS for: '" + definition_parameter.type + " " + \
                        definition_parameter.name + "' created yet :(\n"
+
 
     return UnimplementedType
 
