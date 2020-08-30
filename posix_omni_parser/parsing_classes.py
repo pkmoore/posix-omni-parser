@@ -216,7 +216,15 @@ class PollFDPointer(ParsingClass):
 
 class Filepath(ParsingClass):
     def __init__(self, string_args):
-        self.value = string_args.pop(0)
+        path = string_args.pop(0)
+        # Remove quotes that surround paths for stored value
+        if path[0] == "\"" and path[-1] == "\"":
+            path = path[1:-1]
+        self.value = path
+
+    def __str__(self):
+        # Converting a Filepath to a string restores the surrounding quotes
+        return "\"" + self.value + "\""
 
 
 class Flags(ParsingClass):
