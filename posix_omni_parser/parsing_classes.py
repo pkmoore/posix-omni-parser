@@ -517,6 +517,18 @@ class Stat(ParsingClass):
 
         assert len(stat_args) == 15, "We did not get 15 arguments for stat structure.  Got instead: " + str(len(stat_args)) + "args -> "+ str(stat_args)
 
+
+    def __str__(self):
+        tmp = "{"
+        tmp += ", ".join(self.value)
+        tmp += "}"
+        return tmp
+
+
+    def __setitem__(self, index, value):
+        self.value[index] = value
+
+
     def __getitem__(self, index):
         return self.value[index]
 
