@@ -1,0 +1,12 @@
+14423 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 3
+14423 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
+14423 bind(3, {sa_family=AF_INET, sin_port=htons(5000), sin_addr=inet_addr("127.0.0.1")}, 16) = 0
+14423 getsockname(3, {sa_family=AF_INET, sin_port=htons(5000), sin_addr=inet_addr("127.0.0.1")}, [16]) = 0
+14423 getsockname(3, {sa_family=AF_INET, sin_port=htons(5000), sin_addr=inet_addr("127.0.0.1")}, [16]) = 0
+14423 socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 4
+14423 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+14423 close(4)                          = 0
+14423 socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 4
+14423 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+14423 close(4)                          = 0
+
