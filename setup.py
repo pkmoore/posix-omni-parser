@@ -1,6 +1,6 @@
 """Install posix omni parser
 """
-#new_comment
+
 from setuptools import setup
 
 setup(name='posix_omni_parser',
@@ -15,7 +15,7 @@ setup(name='posix_omni_parser',
       # parse-syscall-definitions assumes that it will exist at this point in
       # the namespace.
       packages=['posix_omni_parser', 'posix_omni_parser.parsers', 'sysDef'],
-      entry_points = {
+      entry_points={
           'console_scripts': [
               'parse_syscall_definitions = posix_omni_parser.parse_syscall_definitions:main'
           ],
