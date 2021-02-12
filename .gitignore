@@ -36,3 +36,10 @@ nosetests.xml
 
 # Test output
 test/syscall_definitions.pickle
+
+# VSCode
+.devcontainer
+.vscode
+
+# Test cache
+.pytest_cache
