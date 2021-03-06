@@ -48,7 +48,7 @@ class TestOpen():
 
 class TestFstat():
   def test_fstat(self):
-    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    strace_path = get_test_data_path("fstat.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
     fstat_call = t.syscalls[0]
