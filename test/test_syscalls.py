@@ -205,3 +205,16 @@ class TestLseek():
     assert lseek_call.ret == (0, None)
 
 
+class TestClone():
+  def test_clone(self):
+    strace_path = get_test_data_path("clone.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    clone_call = t.syscalls[0]
+    assert clone_call.args[0].value == ['child_stack=NULL']
+    assert clone_call.args[1].value == 'flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD'
+    assert clone_call.args[2].value == ['child_tidptr=0x7fdb04c07810']
+    assert clone_call.ret == (21677, None)
+
+
+
