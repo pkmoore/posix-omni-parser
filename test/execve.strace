@@ -1,3 +1,4 @@
 21663 execve("/bin/ps", ["ps"], NULL)   = 0
 21698 getpid()                          = 21698
 27497 geteuid()                         = 0
+321663 lseek(3, 0, SEEK_SET)             = 0
