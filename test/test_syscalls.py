@@ -6,7 +6,6 @@ def get_test_data_path(filename):
   dir_path = os.path.dirname(os.path.realpath(__file__))
   return os.path.join(dir_path, filename)
 
-
 class TestOpen():
   def test_open(self):
     strace_path = get_test_data_path("openclose.strace")
@@ -57,6 +56,36 @@ class TestFstat():
     assert fstat_call.args[0].value == 3
     assert fstat_call.args[1].value[0] == "st_dev=makedev(0, 4)"
     assert fstat_call.args[1].value[5] == "st_gid=0"
+
+  def test_stat(self):
+    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    stat_call = t.syscalls[1]
+    assert stat_call.args[0].value == "/proc/19"
+    assert stat_call.args[1].value[0] == 'st_dev=makedev(0, 0x16)'
+    assert stat_call.args[1].value[5] == 'st_gid=0'
+    assert stat_call.ret == (0, None)
+
+  def test_lstat(self):
+    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    lstat_call = t.syscalls[2]
+    assert lstat_call.args[0].value == "/proc/self/task"
+    assert lstat_call.args[1].value[0] == 'st_dev=makedev(0, 0x16)'
+    assert lstat_call.args[1].value[5] == 'st_gid=0'
+    assert lstat_call.ret == (0, None)
+
+  def test_statfs(self):
+    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    statfs_call = t.syscalls[3]
+    assert statfs_call.args[0].value == "/sys/fs/selinux"
+    assert statfs_call.args[1].value == '0x7ffffab26f40'
+    assert statfs_call.ret == (-1, "ENOENT")
+
 
 class TestSocket():
   def test_socket(self):
