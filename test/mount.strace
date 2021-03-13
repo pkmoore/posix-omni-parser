@@ -1,0 +1,4 @@
+31146 mount("none", "/var/tmp", "tmpfs", 0, "mode=0700,uid=65534") = 0
+30711 mount("al/ma/newest", "al/mnt", NULL, MS_DIRSYNC|MS_NOATIME|MS_NODIRATIME|MS_BIND|MS_MOVE|MS_REC|MS_SILENT|MS_POSIXACL|MS_UNBINDABLE|MS_PRIVATE|MS_SLAVE|MS_SHARED|MS_RELATIME|MS_KERNMOUNT|MS_I_VERSION|MS_STRICTATIME|MS_LAZYTIME|MS_SUBMOUNT|MS_NOREMOTELOCK|MS_NOSEC|MS_BORN|MS_ACTIVE|MS_NOUSER|0xffffffff00000300, NULL) = -1 EINVAL (Invalid argument)
+31146 umount2("/var/tmp", 0)            = 0
+30711 umount2("al/mnt/", 0)             = -1 EINVAL (Invalid argument)
