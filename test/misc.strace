@@ -1,0 +1,5 @@
+31146 brk(NULL)                         = 0x56221d7d1000
+29898 set_tid_address(0x7f75b62c36d0)   = 29898
+29898 set_robust_list(0x7f75b62c36e0, 24) = 0
+29898 arch_prctl(ARCH_SET_FS, 0x7f75b62c3400) = 0
+27497 arch_prctl(0x3001 /* ARCH_??? */, 0x7ffcf11e3030) = -1 EINVAL (Invalid argument)
