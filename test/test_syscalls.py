@@ -439,3 +439,47 @@ class TestMemory():
     assert prlimit64_call.args[2].value == 'NULL'
     assert prlimit64_call.args[3].value == '{rlim_cur=8192*1024'
     assert prlimit64_call.ret == (0, None)
+
+class TestSetup():
+  #set segment size
+  def test_brk(self):
+    strace_path = get_test_data_path("misc.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    brk_call = t.syscalls[0]
+    assert brk_call.args[0].value == "NULL"
+    assert brk_call.ret == ('0x56221d7d1000', None)
+
+  #set pointer to thread ID
+  def test_tid_addr(self):
+    strace_path = get_test_data_path("misc.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    set_tid_addr_call = t.syscalls[1]
+    assert set_tid_addr_call.args[0].value == "7f75b62c36d0"
+    assert set_tid_addr_call.ret == (29898, None)
+
+  #set list of robust futexes
+  def test_robust_list(self):
+    strace_path = get_test_data_path("misc.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    set_robust_list_call = t.syscalls[2]
+    assert set_robust_list_call.args[0].value == "0x7f75b62c36e0"
+    assert set_robust_list_call.args[1].value == "24"
+    assert set_robust_list_call.ret == (0, None)
+
+  #set architecture specific thread state
+  def test_arch_prctl(self):
+    strace_path = get_test_data_path("misc.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    arch_prctl_call = t.syscalls[3]
+    assert arch_prctl_call.args[0].value == ['ARCH_SET_FS']
+    assert arch_prctl_call.args[1].value == '0x7f75b62c3400'
+    assert arch_prctl_call.ret == (0, None)
+
+    bad_arch_prctl_call = t.syscalls[4]
+    assert bad_arch_prctl_call.args[0].value == ['0x3001 /* ARCH_??? */']
+    assert bad_arch_prctl_call.args[1].value == '0x7ffcf11e3030'
+    assert bad_arch_prctl_call.ret == (-1, 'EINVAL')
