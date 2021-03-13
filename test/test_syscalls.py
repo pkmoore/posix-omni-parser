@@ -331,3 +331,27 @@ class TestMount():
     assert bad_unmount_call.args[0].value == '"al/mnt/"'
     assert bad_unmount_call.args[1].value == ['0']
     assert bad_unmount_call.ret == (-1, "EINVAL")
+
+class TestChmod():
+  def test_chmod(self):
+    strace_path = get_test_data_path("execve.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    chmod_call = t.syscalls[4]
+    assert chmod_call.args[0].value == "al/ma/newfile.txt"
+    assert chmod_call.args[1].value == ['0644']
+    assert chmod_call.ret == (0, None)
+
+    bad_chmod_call = t.syscalls[5]
+    assert bad_chmod_call.args[0].value == "al/ma/newfile7.txt"
+    assert bad_chmod_call.args[1].value == ['0644']
+    assert bad_chmod_call.ret == (-1, "ENOENT")
+  
+  def test_access(self):
+    strace_path = get_test_data_path("execve.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    bad_access_call = t.syscalls[6]
+    assert bad_access_call.args[0].value == "/etc/ld.so.preload"
+    assert bad_access_call.args[1].value == ["R_OK"]
+    assert bad_access_call.ret == (-1, 'ENOENT')
