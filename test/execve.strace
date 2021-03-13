@@ -1,0 +1,3 @@
+21663 execve("/bin/ps", ["ps"], NULL)   = 0
+21698 getpid()                          = 21698
+27497 geteuid()                         = 0   
