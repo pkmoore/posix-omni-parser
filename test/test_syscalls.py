@@ -179,7 +179,7 @@ class TestExecve():
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
 
-    getpid_call = t.syscalls[2]
+    getpid_call = t.syscalls[1]
     assert getpid_call.ret == (21698, None)
   
   def test_get_euid(self):
@@ -187,6 +187,6 @@ class TestExecve():
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
 
-    geteuid_call = t.syscalls[5]
+    geteuid_call = t.syscalls[2]
     assert geteuid_call.ret == (0, None)
 
