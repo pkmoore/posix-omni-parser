@@ -190,3 +190,14 @@ class TestExecve():
     geteuid_call = t.syscalls[2]
     assert geteuid_call.ret == (0, None)
 
+class TestLseek():
+  def test_lseek(self):
+    strace_path = get_test_data_path("execve.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    lseek_call = t.syscalls[3]
+    assert lseek_call.args[0].value == 3
+    assert lseek_call.args[1].value == '0'
+    assert lseek_call.args[2].value == ['SEEK_SET']
+    assert lseek_call.ret == (0, None)
+
