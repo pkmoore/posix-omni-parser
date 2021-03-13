@@ -355,3 +355,40 @@ class TestChmod():
     assert bad_access_call.args[0].value == "/etc/ld.so.preload"
     assert bad_access_call.args[1].value == ["R_OK"]
     assert bad_access_call.ret == (-1, 'ENOENT')
+
+
+class TestSignals():
+  
+  def test_sigaction(self):
+    strace_path = get_test_data_path("signals.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    sigaction_call = t.syscalls[0]
+    assert sigaction_call.args[0].value == "SIGCHLD" 
+    assert sigaction_call.args[1].value == "{sa_handler=0x55907f1f81c9"
+    assert sigaction_call.args[2].value == "sa_mask=[CHLD]"
+    assert sigaction_call.args[3].value == "sa_flags=SA_RESTORER|SA_RESTART"
+    assert sigaction_call.args[4].value == 'sa_restorer=0x7ff1ed57f210}'
+    assert sigaction_call.args[4].value == 'sa_restorer=0x7ff1ed57f210}'
+    assert sigaction_call.args[8].value == '8'
+
+    assert sigaction_call.ret == (0, None)
+
+  def test_sigprocmask(self):
+    strace_path = get_test_data_path("signals.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    sigprocmask_call = t.syscalls[1]
+    assert sigprocmask_call.args[0].value == ["SIG_UNBLOCK"]
+    assert sigprocmask_call.args[1].value == '[RTMIN RT_1]'
+    assert sigprocmask_call.args[2].value == 'NULL'
+    assert sigprocmask_call.args[3].value == '8'
+    assert sigprocmask_call.ret == (0, None)
+
+  def test_sigreturn(self):
+    strace_path = get_test_data_path("signals.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    sigreturn_call = t.syscalls[2]
+    assert sigreturn_call.args[0].value == "{mask=[]}"   
+    assert sigreturn_call.ret == (26827, None)
