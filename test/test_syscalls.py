@@ -211,3 +211,30 @@ class TestClone():
     assert clone_call.args[1].value == 'flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD'
     assert clone_call.args[2].value == ['child_tidptr=0x7fdb04c07810']
     assert clone_call.ret == (21677, None)
+
+class TestLink():
+  def test_link(self):
+    strace_path = get_test_data_path("link.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    link_call = t.syscalls[0]
+    assert link_call.args[0].value == "al/ma/newfile.txt"
+    assert link_call.args[1].value == "al/sic/newest1.txt"
+    assert link_call.ret == (0, None)
+
+    bad_link_call = t.syscalls[1]
+    assert bad_link_call.args[0].value == "al/ma/newfile.txt"
+    assert bad_link_call.args[1].value == "al/sic/"
+    assert bad_link_call.ret == (-1, "EEXIST")
+
+  def test_unlink(self):
+    strace_path = get_test_data_path("link.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    unlink_call = t.syscalls[2]
+    assert unlink_call.args[0].value == "al/sic/newest1.txt"
+    assert unlink_call.ret == (0, None)
+
+    bad_unlink_call = t.syscalls[3]
+    assert bad_unlink_call.args[0].value == "al/sic/newest2.txt"
+    assert bad_unlink_call.ret == (-1, "ENOENT")
