@@ -297,3 +297,37 @@ class TestDir():
     assert getdents64_call.args[1].value == '[]'
     assert getdents64_call.args[2].value == 32768
     assert getdents64_call.ret == (0, None)
+
+class TestMount():
+  def test_mount(self):
+    strace_path = get_test_data_path("mount.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    mount_call = t.syscalls[0]
+    assert mount_call.args[0].value == '"none"'
+    assert mount_call.args[1].value == '"/var/tmp"'
+    assert mount_call.args[2].value == '"tmpfs"'
+    assert mount_call.args[3].value == '0'
+    assert mount_call.args[4].value == '"mode=0700,uid=65534"'
+    assert mount_call.ret == (0, None)
+
+    bad_mount_call = t.syscalls[1]
+    assert bad_mount_call.args[0].value == '"al/ma/newest"'
+    assert bad_mount_call.args[1].value == '"al/mnt"'
+    assert bad_mount_call.args[2].value == 'NULL'
+    assert bad_mount_call.args[4].value == 'NULL'
+    assert bad_mount_call.ret == (-1, "EINVAL")
+
+  def test_unmount(self):
+    strace_path = get_test_data_path("mount.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    unmount_call = t.syscalls[2]
+    assert unmount_call.args[0].value == '"/var/tmp"'
+    assert unmount_call.args[1].value == ['0']
+    assert unmount_call.ret == (0, None)
+
+    bad_unmount_call = t.syscalls[3]
+    assert bad_unmount_call.args[0].value == '"al/mnt/"'
+    assert bad_unmount_call.args[1].value == ['0']
+    assert bad_unmount_call.ret == (-1, "EINVAL")
