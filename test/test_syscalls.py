@@ -287,8 +287,8 @@ class TestDir():
     assert getcwd_call.args[1].value == '4096'
     assert getcwd_call.ret == (61, None)
 
-  #get directory entries--write-test-//label-as-empty
-  def test_getdents64(self):
+  #get directory entries label
+  def test_getdents64(self): #Note: empty function
     strace_path = get_test_data_path("directory.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
@@ -358,8 +358,8 @@ class TestChmod():
 
 
 class TestSignals():
-  
-  def test_sigaction(self):
+   
+  def test_sigaction(self): #Note-incorrect parsing
     strace_path = get_test_data_path("signals.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
@@ -427,9 +427,10 @@ class TestMemory():
     assert munmap_call.args[0].value == "0x7fcf9d4b0000"
     assert munmap_call.args[1].value == "75070"
     assert munmap_call.ret == (0, None)
-
+  
+  
   #set resource limits
-  def test_prlimit64(self):
+  def test_prlimit64(self): #Note-incorrect parsing
     strace_path = get_test_data_path("memory.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
@@ -483,3 +484,30 @@ class TestSetup():
     assert bad_arch_prctl_call.args[0].value == ['0x3001 /* ARCH_??? */']
     assert bad_arch_prctl_call.args[1].value == '0x7ffcf11e3030'
     assert bad_arch_prctl_call.ret == (-1, 'EINVAL')
+
+class TestMisc():
+  #control device
+  def test_ioctl(self): #Note-incorrect parsing
+    strace_path = get_test_data_path("misc.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    ioctl_call = t.syscalls[5]
+    assert ioctl_call.args[0].value == 1
+    assert ioctl_call.args[1].value == "TIOCGWINSZ"
+    assert ioctl_call.args[2].value == "{ws_row=16"
+    assert ioctl_call.args[3].value == "ws_col=109"
+    assert ioctl_call.args[4].value == "ws_xpixel=0"
+    assert ioctl_call.ret == (0, None)
+
+  #read from a file descriptor at an offset
+  def test_pread64(self):
+    strace_path = get_test_data_path("misc.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    prlimit64_call = t.syscalls[6]
+    assert prlimit64_call.args[0].value == 3
+    assert prlimit64_call.args[2].value == '784'
+    assert prlimit64_call.args[3].value == '64'
+    assert prlimit64_call.ret == (784, None)
+
+  
