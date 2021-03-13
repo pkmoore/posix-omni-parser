@@ -392,3 +392,50 @@ class TestSignals():
     sigreturn_call = t.syscalls[2]
     assert sigreturn_call.args[0].value == "{mask=[]}"   
     assert sigreturn_call.ret == (26827, None)
+
+class TestMemory():
+
+  def test_mprotect(self):
+    strace_path = get_test_data_path("memory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    mprotect_call = t.syscalls[0]
+    assert mprotect_call.args[0].value == "0x7f3366ab3000"
+    assert mprotect_call.args[1].value == '12288'
+    assert mprotect_call.args[2].value == ['PROT_READ']
+    assert mprotect_call.ret == (0, None)
+  
+  #create new mapping in the va space
+  def test_mmap(self):
+    strace_path = get_test_data_path("memory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    mmap_call = t.syscalls[1]
+    assert mmap_call.args[0].value == "NULL"
+    assert mmap_call.args[1].value == '2036952'
+    assert mmap_call.args[2].value == ['PROT_READ']
+    assert mmap_call.args[4].value == 7
+    assert mmap_call.args[5].value == '0'
+    assert mmap_call.ret == ('0x7fc88349b000', None)
+
+  #delete mappings for specified address range
+  def test_munmap(self):
+    strace_path = get_test_data_path("memory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    munmap_call = t.syscalls[2]
+    assert munmap_call.args[0].value == "0x7fcf9d4b0000"
+    assert munmap_call.args[1].value == "75070"
+    assert munmap_call.ret == (0, None)
+
+  #set resource limits
+  def test_prlimit64(self):
+    strace_path = get_test_data_path("memory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    prlimit64_call = t.syscalls[3]
+    assert prlimit64_call.args[0].value == 0
+    assert prlimit64_call.args[1].value == ['RLIMIT_STACK']
+    assert prlimit64_call.args[2].value == 'NULL'
+    assert prlimit64_call.args[3].value == '{rlim_cur=8192*1024'
+    assert prlimit64_call.ret == (0, None)
