@@ -238,3 +238,62 @@ class TestLink():
     bad_unlink_call = t.syscalls[3]
     assert bad_unlink_call.args[0].value == "al/sic/newest2.txt"
     assert bad_unlink_call.ret == (-1, "ENOENT")
+
+class TestDir():
+  def test_mkdir(self):
+    strace_path = get_test_data_path("directory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    mkdir_call = t.syscalls[0]
+    assert mkdir_call.args[0].value == "al/ma/new-dir1"
+    assert mkdir_call.args[1].value == ['0700']
+    assert mkdir_call.ret == (0, None)
+
+    bad_mkdir_call = t.syscalls[1]
+    assert bad_mkdir_call.args[0].value == "al/ma/new-dir1"
+    assert bad_mkdir_call.args[1].value == ['0700']
+    assert bad_mkdir_call.ret == (-1, "EEXIST")
+
+  def test_rmdir(self):
+    strace_path = get_test_data_path("directory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    rmdir_call = t.syscalls[2]
+    assert rmdir_call.args[0].value == "al/ma/new-dir1"
+    assert rmdir_call.ret == (0, None)
+
+    bad_rmdir_call = t.syscalls[3]
+    assert bad_rmdir_call.args[0].value == "al/ma/new-dir1"
+    assert bad_rmdir_call.ret == (-1, "ENOENT")
+  
+  def test_chdir(self):
+    strace_path = get_test_data_path("directory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    chdir_call = t.syscalls[4]
+    assert chdir_call.args[0].value == "/home/almazhan/Desktop/res_tandon/posix-omni-parser/testbins"
+    assert chdir_call.ret == (0, None)
+
+    bad_chdir_call = t.syscalls[5]
+    assert bad_chdir_call.args[0].value == "/home/almazhan/Desktop/res_tandon/posix-omni-parser/testbins1"
+    assert bad_chdir_call.ret == (-1, "ENOENT")
+  
+  def test_getcwd(self):
+    strace_path = get_test_data_path("directory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    getcwd_call = t.syscalls[6]
+    assert getcwd_call.args[0].value == '"/home/almazhan/Desktop/res_tandon/posix-omni-parser/testbins"'
+    assert getcwd_call.args[1].value == '4096'
+    assert getcwd_call.ret == (61, None)
+
+  #get directory entries--write-test-//label-as-empty
+  def test_getdents64(self):
+    strace_path = get_test_data_path("directory.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    getdents64_call = t.syscalls[7]
+    assert getdents64_call.args[0].value == 7
+    assert getdents64_call.args[1].value == '[]'
+    assert getdents64_call.args[2].value == 32768
+    assert getdents64_call.ret == (0, None)

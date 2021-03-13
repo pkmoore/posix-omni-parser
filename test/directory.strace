@@ -1,0 +1,8 @@
+29772 mkdir("al/ma/new-dir1", 0700)     = 0
+29772 mkdir("al/ma/new-dir1", 0700)     = -1 EEXIST (File exists)
+29772 rmdir("al/ma/new-dir1")           = 0
+29841 rmdir("al/ma/new-dir1")           = -1 ENOENT (No such file or directory)
+32140 chdir("/home/almazhan/Desktop/res_tandon/posix-omni-parser/testbins") = 0
+32140 chdir("/home/almazhan/Desktop/res_tandon/posix-omni-parser/testbins1") = -1 ENOENT (No such file or directory)
+27475 getcwd("/home/almazhan/Desktop/res_tandon/posix-omni-parser/testbins", 4096) = 61
+29898 getdents64(7, [], 32768)          = 0
