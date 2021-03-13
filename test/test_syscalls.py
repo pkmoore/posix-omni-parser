@@ -122,3 +122,41 @@ class TestConnect():
     assert connect_call.args[1].value[1].value == "/var/run/nscd/socket"
     assert connect_call.args[2].value == 110
     assert connect_call.ret == (-1, "ENOENT")
+
+class TestRead():
+  
+  def test_read(self):
+    strace_path = get_test_data_path("readwrite.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    read_call = t.syscalls[0]
+
+    assert read_call.args[0].value == 7
+    assert read_call.args[1].value == '"hello world"'
+    assert read_call.args[2].value == '1024'
+    assert read_call.ret == (11, None)
+
+    bad_read_call = t.syscalls[1]
+    assert bad_read_call.args[0].value == 40
+    assert bad_read_call.args[1].value == "0x7ffcf0e72860"
+    assert bad_read_call.args[2].value == '10'
+    assert bad_read_call.ret == (-1, "EBADF")
+  
+  def test_write(self):
+
+    strace_path = get_test_data_path("readwrite.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    write_call = t.syscalls[2]
+
+    assert write_call.args[0].value == 0
+    assert write_call.args[1].value == '"Hello"'
+    assert write_call.args[2].value == '5'
+    assert write_call.ret == (5, None)
+
+    bad_write_call = t.syscalls[3]
+    assert bad_write_call.args[0].value == 40
+    assert bad_write_call.args[1].value == '"Bad m"'
+    assert bad_write_call.args[2].value == '5'
+    assert bad_write_call.ret == (-1, "EBADF")
+  
