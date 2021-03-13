@@ -34,6 +34,16 @@ class TestOpen():
     assert close_call.args[0].value == 3
     assert close_call.ret == (0, None)
 
+  def openat(self):
+    strace_path = get_test_data_path("openclose.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    openat_call = t.syscalls[4]
+
+    assert openat_call.args[0].value == "AT_FDCWD"
+    assert openat_call.args[1].value == "/etc/ld.so.cache"
+    assert openat_call.ret == (7, None)
+
 
 class TestFstat():
   def test_fstat(self):

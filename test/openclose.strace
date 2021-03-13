@@ -2,3 +2,4 @@
 35388 open("test1.txt", O_RDONLY, 0) = -1 ENOENT (No such file or directory)
 35388 getpid() = 34355
 35388 close(3) = 0
+29898 openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 7
