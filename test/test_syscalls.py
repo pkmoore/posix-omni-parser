@@ -99,6 +99,16 @@ class TestSocket():
     assert socket_call.args[2].value == ["IPPROTO_IP"]
     assert socket_call.ret == (3, None)
 
+  #mark a socket as accepting connections
+  def test_listen(self):
+    strace_path = get_test_data_path("socket.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    listen_call = t.syscalls[11]
+    assert listen_call.args[0].value == 7
+    assert listen_call.args[1].value == 5
+    assert listen_call.ret == (0, None)
+
 
 class TestConnect():
   def test_connect(self):
