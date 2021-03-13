@@ -1,0 +1,4 @@
+28544 link("al/ma/newfile.txt", "al/sic/newest1.txt") = 0
+28544 link("al/ma/newfile.txt", "al/sic/") = -1 EEXIST (File exists)
+29158 unlink("al/sic/newest1.txt")      = 0
+29158 unlink("al/sic/newest2.txt")      = -1 ENOENT (No such file or directory)
