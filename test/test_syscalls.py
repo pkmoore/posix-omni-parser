@@ -58,7 +58,7 @@ class TestFstat():
     assert fstat_call.args[1].value[5] == "st_gid=0"
 
   def test_stat(self):
-    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    strace_path = get_test_data_path("fstat.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
     stat_call = t.syscalls[1]
@@ -68,7 +68,7 @@ class TestFstat():
     assert stat_call.ret == (0, None)
 
   def test_lstat(self):
-    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    strace_path = get_test_data_path("fstat.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
     lstat_call = t.syscalls[2]
@@ -78,7 +78,7 @@ class TestFstat():
     assert lstat_call.ret == (0, None)
 
   def test_statfs(self):
-    strace_path = get_test_data_path("fstat_stat_lstat.strace")
+    strace_path = get_test_data_path("fstat.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
     statfs_call = t.syscalls[3]
