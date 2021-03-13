@@ -124,7 +124,7 @@ class TestConnect():
     assert connect_call.ret == (-1, "ENOENT")
 
 class TestRead():
-  
+
   def test_read(self):
     strace_path = get_test_data_path("readwrite.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -159,4 +159,34 @@ class TestRead():
     assert bad_write_call.args[1].value == '"Bad m"'
     assert bad_write_call.args[2].value == '5'
     assert bad_write_call.ret == (-1, "EBADF")
+
+class TestExecve():
   
+  def test_execve(self):
+
+    strace_path = get_test_data_path("execve.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+
+    execve_call = t.syscalls[0]
+    assert execve_call.args[0].value == '/bin/ps'
+    assert execve_call.args[1].value == '["ps"]'
+    assert execve_call.args[2].value == 'NULL'
+    assert execve_call.ret == (0, None)
+
+  def test_get_pid(self):
+    strace_path = get_test_data_path("execve.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+
+    getpid_call = t.syscalls[2]
+    assert getpid_call.ret == (21698, None)
+  
+  def test_get_euid(self):
+    strace_path = get_test_data_path("execve.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+
+    geteuid_call = t.syscalls[5]
+    assert geteuid_call.ret == (0, None)
+
