@@ -1,0 +1,4 @@
+29898 read(7, "hello world", 1024) = 11
+2365  read(40, 0x7ffcf0e72860, 10) = -1 EBADF (Bad file descriptor)
+16708 write(0, "Hello", 5) = 5
+17215 write(40, "Bad m", 5) = -1 EBADF (Bad file descriptor)

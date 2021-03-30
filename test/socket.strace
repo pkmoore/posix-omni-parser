@@ -9,4 +9,6 @@
 14423 socket(PF_LOCAL, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 4
 14423 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
 14423 close(4)                          = 0
+20655 listen(7, 5)                      = 0
+
 

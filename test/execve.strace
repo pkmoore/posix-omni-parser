@@ -1,0 +1,7 @@
+21663 execve("/bin/ps", ["ps"], NULL)   = 0
+21698 getpid()                          = 21698
+27497 geteuid()                         = 0   
+321663 lseek(3, 0, SEEK_SET)             = 0
+32140 chmod("al/ma/newfile.txt", 0644)  = 0
+32140 chmod("al/ma/newfile7.txt", 0644) = -1 ENOENT (No such file or directory)
+31146 access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
