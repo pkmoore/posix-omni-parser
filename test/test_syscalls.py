@@ -510,4 +510,18 @@ class TestMisc():
     assert prlimit64_call.args[3].value == '64'
     assert prlimit64_call.ret == (784, None)
 
+ 
+class TestWrite():
+  def test_write(self):
   
+    strace_path = get_test_data_path("write.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    write_call = t.syscalls[0]
+    
+    assert write_call.name == "write"
+    assert write_call.args[0].value == 1
+    assert write_call.args[1].value == '"crashsimlang  get-pip.py  local  posix-omni-parser  test\\n"'
+    assert write_call.args[2].value == '57'
+    assert write_call.ret == (57, None)
+ 
