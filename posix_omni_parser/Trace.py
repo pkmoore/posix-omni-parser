@@ -19,9 +19,11 @@
 
 import os
 import sys
+import json
 
+import Syscall
 from parsers.StraceParser import StraceParser
-
+from parsers.ASTParser import ASTParser
 
 class Trace:
     """
@@ -115,6 +117,64 @@ class Trace:
         # - gathered from.
 
 
+    def to_ast(self):
+        """
+        <Purpose>
+          CRASHSIMULATOR MODIFIED
+
+          Generate a JSON-ready AST of the trace in order for
+          better anomaly injection. For each system call, store the
+          PID, name, arguments and return value in a dict, and append to
+          a parse tree list.
+
+        <Returns>
+          None
+
+        """
+
+        parse_tree = []
+
+        for syscall in self.syscalls:
+            ast = {
+              'type': syscall.type,
+              'pid': syscall.pid,
+              'name': syscall.name,
+              'args': [
+                  arg.to_ast(num) for num, arg in enumerate(syscall.args)
+              ],
+              'return': syscall.ret[0]
+            }
+            parse_tree.append(ast)
+
+        # return the parse tree with all system calls
+        return parse_tree
+
+
+    def from_ast(self, trace_ast):
+      """
+      <Purpose>
+        CRASHSIMULATOR MODIFIED
+
+        From a (mutated) AST, reimport into the trace object, replacing
+        self.syscalls with the altered changes. From here, execution from
+        CrashSimulator context can continue.
+
+      <Returns>
+        None
+
+      """
+
+      # store the original syscalls elsewhere and delete it.
+      self.orig_syscalls = self.syscalls
+      del self.syscalls
+
+      # reinitialize the parser as an ASTParser
+      self.parser = ASTParser(trace_ast, None, self.pickle_file)
+
+      # load the AST object back into a posix-omni-parser object
+      self.syscalls = self.parser.parse_trace()
+
+
     def __repr__(self):
         representation = "<Trace\nplatform=" + self.platform \
                        + "\ntrace_path=" + self.trace_path \
@@ -123,4 +183,3 @@ class Trace:
                        + "\ntraced_syscalls=" + str(len(self.syscalls)) + ">"
 
         return representation
-
