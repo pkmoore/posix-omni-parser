@@ -525,3 +525,19 @@ class TestWrite():
     assert write_call.args[2].value == '57'
     assert write_call.ret == (57, None)
  
+ 
+ 
+class TestWait():
+  def test_wait(self):
+    
+    strace_path = get_test_data_path("unfinished.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    wait_call = t.syscalls[0]
+    
+    assert wait.call.name == "wait4"
+    assert wait.call.args[0].value == 8216
+
+    assert wait.call.args[2] == 0
+    assert wait.call.ret == (8216, None)
+    
