@@ -9,13 +9,16 @@
 
 
 """
+from __future__ import absolute_import
 
-import parsing_classes
+from builtins import str
+from builtins import object
+from . import parsing_classes
 
 DEBUG = False
 
 
-class UnfinishedSyscall:
+class UnfinishedSyscall(object):
     """
     If a syscall is interrupted or blocked, it will be split in multiple lines.
     This object is used to store the partial system call information included in
@@ -49,7 +52,7 @@ class UnfinishedSyscall:
              " " + self.name + " " + str(self.args)
 
 
-class Syscall:
+class Syscall(object):
     """
     <Purpose>
       This object is used to describe a system call, holding all the information

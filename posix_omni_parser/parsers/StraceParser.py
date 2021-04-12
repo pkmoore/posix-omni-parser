@@ -25,7 +25,10 @@
     syscalls = parser.parse_trace()
 
 """
+from __future__ import print_function
 
+from builtins import str
+from builtins import range
 import re
 
 from .. import Syscall
@@ -582,7 +585,7 @@ class StraceParser(Parser):
                    continue
 
                 if DEBUG:
-                    print line
+                    print(line)
 
                 # line_parts = self._parse_line(line, unfinished_syscalls)
                 line_parts = self._parse_line(line)
@@ -609,7 +612,7 @@ class StraceParser(Parser):
         return None
 
       if DEBUG:
-        print line
+        print(line)
 
       line_parts = self._parse_line(line)
 

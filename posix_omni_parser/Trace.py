@@ -16,14 +16,17 @@
     print trace
 
 """
+from __future__ import absolute_import
 
+from builtins import str
+from builtins import object
 import os
 import sys
 
-from parsers.StraceParser import StraceParser
+from .parsers.StraceParser import StraceParser
 
 
-class Trace:
+class Trace(object):
     """
     <Purpose>
       This object represents an entire system call trace, which means that it 
@@ -88,13 +91,13 @@ class Trace:
         if self.trace_path == None:
             raise IOError("A trace file is needed to initialize a Trace object")
 
-				# Were we given a pickle file path?
+        #Were we given a pickle file path?
         if self.pickle_file == None:
             raise IOError("A pickle file is needed to initialize a Trace object")
 
         # do these file exist?
         if not os.path.exists(self.trace_path):
-						raise IOError("Could not find trace file `" + self.trace_path + "`")
+            raise IOError("Could not find trace file `" + self.trace_path + "`")
         if not os.path.exists(self.pickle_file):
             raise IOError("Could not find pickle file `" + self.pickle_file + "`")
 

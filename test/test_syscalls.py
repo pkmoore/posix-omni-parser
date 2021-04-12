@@ -1,3 +1,4 @@
+from builtins import object
 from posix_omni_parser import Trace
 import os
 
@@ -7,7 +8,7 @@ def get_test_data_path(filename):
   return os.path.join(dir_path, filename)
 
 
-class TestOpen():
+class TestOpen(object):
   def test_open(self):
     strace_path = get_test_data_path("openclose.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -45,7 +46,7 @@ class TestOpen():
     assert openat_call.ret == (7, None)
 
 
-class TestFstat():
+class TestFstat(object):
   def test_fstat(self):
     strace_path = get_test_data_path("fstat.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -86,7 +87,7 @@ class TestFstat():
     assert statfs_call.args[1].value == '0x7ffffab26f40'
     assert statfs_call.ret == (-1, "ENOENT")
 
-class TestSocket():
+class TestSocket(object):
   def test_socket(self):
     strace_path = get_test_data_path("socket.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -110,7 +111,7 @@ class TestSocket():
     assert listen_call.ret == (0, None)
 
 
-class TestConnect():
+class TestConnect(object):
   def test_connect(self):
     strace_path = get_test_data_path("socket.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -123,7 +124,7 @@ class TestConnect():
     assert connect_call.args[2].value == 110
     assert connect_call.ret == (-1, "ENOENT")
 
-class TestRead():
+class TestRead(object):
   
   def test_read(self):
     strace_path = get_test_data_path("readwrite.strace")
@@ -160,7 +161,7 @@ class TestRead():
     assert bad_write_call.args[2].value == '5'
     assert bad_write_call.ret == (-1, "EBADF")
 
-class TestExecve():
+class TestExecve(object):
   
   def test_execve(self):
 
@@ -190,7 +191,7 @@ class TestExecve():
     geteuid_call = t.syscalls[2]
     assert geteuid_call.ret == (0, None)
 
-class TestLseek():
+class TestLseek(object):
   def test_lseek(self):
     strace_path = get_test_data_path("execve.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -201,7 +202,7 @@ class TestLseek():
     assert lseek_call.args[2].value == ['SEEK_SET']
     assert lseek_call.ret == (0, None)
 
-class TestClone():
+class TestClone(object):
   def test_clone(self):
     strace_path = get_test_data_path("clone.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -212,7 +213,7 @@ class TestClone():
     assert clone_call.args[2].value == ['child_tidptr=0x7fdb04c07810']
     assert clone_call.ret == (21677, None)
 
-class TestLink():
+class TestLink(object):
   def test_link(self):
     strace_path = get_test_data_path("link.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -239,7 +240,7 @@ class TestLink():
     assert bad_unlink_call.args[0].value == "al/sic/newest2.txt"
     assert bad_unlink_call.ret == (-1, "ENOENT")
 
-class TestDir():
+class TestDir(object):
   def test_mkdir(self):
     strace_path = get_test_data_path("directory.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -298,7 +299,7 @@ class TestDir():
     assert getdents64_call.args[2].value == 32768
     assert getdents64_call.ret == (0, None)
 
-class TestMount():
+class TestMount(object):
   def test_mount(self):
     strace_path = get_test_data_path("mount.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -332,7 +333,7 @@ class TestMount():
     assert bad_unmount_call.args[1].value == ['0']
     assert bad_unmount_call.ret == (-1, "EINVAL")
 
-class TestChmod():
+class TestChmod(object):
   def test_chmod(self):
     strace_path = get_test_data_path("execve.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
@@ -357,7 +358,7 @@ class TestChmod():
     assert bad_access_call.ret == (-1, 'ENOENT')
 
 
-class TestSignals():
+class TestSignals(object):
    
   def test_sigaction(self): #Note-incorrect parsing
     strace_path = get_test_data_path("signals.strace")
@@ -393,7 +394,7 @@ class TestSignals():
     assert sigreturn_call.args[0].value == "{mask=[]}"   
     assert sigreturn_call.ret == (26827, None)
 
-class TestMemory():
+class TestMemory(object):
 
   def test_mprotect(self):
     strace_path = get_test_data_path("memory.strace")
@@ -404,7 +405,7 @@ class TestMemory():
     assert mprotect_call.args[1].value == '12288'
     assert mprotect_call.args[2].value == ['PROT_READ']
     assert mprotect_call.ret == (0, None)
-  
+
   #create new mapping in the va space
   def test_mmap(self):
     strace_path = get_test_data_path("memory.strace")
@@ -427,8 +428,8 @@ class TestMemory():
     assert munmap_call.args[0].value == "0x7fcf9d4b0000"
     assert munmap_call.args[1].value == "75070"
     assert munmap_call.ret == (0, None)
-  
-  
+
+
   #set resource limits
   def test_prlimit64(self): #Note-incorrect parsing
     strace_path = get_test_data_path("memory.strace")
@@ -441,7 +442,7 @@ class TestMemory():
     assert prlimit64_call.args[3].value == '{rlim_cur=8192*1024'
     assert prlimit64_call.ret == (0, None)
 
-class TestSetup():
+class TestSetup(object):
   #set segment size
   def test_brk(self):
     strace_path = get_test_data_path("misc.strace")
@@ -485,7 +486,7 @@ class TestSetup():
     assert bad_arch_prctl_call.args[1].value == '0x7ffcf11e3030'
     assert bad_arch_prctl_call.ret == (-1, 'EINVAL')
 
-class TestMisc():
+class TestMisc(object):
   #control device
   def test_ioctl(self): #Note-incorrect parsing
     strace_path = get_test_data_path("misc.strace")
@@ -511,14 +512,14 @@ class TestMisc():
     assert prlimit64_call.ret == (784, None)
 
  
-class TestWrite():
+class TestWrite(object):
   def test_write(self):
-  
+
     strace_path = get_test_data_path("write.strace")
     syscall_definitions = get_test_data_path("syscall_definitions.pickle")
     t = Trace.Trace(strace_path, syscall_definitions)
     write_call = t.syscalls[0]
-    
+
     assert write_call.name == "write"
     assert write_call.args[0].value == 1
     assert write_call.args[1].value == '"crashsimlang  get-pip.py  local  posix-omni-parser  test\\n"'

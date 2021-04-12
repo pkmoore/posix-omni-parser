@@ -13,12 +13,16 @@
     syscallreplay.
 
 """
+from __future__ import print_function
 
+from builtins import str
+from builtins import range
+from builtins import object
 import socket
 
 DEBUG = False
 
-class ParsingClass:
+class ParsingClass(object):
     def __repr__(self):
         return "<" + self.__class__.__name__ + " " + str(self.value) + ">"
 
@@ -474,7 +478,7 @@ class Sockaddr(ParsingClass):
             self.value.append(SockGroups(sockaddr_args.pop(0)))
         else:
             if DEBUG:
-                print "Socket address family \"" + sa_family + "\" of Sockaddr structure not fully parsed"
+                print("Socket address family \"" + sa_family + "\" of Sockaddr structure not fully parsed")
 
             while (len(sockaddr_args) > 0):
                 self.value.append(sockaddr_args.pop(0))
@@ -672,8 +676,8 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
         return Stat
 
     if DEBUG:
-        print "No CLASS for: '" + definition_parameter.type + " " + \
-                       definition_parameter.name + "' created yet :(\n"
+        print("No CLASS for: '" + definition_parameter.type + " " + \
+                       definition_parameter.name + "' created yet :(\n")
 
 
     return UnimplementedType
@@ -710,7 +714,7 @@ def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
     string_args = string_args[:]
 
     if DEBUG:
-        print "Syscall Name:", syscall_name
+        print("Syscall Name:", syscall_name)
 
     # find the syscall definition for this syscall.
     syscall_definition = None
@@ -720,12 +724,12 @@ def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
             break
 
     if DEBUG:
-        print "Syscall Name:", syscall_name
+        print("Syscall Name:", syscall_name)
     casted_args = []
     if syscall_definition.definition != None:
         for definition_parameter in syscall_definition.definition.parameters:
             if DEBUG:
-                print "Definition Parameter:", definition_parameter
+                print("Definition Parameter:", definition_parameter)
 
             # for system calls that are unfinished we don't need to consider the
             # definition arguments beyond the number of arguments the unfinished syscall

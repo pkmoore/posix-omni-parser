@@ -11,10 +11,12 @@
 
 """
 
+from builtins import range
+from builtins import object
 import pickle
 
 
-class Parser():
+class Parser(object):
 
     def __init__(self, trace_path, pickle_file):
         """

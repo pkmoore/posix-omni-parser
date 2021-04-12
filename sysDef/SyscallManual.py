@@ -37,12 +37,16 @@
     Definition:   int open(const char *pathname, int flags, mode_t mode)
 
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
+from builtins import range
+from builtins import object
 import re
 import signal
 import subprocess
 
-from Definition import Definition
+from .Definition import Definition
 
 
 # controls printing
@@ -62,7 +66,7 @@ class SyscallManualException(Exception):
     pass
 
 
-class SyscallManual:
+class SyscallManual(object):
     """
     <Purpose>
       A SyscallManual is made up of the system call name and its definition

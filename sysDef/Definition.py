@@ -1,6 +1,8 @@
-from SyscallParameter import SyscallParameter
+from __future__ import absolute_import
+from builtins import object
+from .SyscallParameter import SyscallParameter
 
-class Definition:
+class Definition(object):
     """
     <Purpose>
       A Definition object is made up of three parts:
