@@ -40,33 +40,33 @@ from sysDef.SyscallManual import SyscallManual
 def parse_syscall_names_list():
     """
     <Purpose>
-      Reads the man entry for 'syscalls' and parses all the names of the system 
+      Reads the man entry for 'syscalls' and parses all the names of the system
       calls in the system.
-    
+
     <Arguments>
       None
-    
+
     <Exceptions>
       None
-    
+
     <Side Effects>
       None
-    
+
     <Returns>
-      syscall_names_list: 
-        A list of all the system call names gathered from the man page of the 
+      syscall_names_list:
+        A list of all the system call names gathered from the man page of the
         syscalls man entry.
     """
-
-
 
     # read the man page for 'syscalls' into a byte string.
     #
     # https://blog.nelhage.com/2010/02/a-very-subtle-bug/
     # read link for supporting this operation on python v2. python v3 fixes this so the second
     # argument of check_output is not needed.
-    man_page_bytestring = subprocess.check_output(['man', 'syscalls'], preexec_fn=lambda:
-                      signal.signal(signal.SIGPIPE, signal.SIG_DFL))
+    man_page_bytestring = subprocess.check_output(
+        ["man", "syscalls"],
+        preexec_fn=lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL),
+    )
 
     # cast to string and split into a list of lines.
     man_page_lines = man_page_bytestring.decode("utf-8").split("\n")
@@ -104,8 +104,10 @@ def parse_syscall_names_list():
     # loop until the last entry of the list of syscall names is writev.
     while True:
         if len(man_page_lines) == 0:
-            raise Exception("Reached the end of syscalls man page while trying to " +
-                          "read the syscall names.")
+            raise Exception(
+                "Reached the end of syscalls man page while trying to "
+                + "read the syscall names."
+            )
 
         line = man_page_lines.pop(0).strip()
 
@@ -113,7 +115,7 @@ def parse_syscall_names_list():
         line = char_backspace.sub("", line)
 
         # skip empty lines.
-        if(line == ''):
+        if line == "":
             continue
 
         # we only need the name of the system call which should be the first part of
@@ -129,42 +131,40 @@ def parse_syscall_names_list():
 
         # all syscall names are followed by the "(2)" text. if not then they must be
         # something else we don't need, so let's skip it.
-        if(not syscall_name.endswith("(2)")):
+        if not syscall_name.endswith("(2)"):
             continue
 
         # remove the "(2)" part and add it to the list.
-        syscall_name = syscall_name[:syscall_name.find("(2)")]
+        syscall_name = syscall_name[: syscall_name.find("(2)")]
         syscall_names_list.append(syscall_name)
-
 
         # once we add the writev syscall we break since there are no more syscalls
         # after this.
-        if(syscall_name == "writev"):
+        if syscall_name == "writev":
             break
 
     return syscall_names_list
-
 
 
 def get_syscall_definitions_list(syscall_names_list):
     """
     <Purpose>
       Given a list of syscall names, it returns a list of SyscallManual  objects.
-    
+
     <Arguments>
       syscall_names_list:
         a list of system call names.
-    
+
     <Exceptions>
       None
-    
+
     <Side Effects>
       None
-    
+
     <Returns>
       syscall_definitions_list:
         A list of SyscallManual objects.
-    
+
     """
     syscall_definitions_list = []
     for syscall_name in syscall_names_list:
@@ -173,11 +173,10 @@ def get_syscall_definitions_list(syscall_names_list):
     return syscall_definitions_list
 
 
-
 def print_definitions1(syscall_definitions_list):
     """
-    A view of the parsed definitions. Prints the number of system call names 
-    parsed, the list of all the system call names and a list of all the 
+    A view of the parsed definitions. Prints the number of system call names
+    parsed, the list of all the system call names and a list of all the
     definitions.
     """
 
@@ -197,7 +196,6 @@ def print_definitions1(syscall_definitions_list):
     print("List of system call definitions:")
     print("--------------------------------")
 
-
     for sd in syscall_definitions_list:
         print(sd)
         print()
@@ -206,27 +204,25 @@ def print_definitions1(syscall_definitions_list):
     print()
 
 
-
 def print_definitions2(syscall_definitions_list):
     """
-    A view of the parsed definitions. Prints only the list of parsed definitions. 
+    A view of the parsed definitions. Prints only the list of parsed definitions.
     Skips the system calls for which a definition was not found (for any reason).
     """
 
     print("List of all syscall definitions found")
     print("=====================================")
     for sd in syscall_definitions_list:
-        if(sd.type == SyscallManual.FOUND):
+        if sd.type == SyscallManual.FOUND:
             print(sd.definition)
 
     print()
     print()
 
 
-
 def print_definitions3(syscall_definitions_list):
     """
-    A view of the parsed definitions. 
+    A view of the parsed definitions.
     - Lists the syscall names for which a definition was NOT found.
     - Prints the reason the definition was not found.
     - Lists the type of all syscalls i.e:
@@ -239,7 +235,7 @@ def print_definitions3(syscall_definitions_list):
     print("List of all syscall names for which a definition was not found")
     print("==============================================================")
     for sd in syscall_definitions_list:
-        if(sd.type != SyscallManual.FOUND):
+        if sd.type != SyscallManual.FOUND:
             print(sd.name)
 
     print()
@@ -254,14 +250,14 @@ def print_definitions3(syscall_definitions_list):
     print("Syscall names and the reason its definition was not found")
     print("=========================================================")
     for sd in syscall_definitions_list:
-        if(sd.type == SyscallManual.FOUND):
+        if sd.type == SyscallManual.FOUND:
             found.append(sd.name)
             continue
-        elif(sd.type == SyscallManual.NO_MAN_ENTRY):
+        elif sd.type == SyscallManual.NO_MAN_ENTRY:
             no_man.append(sd.name)
-        elif(sd.type == SyscallManual.NOT_FOUND):
+        elif sd.type == SyscallManual.NOT_FOUND:
             not_found.append(sd.name)
-        else:    # unimplemented
+        else:  # unimplemented
             unimplemented.append(sd.name)
 
         print(sd)
@@ -300,19 +296,17 @@ def print_definitions3(syscall_definitions_list):
     print()
 
 
-
 def pickle_syscall_definitions(syscall_definitions_list):
     """
     Store the syscall_definitions_list into a pickle file.
     """
 
     import pickle
+
     pickle_name = "syscall_definitions.pickle"
-    pickle_file = open(pickle_name, 'wb')
+    pickle_file = open(pickle_name, "wb")
     pickle.dump(syscall_definitions_list, pickle_file)
     pickle_file.close()
-
-
 
 
 def main():
@@ -331,6 +325,7 @@ def main():
 
     # pickle syscall_definitions_list
     pickle_syscall_definitions(syscall_definitions_list)
+
 
 if __name__ == "__main__":
     main()

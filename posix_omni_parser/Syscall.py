@@ -48,8 +48,7 @@ class UnfinishedSyscall(object):
         return not self.__eq__(other)
 
     def __repr__(self):
-        return "UnfinishedSyscall: " + self.pid + \
-             " " + self.name + " " + str(self.args)
+        return "UnfinishedSyscall: " + self.pid + " " + self.name + " " + str(self.args)
 
 
 class Syscall(object):
@@ -111,7 +110,6 @@ class Syscall(object):
     # them.
     COMPLETE = 2
 
-
     def __init__(self, syscall_definitions, line, line_parts):
         """
         <Purpose>
@@ -146,11 +144,14 @@ class Syscall(object):
 
         # TODO: better use an enum here
         self.type = line_parts["type"]
-        assert self.type == Syscall.UNFINISHED or self.type == Syscall.RESUMED or self.type == Syscall.COMPLETE, "Unrecognized syscall type"
+        assert (
+            self.type == Syscall.UNFINISHED
+            or self.type == Syscall.RESUMED
+            or self.type == Syscall.COMPLETE
+        ), "Unrecognized syscall type"
 
         self.pid = line_parts["pid"]
         self.name = line_parts["name"]
-
 
         # at this point all system call arguments are represented as strings. Let's
         # cast them into more meaningful classes.
@@ -160,9 +161,9 @@ class Syscall(object):
         # and set the self.args parameter to an arbitrary None, as we don't care
         # about it.
         if "syscall_" not in self.name:
-            self.args = parsing_classes.cast_args(self.name, line_parts["type"],
-                                                  syscall_definitions,
-                                                  line_parts["args"])
+            self.args = parsing_classes.cast_args(
+                self.name, line_parts["type"], syscall_definitions, line_parts["args"]
+            )
         else:
             self.args = None
 
@@ -181,7 +182,6 @@ class Syscall(object):
         if "elapsed_time" in line_parts:
             self.elapsed_time = line_parts["elapsed_time"]
 
-
     def isSuccessful(self):
         """
         If the first item of the return part is -1 or ? it means the syscall
@@ -189,28 +189,40 @@ class Syscall(object):
         """
         return self.ret[0] != -1 and self.ret[0] != "?"
 
-
     def __repr__(self):
 
-        types = {Syscall.UNFINISHED:"unfinished",
-                 Syscall.RESUMED:"resumed",
-                 Syscall.COMPLETE:"complete"}
+        types = {
+            Syscall.UNFINISHED: "unfinished",
+            Syscall.RESUMED: "resumed",
+            Syscall.COMPLETE: "complete",
+        }
 
         type_string = types[self.type]
 
-        representation = "ORIGINAL LINE: " + self.original_line + "\n" \
-                       + "TYPE:          " + type_string + "\n" \
-                       + "PID:           " + str(self.pid) + "\n" \
-                       + "NAME:          " + self.name + "\n" \
-                       + "ARGS:          " + str(self.args) + "\n" \
-                       + "RETURN:        " + str(self.ret) + "\n" \
-
+        representation = (
+            "ORIGINAL LINE: "
+            + self.original_line
+            + "\n"
+            + "TYPE:          "
+            + type_string
+            + "\n"
+            + "PID:           "
+            + str(self.pid)
+            + "\n"
+            + "NAME:          "
+            + self.name
+            + "\n"
+            + "ARGS:          "
+            + str(self.args)
+            + "\n"
+            + "RETURN:        "
+            + str(self.ret)
+            + "\n"
+        )
         if self.inst_pointer:
-            representation += "INST_POINTER: " + self.inst_pointer + "\n" \
-
+            representation += "INST_POINTER: " + self.inst_pointer + "\n"
         if self.timestamp:
-            representation += "TIMESTAMP: " + str(self.timestamp) + "\n" \
-
+            representation += "TIMESTAMP: " + str(self.timestamp) + "\n"
         if self.elapsed_time:
             representation += "ELAPSED_TIME: " + str(self.elapsed_time) + "\n"
 

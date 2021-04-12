@@ -1,5 +1,7 @@
 from builtins import str
 from builtins import object
+
+
 class SyscallParameter(object):
     """
     <Purpose>
@@ -103,7 +105,7 @@ class SyscallParameter(object):
         self.long = False
 
         # a parameter could be the ellipsis ("...")
-        if(parameter_string == "..."):
+        if parameter_string == "...":
             # type and name of the parameter remain None
             self.ellipsis = True
             return
@@ -111,13 +113,13 @@ class SyscallParameter(object):
         # parameter can be a function pointer eg in clone:
         # int clone(int (*fn)(void *), void *child_stack, int flags, void *arg, ...)
         # ==> int (*fn)(void *)
-        if(parameter_string.endswith(")")):
+        if parameter_string.endswith(")"):
             self.function = True
             # type will hold the return type of the function
-            self.type = parameter_string[:parameter_string.find(" (*")].strip()
+            self.type = parameter_string[: parameter_string.find(" (*")].strip()
             # name will hold everything else.
             # TODO: could potentially be more fine-grained parsed.
-            self.name = parameter_string[parameter_string.find(" (*"):].strip()
+            self.name = parameter_string[parameter_string.find(" (*") :].strip()
 
         else:
             try:
@@ -130,38 +132,38 @@ class SyscallParameter(object):
                 return
 
         # if the name starts with a "*" the parameter is a pointer.
-        if(self.name.startswith("*")):
+        if self.name.startswith("*"):
             self.pointer = True
-            self.name = self.name[1:]    # remove the asterisk.
+            self.name = self.name[1:]  # remove the asterisk.
 
         # if the name ends with a "[]" the parameter is an array.
-        if(self.name.endswith("[]")):
+        if self.name.endswith("[]"):
             self.array = True
-            self.name = self.name[:-2]    # remove square brackets.
+            self.name = self.name[:-2]  # remove square brackets.
 
         # split and examine the parts of the type.
-        while(len(self.type.split()) > 1):
+        while len(self.type.split()) > 1:
             item, self.type = self.type.split(None, 1)
 
-            if(item == "unsigned"):
+            if item == "unsigned":
                 self.unsigned = True
-            elif(item == "const"):
+            elif item == "const":
                 self.const = True
-            elif(item == "struct"):
+            elif item == "struct":
                 self.struct = True
-            elif(item == "union"):
+            elif item == "union":
                 self.union = True
-            elif(item == "enum"):
+            elif item == "enum":
                 self.enum = True
-            elif(item == "short"):
+            elif item == "short":
                 self.short = True
-            elif(item == "long"):
+            elif item == "long":
                 self.long = True
             else:
                 # it could be a constant pointer eg char *const argv[] in execve in
                 # which case the item variable holds the correct type of the pointer and
                 # self.type variable should hold the string "*const"
-                if(self.type == "*const"):
+                if self.type == "*const":
                     self.const_pointer = True
                     self.type = item
                 else:
@@ -174,50 +176,49 @@ class SyscallParameter(object):
         in the man page it was originally parsed from.
         """
 
-        if(self.ellipsis):
+        if self.ellipsis:
             return "..."
 
         representation = ""
 
-        if(self.const):
+        if self.const:
             representation += "const "
 
-        if(self.struct):
+        if self.struct:
             representation += "struct "
 
-        if(self.union):
+        if self.union:
             representation += "union "
 
-        if(self.enum):
+        if self.enum:
             representation += "enum "
 
-        if(self.unsigned):
+        if self.unsigned:
             representation += "unsigned "
 
         # short / long modifier comes immediately before type
-        if(self.short):
+        if self.short:
             representation += "short "
 
-        if(self.long):
+        if self.long:
             representation += "long "
 
         representation += str(self.type) + " "
 
         # const pointer comes after the type.
-        if(self.const_pointer):
+        if self.const_pointer:
             representation += "*const "
 
-        if(self.pointer):
+        if self.pointer:
             representation += "*"
 
         representation += self.name
 
         # square brackets come right after the name.
-        if(self.array):
+        if self.array:
             representation += "[]"
 
         return representation
-
 
     def __str__(self):
         """
@@ -227,45 +228,44 @@ class SyscallParameter(object):
 
         representation = "<"
 
-        if(self.ellipsis):
+        if self.ellipsis:
             representation += "ellipsis, "
 
-
-        if(self.const):
+        if self.const:
             representation += "const, "
 
-        if(self.struct):
+        if self.struct:
             representation += "struct, "
 
-        if(self.union):
+        if self.union:
             representation += "union, "
 
-        if(self.enum):
+        if self.enum:
             representation += "enum, "
 
-        if(self.unsigned):
+        if self.unsigned:
             representation += "unsigned, "
 
         # short / long modifier comes immediately before type
-        if(self.short):
+        if self.short:
             representation += "short, "
 
-        if(self.long):
+        if self.long:
             representation += "long, "
 
         representation += str(self.type) + ", "
 
         # const pointer comes after the type.
-        if(self.const_pointer):
+        if self.const_pointer:
             representation += "const-pointer, "
 
-        if(self.pointer):
+        if self.pointer:
             representation += "pointer, "
 
         representation += "name:" + str(self.name)
 
         # square brackets come right after the name.
-        if(self.array):
+        if self.array:
             representation += "array, "
 
         representation = representation.strip(", ") + ">"

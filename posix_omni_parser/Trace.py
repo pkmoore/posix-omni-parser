@@ -29,27 +29,27 @@ from .parsers.StraceParser import StraceParser
 class Trace(object):
     """
     <Purpose>
-      This object represents an entire system call trace, which means that it 
+      This object represents an entire system call trace, which means that it
       holds all the information extracted from a system call trace file created by
-      an interposition utility such as the strace utility on Linux, the truss 
+      an interposition utility such as the strace utility on Linux, the truss
       utility on Solaris or the dtrace utility on BSD and OSX platforms.
-    
+
     <Attributes>
       self.trace_path:
         The path to the file containing the traced system calls.
-      
+
       self.tracing_utility:
         The detected tracing utility used to generate the trace file, e.g strace.
-      
+
       self.parser:
         The parser to use in order to extract the information from the trace file.
-        The choice of parser depends on the tracing utility used to generate the 
+        The choice of parser depends on the tracing utility used to generate the
         trace file, i.e self.tracing_utility.
-    
+
       self.syscalls:
         This variable holds all the parsed system calls. It is a list of Syscall
         objects returned by the parser.
-    
+
       self.platform:
         The platform in which the trace is parsed on (sys.platform). This is
         especially useful when creating a trace bundle containing not only the
@@ -60,26 +60,26 @@ class Trace(object):
     def __init__(self, trace_path, pickle_file):
         """
         <Purpose>
-          Creates a trace object containing all the information extracted from a 
+          Creates a trace object containing all the information extracted from a
           trace file.
-        
+
         <Arguments>
           trace_path:
             The path to the trace file containing all needed information.
           pickle_file:
             The path to the pickle file containing the parsed system call
             representations.
-        
+
         <Exceptions>
           IOError:
             If no trace_path or pickle_file is given
-          
+
           IOError:
             If the trace_path or pickle_file given is not a file
-        
+
         <Side Effects>
           None
-        
+
         <Returns>
           None
         """
@@ -91,7 +91,7 @@ class Trace(object):
         if self.trace_path == None:
             raise IOError("A trace file is needed to initialize a Trace object")
 
-        #Were we given a pickle file path?
+        # Were we given a pickle file path?
         if self.pickle_file == None:
             raise IOError("A pickle file is needed to initialize a Trace object")
 
@@ -117,13 +117,19 @@ class Trace(object):
         # - in bundle can store metadata what command / date / OS / etc the trace was
         # - gathered from.
 
-
     def __repr__(self):
-        representation = "<Trace\nplatform=" + self.platform \
-                       + "\ntrace_path=" + self.trace_path \
-                       + "\ntracing_utility=" + self.tracing_utility \
-                       + "\nparser=" + str(self.parser) \
-                       + "\ntraced_syscalls=" + str(len(self.syscalls)) + ">"
+        representation = (
+            "<Trace\nplatform="
+            + self.platform
+            + "\ntrace_path="
+            + self.trace_path
+            + "\ntracing_utility="
+            + self.tracing_utility
+            + "\nparser="
+            + str(self.parser)
+            + "\ntraced_syscalls="
+            + str(len(self.syscalls))
+            + ">"
+        )
 
         return representation
-

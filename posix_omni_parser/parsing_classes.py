@@ -22,6 +22,7 @@ import socket
 
 DEBUG = False
 
+
 class ParsingClass(object):
     def __repr__(self):
         return "<" + self.__class__.__name__ + " " + str(self.value) + ">"
@@ -74,8 +75,13 @@ class MissingValue(ParsingClass):
 
     # override less than
     def __lt__(self, other):
-        raise Exception("Comparing object of type " + type(other) +
-                      " with " + self.__class__.__name__ + " object.")
+        raise Exception(
+            "Comparing object of type "
+            + type(other)
+            + " with "
+            + self.__class__.__name__
+            + " object."
+        )
 
     # greater than behaves exactly like less than.
     def __gt__(self, other):
@@ -83,9 +89,15 @@ class MissingValue(ParsingClass):
 
     # override representation and string
     def __repr__(self):
-        return "<" + self.__class__.__name__ + " expected_value: " + \
-             str(self.expected_value) + ", given_value: " + \
-             str(self.given_value) + ">"
+        return (
+            "<"
+            + self.__class__.__name__
+            + " expected_value: "
+            + str(self.expected_value)
+            + ", given_value: "
+            + str(self.given_value)
+            + ">"
+        )
 
 
 class Int(ParsingClass):
@@ -105,6 +117,7 @@ class Int(ParsingClass):
             raise Exception("Unexpected format when parsing Int:", temp_value)
 
         self.value = temp_value
+
 
 class Hex(ParsingClass):
     def __init__(self, string_args):
@@ -129,8 +142,7 @@ class FileDescriptor(ParsingClass):
             # AT_FDCWD is a valid value for the openat() file descriptor
             # parameter
             if fd != "AT_FDCWD":
-                raise Exception("Unexpected format when parsing "
-                                "FileDescriptor:", fd)
+                raise Exception("Unexpected format when parsing " "FileDescriptor:", fd)
         self.value = fd
 
 
@@ -222,13 +234,13 @@ class Filepath(ParsingClass):
     def __init__(self, string_args):
         path = string_args.pop(0)
         # Remove quotes that surround paths for stored value
-        if path[0] == "\"" and path[-1] == "\"":
+        if path[0] == '"' and path[-1] == '"':
             path = path[1:-1]
         self.value = path
 
     def __str__(self):
         # Converting a Filepath to a string restores the surrounding quotes
-        return "\"" + self.value + "\""
+        return '"' + self.value + '"'
 
 
 class Flags(ParsingClass):
@@ -244,21 +256,22 @@ class Flags(ParsingClass):
         if len(self.value) == 1:
             return str(self.value[0])
         else:
-            return '|'.join(self.value)
-
+            return "|".join(self.value)
 
 
 class SockFamily(ParsingClass):
     """
     A SockFamily object can only appear as part of the Sockaddr object.
     """
+
     def __init__(self, value):
         if "sa_family=" not in value:
-            raise Exception("Unexpected argument when parsing SockFamily object: " +
-                      value)
+            raise Exception(
+                "Unexpected argument when parsing SockFamily object: " + value
+            )
 
         # get the part that comes after the 'sa_family=" label
-        value = value[value.find("sa_family=") + 10:]
+        value = value[value.find("sa_family=") + 10 :]
 
         # a basic test.
         if not value.startswith("AF_") and not value.startswith("PF_"):
@@ -272,18 +285,19 @@ class SockPort(ParsingClass):
 
     sin_port=htons(25588)
     """
+
     def __init__(self, value):
         if "sin_port=htons(" not in value:
-            raise Exception("Unexpected argument when parsing SockPort object: " +
-                          value)
+            raise Exception(
+                "Unexpected argument when parsing SockPort object: " + value
+            )
 
         # get the part that comes between "sin_port=htons(" and ")". The remaining
         # value should be a number.
         try:
-            value = int(value[value.find("sin_port=htons(") + 15:value.rfind(")")])
+            value = int(value[value.find("sin_port=htons(") + 15 : value.rfind(")")])
         except:
-            raise Exception("Unexpected argument when parsing SockPort object " +
-                          value)
+            raise Exception("Unexpected argument when parsing SockPort object " + value)
 
         self.value = value
 
@@ -294,14 +308,14 @@ class SockIP(ParsingClass):
 
     sin_addr=inet_addr("127.0.0.1")
     """
+
     def __init__(self, value):
-        if "sin_addr=inet_addr(\"" not in value:
-            raise Exception("Unexpected argument when parsing SockIP object: " +
-                          value)
+        if 'sin_addr=inet_addr("' not in value:
+            raise Exception("Unexpected argument when parsing SockIP object: " + value)
 
         # get the part that comes between sin_addr=inet_addr(" and ").
         try:
-            value = value[value.find("sin_addr=inet_addr(\"") + 20:value.rfind("\")")]
+            value = value[value.find('sin_addr=inet_addr("') + 20 : value.rfind('")')]
         except:
             raise Exception("Unexpected argument when parsing SockIP object " + value)
 
@@ -334,21 +348,28 @@ class SockPath(ParsingClass):
         if value == "NULL":
             self.type = "unnamed"
             self.value = value
-        elif value.startswith("path=@\""):
+        elif value.startswith('path=@"'):
             self.type = "pathname"
-            self.value = value[value.find("path=@\"") + 7:value.rfind("\"}")]
+            self.value = value[value.find('path=@"') + 7 : value.rfind('"}')]
         elif value.startswith("path="):
             self.type = "abstract"
-            self.value = value[value.find("path=\"") + 6:value.rfind("\"}")]
+            self.value = value[value.find('path="') + 6 : value.rfind('"}')]
         elif value.startswith("sun_path="):
             self.type = "sun"
-            self.value = value[value.find("sun_path=\"") + 10:value.rfind("\"}")]
+            self.value = value[value.find('sun_path="') + 10 : value.rfind('"}')]
         else:
             raise Exception("Unexpected value when parsing SockPath object: " + value)
 
     def __repr__(self):
-        return "<" + self.__class__.__name__ + " type: " + str(self.type) + \
-             " value: " + str(self.value) + ">"
+        return (
+            "<"
+            + self.__class__.__name__
+            + " type: "
+            + str(self.type)
+            + " value: "
+            + str(self.value)
+            + ">"
+        )
 
 
 class SockData(ParsingClass):
@@ -364,7 +385,7 @@ class SockData(ParsingClass):
         assert value.endswith("}"), "invalid SockGroups value"
 
         # geta data inside double quotes
-        self.value = value[value.find("sa_data=\"") + 9:-2]
+        self.value = value[value.find('sa_data="') + 9 : -2]
 
 
 class SockPid(ParsingClass):
@@ -375,10 +396,12 @@ class SockPid(ParsingClass):
     def __init__(self, value):
 
         # some bind() calls can either have "pid=0", or "nl_pid=0"
-        assert value.startswith("pid=") or value.startswith("nl_pid"), "invalid SockPid value"
+        assert value.startswith("pid=") or value.startswith(
+            "nl_pid"
+        ), "invalid SockPid value"
 
         try:
-            self.value = int(value[value.find("pid=") + 4:])
+            self.value = int(value[value.find("pid=") + 4 :])
         except ValueError:
             raise Exception("Unexpected pid format: " + str(value))
 
@@ -391,12 +414,14 @@ class SockGroups(ParsingClass):
     def __init__(self, value):
 
         # some bind() calls can either have "groups=00000000", or "nl_groups=00000000"
-        assert value.startswith("groups=") or value.startswith("nl_groups"), "invalid SockGroups value"
+        assert value.startswith("groups=") or value.startswith(
+            "nl_groups"
+        ), "invalid SockGroups value"
         assert value.endswith("}"), "invalid SockGroups value"
 
         # remove closing curly bracket
         value = value[:-1]
-        self.value = value[value.find("groups=") + 7:]
+        self.value = value[value.find("groups=") + 7 :]
 
 
 class Sockaddr(ParsingClass):
@@ -434,8 +459,12 @@ class Sockaddr(ParsingClass):
         sockaddr_args.append(string_args.pop(0))
 
         # the first argument of sockaddr should start with a '{'
-        assert sockaddr_args[0].startswith("{"), "First argument of sockaddr " + \
-            "structure does not start with a '{'" + "in arguments: " + str(sockaddr_args)
+        assert sockaddr_args[0].startswith("{"), (
+            "First argument of sockaddr "
+            + "structure does not start with a '{'"
+            + "in arguments: "
+            + str(sockaddr_args)
+        )
 
         # and the last one should end with a '}'
         while True:
@@ -453,15 +482,15 @@ class Sockaddr(ParsingClass):
         sa_family = sockaddr_args.pop(0)
         self.value.append(SockFamily(sa_family))
 
-        if sa_family.endswith("_FILE") :
+        if sa_family.endswith("_FILE"):
             # sockaddr should include a path.
             # 14037 connect(6, {sa_family=AF_FILE, path=@"/tmp/.X11-unix/X0"}, 20 )= 0
             self.value.append(SockPath(sockaddr_args.pop(0)))
-        elif sa_family.endswith("_LOCAL") :
+        elif sa_family.endswith("_LOCAL"):
             # sockaddr should include a path.
             # 11597 connect(4, {sa_family=AF_LOCAL, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
             self.value.append(SockPath(sockaddr_args.pop(0)))
-        elif sa_family.endswith("_UNSPEC") :
+        elif sa_family.endswith("_UNSPEC"):
             # sockaddr should include data bytes.
             # 11597 connect(3, {sa_family=AF_UNSPEC, sa_data="\0\0\0\0\0\0\0\0\0\0\0\0\0\0"}, 16) = 0
             self.value.append(SockData(sockaddr_args.pop(0)))
@@ -478,13 +507,21 @@ class Sockaddr(ParsingClass):
             self.value.append(SockGroups(sockaddr_args.pop(0)))
         else:
             if DEBUG:
-                print("Socket address family \"" + sa_family + "\" of Sockaddr structure not fully parsed")
+                print(
+                    'Socket address family "'
+                    + sa_family
+                    + '" of Sockaddr structure not fully parsed'
+                )
 
-            while (len(sockaddr_args) > 0):
+            while len(sockaddr_args) > 0:
                 self.value.append(sockaddr_args.pop(0))
 
         # there should be no more items in the sockaddr_args list
-        assert len(sockaddr_args) == 0, "Additional arguments found when parsing Sockaddr object: " + str(sockaddr_args)
+        assert (
+            len(sockaddr_args) == 0
+        ), "Additional arguments found when parsing Sockaddr object: " + str(
+            sockaddr_args
+        )
 
 
 class Stat(ParsingClass):
@@ -498,7 +535,11 @@ class Stat(ParsingClass):
         stat_args = []
         stat_args.append(string_args.pop(0))
 
-        assert stat_args[0].startswith("{"), "First argument of stat structure does not start with a '{'" + "in arguments: " + str(stat_args)
+        assert stat_args[0].startswith("{"), (
+            "First argument of stat structure does not start with a '{'"
+            + "in arguments: "
+            + str(stat_args)
+        )
 
         while True:
             stat_args.append(string_args.pop(0))
@@ -511,16 +552,20 @@ class Stat(ParsingClass):
 
         for i in range(len(stat_args)):
             if stat_args[i].startswith("st_dev=makedev("):
-                stat_args[i] = stat_args[i] + ", " + stat_args[i+1]
-                stat_args.pop(i+1)
+                stat_args[i] = stat_args[i] + ", " + stat_args[i + 1]
+                stat_args.pop(i + 1)
                 # break out here because we've shortened the list and will
                 # get an index out of range if we continue
                 break
 
         self.value = stat_args
 
-        assert len(stat_args) == 15, "We did not get 15 arguments for stat structure.  Got instead: " + str(len(stat_args)) + "args -> "+ str(stat_args)
-
+        assert len(stat_args) == 15, (
+            "We did not get 15 arguments for stat structure.  Got instead: "
+            + str(len(stat_args))
+            + "args -> "
+            + str(stat_args)
+        )
 
     def __str__(self):
         tmp = "{"
@@ -528,10 +573,8 @@ class Stat(ParsingClass):
         tmp += "}"
         return tmp
 
-
     def __setitem__(self, index, value):
         self.value[index] = value
-
 
     def __getitem__(self, index):
         return self.value[index]
@@ -544,7 +587,7 @@ def _string_to_flags(flags_string):
     flags_list = []
 
     # if no flags are set a zero is given. Return an empty list to indicate this.
-    if flags_string == '0':
+    if flags_string == "0":
         return flags_list
 
     # A a list of flags can also contain a mode in its numeric value.
@@ -564,7 +607,6 @@ def _string_to_flags(flags_string):
     return flags_list
 
 
-
 def _mode_to_flags(mode):
     """
     Transforms a number representing a mode to a list of flags.
@@ -572,10 +614,20 @@ def _mode_to_flags(mode):
     mode = int(str(mode).strip("0"))
 
     mode_flags = {
-      777: 'S_IRWXA', 700: 'S_IRWXU', 400: 'S_IRUSR', 200: 'S_IWUSR',
-      100: 'S_IXUSR', 70: 'S_IRWXG', 40: 'S_IRGRP', 20: 'S_IWGRP',
-      10: 'S_IXGRP', 7: 'S_IRWXO', 4: 'S_IROTH', 2: 'S_IWOTH',
-      1: 'S_IXOTH'}
+        777: "S_IRWXA",
+        700: "S_IRWXU",
+        400: "S_IRUSR",
+        200: "S_IWUSR",
+        100: "S_IXUSR",
+        70: "S_IRWXG",
+        40: "S_IRGRP",
+        20: "S_IWGRP",
+        10: "S_IXGRP",
+        7: "S_IRWXO",
+        4: "S_IROTH",
+        2: "S_IWOTH",
+        1: "S_IXOTH",
+    }
 
     list_of_flags = []
     # check for all permissions.
@@ -605,13 +657,12 @@ def _mode_to_flags(mode):
                 for flag in mode_flags:
                     if flag > 7 * entity_position or flag < entity_position:
                         continue
-                    compare = int(str(flag).strip('0'))
+                    compare = int(str(flag).strip("0"))
                     if entity & compare == compare:
                         list_of_flags.append(mode_flags[flag])
 
             entity_position /= 10
     return list_of_flags
-
 
 
 def _get_parsing_class(syscall_name, definition_parameter, value):
@@ -625,7 +676,10 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
 
     if definition_parameter.type == "char" and definition_parameter.pointer:
         # char pointer type
-        if "path" in definition_parameter.name or "filename" in definition_parameter.name:
+        if (
+            "path" in definition_parameter.name
+            or "filename" in definition_parameter.name
+        ):
             # argument is a file path.
             return Filepath
 
@@ -638,31 +692,38 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
 
         return PollFDPointer
 
-
     elif definition_parameter.type == "int" or definition_parameter.type.endswith("_t"):
         # number type
         if "fd" in definition_parameter.name:
             # argument is a file descriptor
             return FileDescriptor
 
-        elif ("flag" in definition_parameter.name or
-             "mode" in definition_parameter.name or
-             "prot" in definition_parameter.name or
-             "domain" in definition_parameter.name):
+        elif (
+            "flag" in definition_parameter.name
+            or "mode" in definition_parameter.name
+            or "prot" in definition_parameter.name
+            or "domain" in definition_parameter.name
+        ):
             # argument is a set of flags.
             return Flags
 
-        elif ("socket" in syscall_name and definition_parameter.type == "int" and
-              "type" in definition_parameter.name):
+        elif (
+            "socket" in syscall_name
+            and definition_parameter.type == "int"
+            and "type" in definition_parameter.name
+        ):
             return Flags
 
-        elif (definition_parameter.pointer):
+        elif definition_parameter.pointer:
             return Hex
 
-        elif (definition_parameter.type == "off_t" or definition_parameter.type == "size_t"):
+        elif (
+            definition_parameter.type == "off_t"
+            or definition_parameter.type == "size_t"
+        ):
             return Hex
 
-        elif ("|" in value or not value.isdigit()):
+        elif "|" in value or not value.isdigit():
             return Flags
 
         else:
@@ -676,12 +737,15 @@ def _get_parsing_class(syscall_name, definition_parameter, value):
         return Stat
 
     if DEBUG:
-        print("No CLASS for: '" + definition_parameter.type + " " + \
-                       definition_parameter.name + "' created yet :(\n")
-
+        print(
+            "No CLASS for: '"
+            + definition_parameter.type
+            + " "
+            + definition_parameter.name
+            + "' created yet :(\n"
+        )
 
     return UnimplementedType
-
 
 
 def _cast_syscall_arg(syscall_name, definition_parameter, string_args):
@@ -690,7 +754,9 @@ def _cast_syscall_arg(syscall_name, definition_parameter, string_args):
         return MissingValue(definition_parameter, string_args)
 
     # detect the class to wrap this parameter in based on the definition of the parameter.
-    parsing_class = _get_parsing_class(syscall_name, definition_parameter, string_args[0])
+    parsing_class = _get_parsing_class(
+        syscall_name, definition_parameter, string_args[0]
+    )
 
     arg = parsing_class(string_args)
 
@@ -703,9 +769,7 @@ def _cast_syscall_arg(syscall_name, definition_parameter, string_args):
         # 14037 recv(6, 0xb7199058, 4096, 0)      = -1 EAGAIN
         return MissingValue(definition_parameter, string_args)
 
-
     return arg
-
 
 
 def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
@@ -753,7 +817,6 @@ def cast_args(syscall_name, syscall_type, syscall_definitions, string_args):
         # remember that casting to a class automatically consumes items from the
         # given list
         casted_args.append(UnimplementedType(string_args))
-
 
     casted_args = tuple(casted_args)
 

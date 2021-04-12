@@ -52,6 +52,7 @@ from .Definition import Definition
 # controls printing
 DEBUG = False
 
+
 class SyscallManualException(Exception):
     """
     <Purpose>
@@ -63,6 +64,7 @@ class SyscallManualException(Exception):
     <Attributes>
       None
     """
+
     pass
 
 
@@ -114,7 +116,6 @@ class SyscallManual(object):
     UNIMPLEMENTED = 3
     FOUND = 4
 
-
     def __init__(self, syscall_name):
         """
         <Purpose>
@@ -140,7 +141,6 @@ class SyscallManual(object):
         """
         self.name = syscall_name
         self.type, self.definition = self._parse_definition(self.name)
-
 
     def _parse_definition(self, syscall_name):
         """
@@ -174,8 +174,10 @@ class SyscallManual(object):
         # TODO: reading entire man page: current implementation is not concerned
         # with performance too much.
         try:
-            man_page_bytestring = subprocess.check_output(['man', '2', syscall_name], preexec_fn=lambda:
-                          signal.signal(signal.SIGPIPE, signal.SIG_DFL))
+            man_page_bytestring = subprocess.check_output(
+                ["man", "2", syscall_name],
+                preexec_fn=lambda: signal.signal(signal.SIGPIPE, signal.SIG_DFL),
+            )
         except subprocess.CalledProcessError:
             # if a man entry does not exist no definitions exists.
             return self.NO_MAN_ENTRY, None
@@ -218,11 +220,13 @@ class SyscallManual(object):
         # instead return an empty string which means the syscall definition will not
         # be discovered. If this happens check if there is a man page for the
         # syscall without the number at the end.
-        if len(man_page_lines) == 1 and man_page_lines[0] == '':
+        if len(man_page_lines) == 1 and man_page_lines[0] == "":
             # read the man page of syscall_name into a byte string.
-            if(syscall_name.endswith("32") or syscall_name.endswith("64")):
+            if syscall_name.endswith("32") or syscall_name.endswith("64"):
                 try:
-                    man_page_bytestring = subprocess.check_output(['man', '2', syscall_name[:-2]])
+                    man_page_bytestring = subprocess.check_output(
+                        ["man", "2", syscall_name[:-2]]
+                    )
                 except subprocess.CalledProcessError:
                     # if a man entry does not exist no definition exists.
                     return self.NO_MAN_ENTRY, None
@@ -231,7 +235,6 @@ class SyscallManual(object):
                 man_page_lines = man_page_bytestring.decode("utf-8").split("\n")
             else:
                 return self.NO_MAN_ENTRY, None
-
 
         # a regular expression used to sanitize the read lines. Specifically it
         # removes the backspace characters and the character they hide to allow
@@ -244,7 +247,11 @@ class SyscallManual(object):
         # page given above for more information.
         while True:
             if len(man_page_lines) == 0:
-                raise SyscallManualException("Reached end of man page while looking for SYNOPSIS line for {}.".format(syscall_name))
+                raise SyscallManualException(
+                    "Reached end of man page while looking for SYNOPSIS line for {}.".format(
+                        syscall_name
+                    )
+                )
 
             # read the first line
             line = man_page_lines[0]
@@ -258,7 +265,7 @@ class SyscallManual(object):
             line = char_backspace.sub("", line)
 
             # if the line is the synopsis line we don't want to remove any more lines.
-            if (line == "SYNOPSIS"):
+            if line == "SYNOPSIS":
                 break
 
         # examine the lines until the 'DESCRIPTION' line is met, indicating the end
@@ -267,7 +274,11 @@ class SyscallManual(object):
         all_definitions = []
         while True:
             if len(man_page_lines) == 0:
-                raise SyscallManualException("Reached end of man page while looking for DESCRIPTION line for {}.".format(syscall_name))
+                raise SyscallManualException(
+                    "Reached end of man page while looking for DESCRIPTION line for {}.".format(
+                        syscall_name
+                    )
+                )
 
             line = man_page_lines.pop(0).strip()
 
@@ -275,28 +286,28 @@ class SyscallManual(object):
             line = char_backspace.sub("", line)
 
             # when we reach the description line then we can safely stop.
-            if (line == "DESCRIPTION"):
+            if line == "DESCRIPTION":
                 break
 
             # if the line includes the word "Unimplemented" then the system call is
             # unimplemented.
-            if("Unimplemented" in line):
+            if "Unimplemented" in line:
                 return self.UNIMPLEMENTED, None
 
             # we can skip the type definition lines.
-            if(line.startswith("typedef")):
+            if line.startswith("typedef"):
                 continue
 
             # remove comments if any. comments are wrapped in "/* */"
-            if("/*" in line and "*/" in line):
-                line = line[:line.find("/*")] + line[line.rfind("*/") + 2:]
+            if "/*" in line and "*/" in line:
+                line = line[: line.find("/*")] + line[line.rfind("*/") + 2 :]
                 line = line.strip()
 
             # a definition line must contain at least two parts (separated by
             # whitespace) and an opening bracket, otherwise it's not a definition. It
             # is possible that definition spans multiple lines hence we don't
             # expect it to have its closing bracket in the current line.
-            if(not (len(line.split()) > 1 and "(" in line)):
+            if not (len(line.split()) > 1 and "(" in line):
                 continue
 
             # a definition can sometimes span multiple lines. If a definition line
@@ -304,27 +315,27 @@ class SyscallManual(object):
             # For up to three times or until the line ends with a semi-colon, join the
             # line with the subsequent line.
             times = 0
-            while(not line.endswith(";")):
+            while not line.endswith(";"):
                 # join the line with the subsequent line, without removing it from the
                 # man_page_lines, to avoid skipping a definition.
                 nextLine = char_backspace.sub("", man_page_lines[times]).strip()
                 line += " " + nextLine
 
                 # remove comments from the newly created line.
-                if("/*" in line and "*/" in line):
-                    line = line[:line.find("/*")] + line[line.rfind("*/") + 2:]
+                if "/*" in line and "*/" in line:
+                    line = line[: line.find("/*")] + line[line.rfind("*/") + 2 :]
                     line = line.strip()
 
                 # definitions cannot span more than 3 lines so don't join more than 3 lines.
                 times += 1
-                if(times == 3):
+                if times == 3:
                     break
 
             # at this point a complete definition must contain at least two
             # parts(separated by whitespace), an opening bracket, a closing bracket
             # and end with a semi-colon. if any of these requirements are missing,
             # then the line is not a definition and we skip it.
-            if(not(len(line.split()) > 1 and "(" in line and line.endswith(");"))):
+            if not (len(line.split()) > 1 and "(" in line and line.endswith(");")):
                 continue
 
             if DEBUG:
@@ -341,7 +352,7 @@ class SyscallManual(object):
         # definitions. Remove definitions whose name does not start with the syscall
         # name given.
         def_index = 0
-        while(def_index < len(definitions)):
+        while def_index < len(definitions):
 
             # a definition name can sometimes have a "_" in front of it e.g. _exit instead of exit.
             # remove the "_" if what's remaining is similar to the syscall_name.
@@ -352,18 +363,19 @@ class SyscallManual(object):
             # only keep the definitions whose name is the first part of the syscall_name we care
             # about. Remove all the other definitions. For example if the syscall_name is "chown32"
             # we want to keep the definition with name "chown" but not the one with name "fchown".
-            if(syscall_name.startswith(definitions[def_index].name)
-               or ("_" + syscall_name).startswith(definitions[def_index].name)):
-                def_index += 1    # increment index so we keep this item
+            if syscall_name.startswith(definitions[def_index].name) or (
+                "_" + syscall_name
+            ).startswith(definitions[def_index].name):
+                def_index += 1  # increment index so we keep this item
             else:
-                definitions.pop(def_index)    # remove this item, don't increment index
+                definitions.pop(def_index)  # remove this item, don't increment index
 
-        if(len(definitions) == 0):
+        if len(definitions) == 0:
             # if there are no definitions left, then we could not find a suitable
             # definition for this syscall_name
             return self.NOT_FOUND, None
 
-        elif(len(definitions) == 1):
+        elif len(definitions) == 1:
             # if there is exactly one definition left, then it must be the one we need.
             return self.FOUND, definitions[0]
 
@@ -379,15 +391,16 @@ class SyscallManual(object):
             # syscall_name?
             same_name_definitions = []
             for definition in definitions:
-                if(definition.name == syscall_name):
+                if definition.name == syscall_name:
                     same_name_definitions.append(definition)
 
-            if(len(same_name_definitions) > 0):
+            if len(same_name_definitions) > 0:
                 # return the definition with the most parameters.
                 most_parameters_index = 0
                 for sd_index in range(len(same_name_definitions)):
-                    if(len(same_name_definitions[sd_index].parameters)
-                       > len(same_name_definitions[most_parameters_index].parameters)):
+                    if len(same_name_definitions[sd_index].parameters) > len(
+                        same_name_definitions[most_parameters_index].parameters
+                    ):
                         most_parameters_index = sd_index
 
                 return self.FOUND, same_name_definitions[most_parameters_index]
@@ -400,23 +413,22 @@ class SyscallManual(object):
 
                 stripped_name = definition.name.rstrip("0123456789")
                 stripped_syscall_name = syscall_name.rstrip("0123456789")
-                if(stripped_name == stripped_syscall_name):
+                if stripped_name == stripped_syscall_name:
                     similar_definitions.append(definition)
 
-            if(len(similar_definitions) == 0):
+            if len(similar_definitions) == 0:
                 return self.NOT_FOUND, None
 
             return self.FOUND, similar_definitions[0]
 
-
     def __repr__(self):
         representation = "Syscall Name: " + self.name + "\nDefinition:   "
 
-        if(self.type == self.NO_MAN_ENTRY):
+        if self.type == self.NO_MAN_ENTRY:
             representation += "No man entry found for this system call name."
-        elif(self.type == self.NOT_FOUND):
+        elif self.type == self.NOT_FOUND:
             representation += "Definition not found in man page."
-        elif(self.type == self.UNIMPLEMENTED):
+        elif self.type == self.UNIMPLEMENTED:
             representation += "System call is Unimplemented"
         else:
             representation += repr(self.definition)
@@ -424,18 +436,16 @@ class SyscallManual(object):
         return representation
 
 
-
-
-
 def main():
     import sys
 
-    if(len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print("Usage: python " + sys.argv[0] + " <syscall_name>")
         exit()
 
     syscall_definition = SyscallManual(sys.argv[1])
     print(syscall_definition)
+
 
 if __name__ == "__main__":
     main()

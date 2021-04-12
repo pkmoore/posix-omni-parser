@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from builtins import object
 from .SyscallParameter import SyscallParameter
 
+
 class Definition(object):
     """
     <Purpose>
@@ -59,9 +60,9 @@ class Definition(object):
 
         # return type can be a pointer in which case the '*' character will be
         # included in the name of the definition instead of the return type.
-        if(self.name.startswith("*")):
-            self.name = self.name[1:]    # remove the asterisk from name
-            self.ret_type += "*"    # and add it to the return type.
+        if self.name.startswith("*"):
+            self.name = self.name[1:]  # remove the asterisk from name
+            self.ret_type += "*"  # and add it to the return type.
 
         # remove brackets and semi-colon from the end of the parameters and split
         # them into a list of type-name parameters.
@@ -73,7 +74,7 @@ class Definition(object):
         # the parameter_list will have its first (and only) item as "void". In this
         # case we leave the self.parameters as an empty list. Example void
         # definition: pid_t fork(void)
-        if(parameters_list[0] == "void"):
+        if parameters_list[0] == "void":
             return
 
         for param_string in parameters_list:
@@ -88,11 +89,10 @@ class Definition(object):
             parameter = SyscallParameter(param_string)
 
             # test whether the parameter was parsed completely and correctly.
-            if (repr(parameter) != param_string):
+            if repr(parameter) != param_string:
                 continue
 
             self.parameters.append(parameter)
-
 
     def __repr__(self):
         """
@@ -101,10 +101,10 @@ class Definition(object):
         """
 
         # firstly generate the representation for the parameters.
-        parameters_string = ''
+        parameters_string = ""
         first = True
         for par in self.parameters:
-            if(first):
+            if first:
                 parameters_string += repr(par)
                 first = False
             else:

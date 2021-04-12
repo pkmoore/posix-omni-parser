@@ -17,24 +17,23 @@ import pickle
 
 
 class Parser(object):
-
     def __init__(self, trace_path, pickle_file):
         """
         <Purpose>
           Creates an Parser object which acts as the parent of parsers targeting
           specific interposition utilities.
-        
+
         <Arguments>
           trace_path:
             The path to the trace file containing the traced system calls. This file
             should contain the output of the strace utility.
           pickle_file:
-            The path to the pickle file containing the parsed system call 
+            The path to the pickle file containing the parsed system call
             representations.
 
         <Side Effects>
           None
-        
+
         <Returns>
           None
         """
@@ -43,7 +42,7 @@ class Parser(object):
 
         # get the system call definitions from the pickle file. These will be used
         # to parse the parameters of each system call.
-        self.syscall_definitions = pickle.load(open(pickle_file, 'rb'))
+        self.syscall_definitions = pickle.load(open(pickle_file, "rb"))
 
         # detect the options used in with the tracing utility. These options will be later used to
         # parse all the trace lines of the file.
@@ -58,8 +57,8 @@ class Parser(object):
         # directory is assumed to be the current directory (pwd)
         self.home_env = self._get_home_environment()
 
-
     """ ABSTRACT METHODS """
+
     def _get_home_environment(self):
         raise NotImplementedError
 
@@ -68,7 +67,6 @@ class Parser(object):
 
     def parse_trace(self):
         raise NotImplementedError
-
 
     def _merge_quote_args(self, args_list):
         """
@@ -80,21 +78,21 @@ class Parser(object):
           then the argument must have been wrongly split into two. Reconstruct the
           original argument by joining the current part of the argument with the next
           part in the arguments list.
-        
+
         <Arguments>
           args_list:
             A list of string arguments.
-        
+
         <Exceptions>
           None
-        
+
         <Side Effects>
           None
-        
+
         <Returns>
           line_parts:
             The updated line_parts.
-        
+
         """
 
         if len(args_list) <= 1:
@@ -104,7 +102,7 @@ class Parser(object):
         while index < len(args_list):
             # if the current argument starts with a quote but does not end with a quote,
             # then the argument must have been wrongly split.
-            if args_list[index].startswith("\""):
+            if args_list[index].startswith('"'):
                 while index + 1 < len(args_list):
                     if self._ends_in_unescaped_quote(args_list[index].strip(".")):
                         break
@@ -114,7 +112,6 @@ class Parser(object):
 
         return args_list
 
-
     def _ends_in_unescaped_quote(self, string):
         """
         Helper method for _merge_quote_args
@@ -123,9 +120,7 @@ class Parser(object):
             return False
 
         for index in range(-2, -len(string) - 1, -1):
-            if string[index] != '\\':
+            if string[index] != "\\":
                 return index % 2 == 0
 
         return False
-
-
