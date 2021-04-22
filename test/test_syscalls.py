@@ -1,4 +1,5 @@
 from posix_omni_parser import Trace
+from posix_omni_parser import parsing_classes
 import os
 
 
@@ -526,7 +527,7 @@ class TestWrite():
     assert write_call.ret == (57, None)
  
  
- 
+
 class TestWait():
   def test_wait(self):
     
@@ -535,9 +536,14 @@ class TestWait():
     t = Trace.Trace(strace_path, syscall_definitions)
     wait_call = t.syscalls[0]
     
-    assert wait.call.name == "wait4"
-    assert wait.call.args[0].value == 8216
+    
+    assert wait_call.name == "wait4"
+    assert wait_call.args[0].value == 8216
+    assert type(wait_call.args[1].expected_value) == type(parsing_classes.Int)
+    assert wait_call.ret == None
 
-    assert wait.call.args[2] == 0
-    assert wait.call.ret == (8216, None)
+
+
+
+
     
