@@ -1,5 +1,6 @@
 from builtins import object
 from posix_omni_parser import Trace
+from posix_omni_parser import parsing_classes
 import os
 
 
@@ -1069,7 +1070,6 @@ class TestWrite():
     assert write_call.args[1].value == '"crashsimlang  get-pip.py  local  posix-omni-parser  test\\n"'
     assert write_call.args[2].value == '57'
     assert write_call.ret == (57, None)
- 
  
  
 
