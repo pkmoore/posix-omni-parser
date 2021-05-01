@@ -1073,3 +1073,32 @@ class TestWrite():
  
  
 
+<<<<<<< HEAD
+=======
+class TestWait():
+  def test_wait(self):
+    
+    strace_path = get_test_data_path("unfinished.strace")
+    syscall_definitions = get_test_data_path("syscall_definitions.pickle")
+    t = Trace.Trace(strace_path, syscall_definitions)
+    wait_call = t.syscalls[0]
+    
+    #import pdb; pdb.set_trace()
+    assert wait_call.name == "wait4"
+    assert wait_call.args[0].value == 8216
+    
+    assert wait_call.args[1].expected_value.type == 'int'
+    assert wait_call.args[1].expected_value.name == 'wstatus'
+    assert wait_call.args[1].given_value == None
+    assert wait_call.args[2].expected_value.type == 'int'
+    assert wait_call.args[2].expected_value.name == 'options'
+    assert wait_call.args[3].expected_value.pointer == True
+    assert wait_call.args[4].expected_value.pointer == True
+    assert wait_call.ret == None
+
+
+
+
+
+    
+>>>>>>> final version of unfinished system call
