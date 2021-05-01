@@ -1,0 +1,5 @@
+8215  wait4(8216,  <unfinished ...>
+8216  exit_group(0)                     = 1
+8216  +++ exited with 0 +++
+8215  <... wait4 resumed> NULL, 0, NULL) = 8216
+
