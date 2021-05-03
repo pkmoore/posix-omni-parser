@@ -545,7 +545,6 @@ class TestWait():
     assert wait_call.args[2].expected_value.type == 'int'
     assert wait_call.args[2].expected_value.name == 'options'
     assert wait_call.args[3].expected_value.pointer == True
-    assert wait_call.args[4].expected_value.pointer == True
     assert wait_call.ret == None
 
 
